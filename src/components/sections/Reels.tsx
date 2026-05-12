@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { Play, InstagramLogo } from "@phosphor-icons/react";
+import { InstagramLogo } from "@phosphor-icons/react";
 import { REELS } from "@/content/reels";
 import { CONTACT } from "@/lib/site";
 
 export function Reels() {
   const autoplay = useRef(
-    Autoplay({ delay: 4200, stopOnInteraction: false, stopOnMouseEnter: true }),
+    Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -18,7 +18,6 @@ export function Reels() {
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -31,19 +30,6 @@ export function Reels() {
       emblaApi.off("reInit", onSelect);
     };
   }, [emblaApi]);
-
-  useEffect(() => {
-    videoRefs.current.forEach((video, i) => {
-      if (!video) return;
-      if (i === activeIndex) {
-        video.currentTime = 0;
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-        video.currentTime = 0;
-      }
-    });
-  }, [activeIndex]);
 
   return (
     <section
@@ -83,7 +69,7 @@ export function Reels() {
         </div>
       </div>
 
-      <div className="overflow-hidden px-4 md:px-8" ref={emblaRef}>
+      <div className="container-page overflow-hidden" ref={emblaRef}>
         <div className="flex gap-4 md:gap-6">
           {REELS.map((reel, index) => {
             const isActive = index === activeIndex;
@@ -96,32 +82,14 @@ export function Reels() {
                   opacity: isActive ? 1 : 0.6,
                 }}
               >
-                <video
-                  ref={(el) => {
-                    videoRefs.current[index] = el;
-                  }}
-                  src={reel.videoUrl}
-                  muted
-                  playsInline
-                  loop
-                  preload="metadata"
-                  className="absolute inset-0 h-full w-full object-cover"
-                  aria-label={reel.caption}
+                <iframe
+                  src={reel.embedUrl}
+                  allow="autoplay; fullscreen"
+                  className="absolute inset-0 h-full w-full"
+                  title={reel.caption}
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-mp-ink/70 via-transparent to-transparent pointer-events-none" />
-
-                {!isActive && (
-                  <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-mp-canvas/90">
-                      <Play
-                        weight="fill"
-                        className="h-5 w-5 text-mp-ink translate-x-0.5"
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </span>
-                )}
 
                 <p className="absolute bottom-3 left-3 right-3 text-xs text-mp-canvas font-medium leading-snug line-clamp-2 drop-shadow">
                   {reel.caption}

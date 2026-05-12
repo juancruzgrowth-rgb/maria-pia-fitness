@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HERO } from "@/content/hero";
 import { CONTACT } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
-import { ShutterHeadline } from "@/components/ui/ShutterHeadline";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 20 },
@@ -35,13 +34,11 @@ export function Hero() {
             className="container-page"
           >
             <div className="relative w-full aspect-video rounded-[var(--radius-card)] overflow-hidden border border-mp-line bg-mp-ink">
-              <video
-                src={HERO.videoUrl}
-                autoPlay
-                controls
-                playsInline
-                className="h-full w-full object-cover"
-                aria-label="Video de presentación de Maria Pia"
+              <iframe
+                src={`${HERO.videoUrl}?autoplay=1`}
+                allow="autoplay; fullscreen"
+                className="h-full w-full"
+                title="Video de presentación de Maria Pia"
               />
               <button
                 type="button"
@@ -74,13 +71,13 @@ export function Hero() {
                 {HERO.eyebrow}
               </motion.span>
 
-              <h1 className="leading-[1.02]">
-                <ShutterHeadline
-                  lead={HERO.headlineLead}
-                  accent={HERO.headlineAccent}
-                  baseDelay={0.15}
-                />
-              </h1>
+              <motion.h1
+                {...fadeUp(0.2)}
+                className="font-display font-extrabold text-5xl sm:text-6xl lg:text-[72px] tracking-tight leading-[1.05]"
+              >
+                <span className="block text-mp-ink">{HERO.headlineLead}</span>
+                <span className="block text-mp-orange">{HERO.headlineAccent}</span>
+              </motion.h1>
 
               <motion.p
                 {...fadeUp(0.3)}

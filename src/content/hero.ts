@@ -4,11 +4,10 @@ export const HERO = {
   headlineAccent: "Transformá tu cuerpo con acompañamiento real.",
   description:
     "Programas personalizados de entrenamiento y nutrición diseñados según tu cuerpo, tus objetivos y tu estilo de vida. Presencial en Rosario y online desde cualquier lugar.",
-  primaryCtaLabel: "Chatear por WhatsApp",
+  primaryCtaLabel: "WhatsApp",
   secondaryCtaLabel: "Ver programas",
-  videoPosterUrl:
-    "https://images.pexels.com/photos/4498140/pexels-photo-4498140.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  videoUrl: "/videos/hero.mp4",
+  videoPosterUrl: "/images/sobre-mi.png",
+  videoUrl: "https://www.pexels.com/video/6525502/embed/",
   trustPoints: [
     { label: "8+ años", caption: "acompañando procesos reales" },
     { label: "+200", caption: "personas entrenaron con planificación personalizada" },

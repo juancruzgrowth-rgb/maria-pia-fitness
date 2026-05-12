@@ -32,8 +32,9 @@
 - [ ] Crear preferencia MP con `unit_price` único para la opción pago único
 - [ ] Ruta: `src/app/api/checkout/mercadopago/route.ts`
 
-### 2. Imagen del Gym
-- [ ] María Pía debe proveer foto del centro para reemplazar el placeholder actual
+### 2. Videos a CDN (antes del deploy a producción)
+- [ ] GitHub advierte que los MP4 son > 50 MB. Mover videos a CDN (Vercel Blob, Cloudflare R2, o Cloudinary) y reemplazar rutas `/videos/*.mp4` por URLs de CDN
+- [ ] Mientras tanto funcionan localmente en dev sin problema
 
 ### 3. VSL Hero — video real
 - [ ] Pendiente de subir video real del método (ya colocado el placeholder local)

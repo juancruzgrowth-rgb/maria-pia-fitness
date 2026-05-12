@@ -7,13 +7,11 @@ import { Gym } from "@/components/sections/Gym";
 import { Reels } from "@/components/sections/Reels";
 import { Newsletter } from "@/components/sections/Newsletter";
 import { FAQ } from "@/components/sections/FAQ";
-import { PageIntro } from "@/components/ui/PageIntro";
 import { PulseDivider } from "@/components/ui/PulseDivider";
 
 export default function Home() {
   return (
     <>
-      <PageIntro />
       <Hero />
       <PulseDivider className="container-page py-2" />
       <Services />

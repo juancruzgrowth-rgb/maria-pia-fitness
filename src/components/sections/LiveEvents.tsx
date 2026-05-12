@@ -1,9 +1,4 @@
-"use client";
-
-import { useRef } from "react";
-import { ArrowRight, YoutubeLogo, CalendarBlank, Clock } from "@phosphor-icons/react";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+import { ArrowRight, YoutubeLogo, CalendarBlank, Clock } from "@phosphor-icons/react/dist/ssr";
 import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
 
 interface LiveEvent {
@@ -59,15 +54,6 @@ const TOPIC_COLORS: Record<string, string> = {
 const YOUTUBE_CHANNEL = "https://www.youtube.com/@mp.cep";
 
 export function LiveEvents() {
-  const autoplay = useRef(
-    Autoplay({ delay: 7000, stopOnInteraction: false, stopOnMouseEnter: true }),
-  );
-
-  const [emblaRef] = useEmblaCarousel(
-    { loop: true, align: "start" },
-    [autoplay.current],
-  );
-
   return (
     <section
       id="eventos"
@@ -105,68 +91,65 @@ export function LiveEvents() {
             </a>
           </RevealOnScroll>
         </div>
-      </div>
 
-      <div className="overflow-hidden px-4 md:px-8 lg:px-12" ref={emblaRef}>
-        <div className="flex gap-6">
-          {EVENTS.map((event) => (
-            <article
-              key={event.id}
-              className="flex shrink-0 basis-[85%] sm:basis-[60%] md:basis-[46%] lg:basis-[calc(25%-18px)] flex-col rounded-[var(--radius-card)] border border-mp-line bg-mp-canvas p-6 md:p-8 gap-5 transition-all duration-300 hover:border-mp-orange/25 hover:shadow-[0_0_28px_-6px_rgba(242,163,27,0.14)]"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <span
-                  className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] font-display font-semibold ${
-                    TOPIC_COLORS[event.topic] ?? TOPIC_COLORS["Salud y rendimiento"]
-                  }`}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {EVENTS.map((event, i) => (
+            <RevealOnScroll key={event.id} delay={i * 80}>
+              <article className="flex flex-col rounded-[var(--radius-card)] border border-mp-line bg-mp-canvas p-6 md:p-8 gap-5 h-full transition-all duration-300 hover:border-mp-orange/25 hover:shadow-[0_0_28px_-6px_rgba(242,163,27,0.14)]">
+                <div className="flex items-start justify-between gap-3">
+                  <span
+                    className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] font-display font-semibold ${
+                      TOPIC_COLORS[event.topic] ?? TOPIC_COLORS["Salud y rendimiento"]
+                    }`}
+                  >
+                    {event.topic}
+                  </span>
+                  <YoutubeLogo
+                    weight="regular"
+                    className="h-5 w-5 text-mp-carbon/40 shrink-0"
+                    aria-hidden="true"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-3 flex-1">
+                  <h3 className="font-display font-bold text-xl md:text-2xl text-mp-ink leading-snug">
+                    {event.title}
+                  </h3>
+                  <p className="text-sm text-mp-carbon/80 leading-relaxed">
+                    {event.description}
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-2 border-t border-mp-line pt-5">
+                  <div className="flex items-center gap-2 text-sm text-mp-carbon/80">
+                    <CalendarBlank
+                      weight="duotone"
+                      className="h-4 w-4 text-mp-orange shrink-0"
+                      aria-hidden="true"
+                    />
+                    <span>{event.date}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-mp-carbon/80">
+                    <Clock
+                      weight="duotone"
+                      className="h-4 w-4 text-mp-orange shrink-0"
+                      aria-hidden="true"
+                    />
+                    <span>{event.time}</span>
+                  </div>
+                </div>
+
+                <a
+                  href={event.youtubeUrl || YOUTUBE_CHANNEL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-mp-ink px-5 py-3 font-display font-semibold uppercase tracking-[0.08em] text-xs text-mp-canvas hover:bg-mp-carbon active:scale-[0.98] transition-all duration-200 mt-1"
                 >
-                  {event.topic}
-                </span>
-                <YoutubeLogo
-                  weight="regular"
-                  className="h-5 w-5 text-mp-carbon/40 shrink-0"
-                  aria-hidden="true"
-                />
-              </div>
-
-              <div className="flex flex-col gap-3 flex-1">
-                <h3 className="font-display font-bold text-xl md:text-2xl text-mp-ink leading-snug">
-                  {event.title}
-                </h3>
-                <p className="text-sm text-mp-carbon/80 leading-relaxed">
-                  {event.description}
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-2 border-t border-mp-line pt-5">
-                <div className="flex items-center gap-2 text-sm text-mp-carbon/80">
-                  <CalendarBlank
-                    weight="duotone"
-                    className="h-4 w-4 text-mp-orange shrink-0"
-                    aria-hidden="true"
-                  />
-                  <span>{event.date}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-mp-carbon/80">
-                  <Clock
-                    weight="duotone"
-                    className="h-4 w-4 text-mp-orange shrink-0"
-                    aria-hidden="true"
-                  />
-                  <span>{event.time}</span>
-                </div>
-              </div>
-
-              <a
-                href={event.youtubeUrl || YOUTUBE_CHANNEL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-mp-ink px-5 py-3 font-display font-semibold uppercase tracking-[0.08em] text-xs text-mp-canvas hover:bg-mp-carbon active:scale-[0.98] transition-all duration-200 mt-1"
-              >
-                Inscribirme al seminario
-                <ArrowRight weight="bold" className="h-3.5 w-3.5" />
-              </a>
-            </article>
+                  Inscribirme al seminario
+                  <ArrowRight weight="bold" className="h-3.5 w-3.5" />
+                </a>
+              </article>
+            </RevealOnScroll>
           ))}
         </div>
       </div>

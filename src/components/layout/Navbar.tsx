@@ -61,7 +61,7 @@ export function Navbar() {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-md bg-mp-ink px-5 py-2.5 font-display font-semibold uppercase tracking-[0.1em] text-xs text-mp-canvas hover:bg-mp-carbon active:scale-[0.98] transition-all duration-200"
           >
-            Chatear por WhatsApp
+            WhatsApp
           </a>
         </div>
 
@@ -106,7 +106,7 @@ export function Navbar() {
               onClick={() => setMobileOpen(false)}
               className="mt-4 inline-flex items-center justify-center rounded-md bg-mp-ink px-6 py-4 font-display font-semibold uppercase tracking-[0.1em] text-xs text-mp-canvas"
             >
-              Chatear por WhatsApp
+              WhatsApp
             </a>
           </nav>
         </div>
