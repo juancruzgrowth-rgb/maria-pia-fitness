@@ -21,12 +21,12 @@ export function Services() {
               Programas
             </span>
             <h2 className="font-display font-extrabold text-4xl md:text-5xl lg:text-[56px] leading-[1.05] tracking-tight">
-              Elegí el plan que se adapta a tu momento.
+              Un programa. Una promesa clara.
             </h2>
             <p className="text-base md:text-lg text-mp-carbon/80 leading-relaxed">
-              Cada programa parte del mismo método: diagnóstico, plan
-              personalizado y seguimiento real. Lo que cambia es la profundidad
-              y el ritmo.
+              90 días para mejorar hábitos, subir energía y tonificar el
+              cuerpo, sin depender de la motivación. Todo incluido, sin
+              llamadas previas.
             </p>
           </RevealOnScroll>
 
@@ -38,13 +38,9 @@ export function Services() {
           </RevealOnScroll>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {PRODUCTS.map((product, index) => (
-            <RevealOnScroll
-              key={product.id}
-              delay={index * 100}
-              className="h-full"
-            >
+        <div className="max-w-2xl mx-auto">
+          {PRODUCTS.map((product) => (
+            <RevealOnScroll key={product.id} delay={0} className="h-full">
               <ProductCard product={product} />
             </RevealOnScroll>
           ))}
