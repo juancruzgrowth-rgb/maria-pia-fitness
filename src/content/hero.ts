@@ -7,7 +7,7 @@ export const HERO = {
   primaryCtaLabel: "WhatsApp",
   secondaryCtaLabel: "Ver programas",
   videoPosterUrl: "/images/sobre-mi.png",
-  videoUrl: "https://www.pexels.com/video/6525502/embed/",
+  videoUrl: "https://www.youtube.com/embed/ZBpxYGFmyL8",
   trustPoints: [
     { label: "8+ años", caption: "acompañando procesos reales" },
     { label: "+200", caption: "personas entrenaron con planificación personalizada" },

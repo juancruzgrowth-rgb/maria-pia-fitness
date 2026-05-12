@@ -35,8 +35,9 @@ export function Hero() {
           >
             <div className="relative w-full aspect-video rounded-[var(--radius-card)] overflow-hidden border border-mp-line bg-mp-ink">
               <iframe
-                src={`${HERO.videoUrl}?autoplay=1`}
-                allow="autoplay; fullscreen"
+                src={`${HERO.videoUrl}?autoplay=1&rel=0`}
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
                 className="h-full w-full"
                 title="Video de presentación de Maria Pia"
               />
