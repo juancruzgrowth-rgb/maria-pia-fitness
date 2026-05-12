@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@theme {
+  --color-mp-canvas: #f5f5f2;
+  --color-mp-ink: #050505;
+  --color-mp-carbon: #161616;
+  --color-mp-orange: #f2a31b;
+  --color-mp-amber: #d98a17;
+  --color-mp-sky: #bfdfff;
+  --color-mp-line: #eaeaea;
+
+  --font-display: var(--font-manrope);
+  --font-sans: var(--font-inter);
+
+  --radius-card: 1rem;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  background-color: var(--color-mp-canvas);
+  color: var(--color-mp-ink);
+}
+
+body {
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+}
+
+::selection {
+  background-color: var(--color-mp-ink);
+  color: var(--color-mp-canvas);
+}
+
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-page {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-page {
+    padding-inline: 2rem;
+  }
+}
+
+@utility section-pad {
+  padding-block: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-pad {
+    padding-block: 7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-pad {
+    padding-block: 8rem;
+  }
+}
+
+@keyframes mp-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.mp-marquee {
+  animation: mp-marquee 60s linear infinite;
+}
+
+.mp-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes mp-pulse-line {
+  0%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dashoffset: -8;
+  }
+}
+
+.mp-pulse path {
+  stroke-dasharray: 4 6;
+  animation: mp-pulse-line 2.4s ease-in-out infinite;
+}
+
+@keyframes mp-cta-ring {
+  0%, 60%, 100% {
+    box-shadow: 0 0 0 0 rgba(242, 163, 27, 0);
+  }
+  78% {
+    box-shadow: 0 0 0 5px rgba(242, 163, 27, 0.18);
+  }
+}
+
+.mp-cta-ring {
+  animation: mp-cta-ring 4s ease-in-out infinite;
+  animation-delay: 2s;
+}
