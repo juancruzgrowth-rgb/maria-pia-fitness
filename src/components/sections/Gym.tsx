@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { CONTACT } from "@/lib/site";
 
 const GYM_VIDEO_URL = "";
-const GYM_POSTER_URL =
-  "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=1200";
+const GYM_POSTER_URL = "/images/centro-entrenamiento.png";
 
 export function Gym() {
   return (
@@ -58,14 +57,13 @@ export function Gym() {
 
           <RevealOnScroll delay={260}>
             <Button
-              href={
-                CONTACT.whatsappUrl ||
-                `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`
-              }
+              href="https://www.google.com/maps/place/MP+Centro+de+Entrenamiento+Personalizado/@-32.8984607,-60.684188,17z/data=!3m1!4b1!4m6!3m5!1s0x95b653007bd5c367:0xd8e5147c3aa73d63!8m2!3d-32.8984652!4d-60.6816131!16s%2Fg%2F11wpl28q96?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D"
               size="lg"
               variant="primary"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Conocé el centro
+              Cómo llegar
               <ArrowRight weight="bold" className="h-4 w-4" />
             </Button>
           </RevealOnScroll>

@@ -21,7 +21,7 @@ export function Services() {
               Programas
             </span>
             <h2 className="font-display font-extrabold text-4xl md:text-5xl lg:text-[56px] leading-[1.05] tracking-tight">
-              Un programa. Una promesa clara.
+              Un programa. Resultados claros.
             </h2>
             <p className="text-base md:text-lg text-mp-carbon/80 leading-relaxed">
               90 días para mejorar hábitos, subir energía y tonificar el

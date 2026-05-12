@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Play, InstagramLogo } from "@phosphor-icons/react";
@@ -10,7 +9,7 @@ import { CONTACT } from "@/lib/site";
 
 export function Reels() {
   const autoplay = useRef(
-    Autoplay({ delay: 3800, stopOnInteraction: false, stopOnMouseEnter: true }),
+    Autoplay({ delay: 4200, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -19,6 +18,7 @@ export function Reels() {
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -31,6 +31,19 @@ export function Reels() {
       emblaApi.off("reInit", onSelect);
     };
   }, [emblaApi]);
+
+  useEffect(() => {
+    videoRefs.current.forEach((video, i) => {
+      if (!video) return;
+      if (i === activeIndex) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }, [activeIndex]);
 
   return (
     <section
@@ -51,8 +64,8 @@ export function Reels() {
               Entrenamiento, nutrición y hábitos explicados simple.
             </p>
             <h2 className="font-display font-extrabold text-3xl md:text-4xl leading-[1.1] tracking-tight">
-              Cada semana, te comparto contenido práctico para ayudarte a moverte mejor, comer con
-              más claridad y construir un proceso que puedas sostener.
+              Cada semana, te comparto contenido práctico para ayudarte a moverte
+              mejor, comer con más claridad y construir un proceso que puedas sostener.
             </h2>
           </div>
 
@@ -80,28 +93,21 @@ export function Reels() {
                 className="relative shrink-0 basis-[70%] sm:basis-[44%] md:basis-[32%] lg:basis-[22%] aspect-[9/16] rounded-[var(--radius-card)] overflow-hidden border border-mp-line transition-all duration-500"
                 style={{
                   transform: isActive ? "scale(1)" : "scale(0.92)",
-                  opacity: isActive ? 1 : 0.65,
+                  opacity: isActive ? 1 : 0.6,
                 }}
               >
-                {isActive ? (
-                  <video
-                    src={reel.videoUrl}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="absolute inset-0 h-full w-full object-cover"
-                    aria-label={reel.caption}
-                  />
-                ) : (
-                  <Image
-                    src={reel.posterUrl}
-                    alt={reel.caption}
-                    fill
-                    sizes="(min-width: 1024px) 22vw, 70vw"
-                    className="object-cover"
-                  />
-                )}
+                <video
+                  ref={(el) => {
+                    videoRefs.current[index] = el;
+                  }}
+                  src={reel.videoUrl}
+                  muted
+                  playsInline
+                  loop
+                  preload="metadata"
+                  className="absolute inset-0 h-full w-full object-cover"
+                  aria-label={reel.caption}
+                />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-mp-ink/70 via-transparent to-transparent pointer-events-none" />
 

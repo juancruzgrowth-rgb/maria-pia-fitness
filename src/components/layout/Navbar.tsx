@@ -56,12 +56,12 @@ export function Navbar() {
         <div className="hidden lg:flex items-center gap-3">
           <CartButton />
           <a
-            href={CONTACT.calendlyUrl || "#newsletter"}
-            target={CONTACT.calendlyUrl ? "_blank" : undefined}
-            rel={CONTACT.calendlyUrl ? "noopener noreferrer" : undefined}
+            href={CONTACT.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-md bg-mp-ink px-5 py-2.5 font-display font-semibold uppercase tracking-[0.1em] text-xs text-mp-canvas hover:bg-mp-carbon active:scale-[0.98] transition-all duration-200"
           >
-            Agendar llamada
+            Chatear por WhatsApp
           </a>
         </div>
 
@@ -99,15 +99,15 @@ export function Navbar() {
                 {section.label}
               </a>
             ))}
-            <Link
-              href={CONTACT.calendlyUrl || "#newsletter"}
-              target={CONTACT.calendlyUrl ? "_blank" : undefined}
-              rel={CONTACT.calendlyUrl ? "noopener noreferrer" : undefined}
+            <a
+              href={CONTACT.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setMobileOpen(false)}
               className="mt-4 inline-flex items-center justify-center rounded-md bg-mp-ink px-6 py-4 font-display font-semibold uppercase tracking-[0.1em] text-xs text-mp-canvas"
             >
-              Agendar llamada
-            </Link>
+              Chatear por WhatsApp
+            </a>
           </nav>
         </div>
       )}

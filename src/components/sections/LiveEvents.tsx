@@ -47,16 +47,6 @@ const EVENTS: LiveEvent[] = [
     topic: "Hábitos",
     youtubeUrl: "",
   },
-  {
-    id: "seminario-4",
-    title: "Cómo leer tu cuerpo: señales que no podés ignorar",
-    description:
-      "Fatiga, dolor, mesetas y progreso real. Cómo distinguir lo que es normal de lo que necesita atención.",
-    date: "Martes 1 de julio",
-    time: "19:00 hs ARG",
-    topic: "Salud y rendimiento",
-    youtubeUrl: "",
-  },
 ];
 
 const TOPIC_COLORS: Record<string, string> = {

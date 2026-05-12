@@ -99,10 +99,9 @@ export function ProductCard({ product, className }: ProductCardProps) {
   return (
     <article
       className={cn(
-        "flex h-full flex-col justify-between rounded-[var(--radius-card)] border border-mp-line bg-mp-canvas p-8 md:p-10 transition-all duration-300",
-        product.recommended
-          ? "border-mp-ink"
-          : "hover:border-mp-orange/25 hover:shadow-[0_0_28px_-6px_rgba(242,163,27,0.14)]",
+        "flex h-full flex-col justify-between rounded-[var(--radius-card)] border bg-mp-canvas p-8 md:p-10 transition-all duration-500",
+        "hover:shadow-[0_0_48px_-8px_rgba(242,163,27,0.22)] hover:border-mp-orange/40",
+        product.recommended ? "border-mp-ink" : "border-mp-line",
         className,
       )}
     >

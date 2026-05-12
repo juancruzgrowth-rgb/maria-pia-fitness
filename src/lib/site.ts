@@ -12,7 +12,7 @@ export const SITE = {
 } as const;
 
 export const NAV_SECTIONS = [
-  { id: "servicios", label: "Servicios" },
+  { id: "servicios", label: "Programas" },
   { id: "casos", label: "Casos" },
   { id: "sobre-mi", label: "Sobre mí" },
   { id: "newsletter", label: "Newsletter" },

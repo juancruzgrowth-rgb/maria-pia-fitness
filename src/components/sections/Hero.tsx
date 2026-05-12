@@ -94,9 +94,11 @@ export function Hero() {
                 className="flex flex-col sm:flex-row gap-3 sm:items-center"
               >
                 <Button
-                  href={CONTACT.calendlyUrl || "#newsletter"}
+                  href={CONTACT.whatsappUrl}
                   size="lg"
                   variant="primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {HERO.primaryCtaLabel}
                   <ArrowRight weight="bold" className="h-4 w-4" />
@@ -153,7 +155,7 @@ export function Hero() {
                     aria-hidden="true"
                     className="h-1.5 w-1.5 rounded-full bg-mp-orange"
                   />
-                  Mirá el método en 90 segundos
+                  Te explico mi método en 10 minutos
                 </span>
               </div>
             </motion.div>

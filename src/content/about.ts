@@ -1,5 +1,5 @@
 export const ABOUT = {
-  heading: "Soy Maria Pia.",
+  heading: "Soy María Pía.",
   intro:
     "Entrenadora personal y nutricionista en Rosario. Hace más de ocho años acompaño a personas que quieren entrenar con criterio y comer sin pelearse con la balanza.",
   paragraphs: [
@@ -24,6 +24,5 @@ export const ABOUT = {
       body: "Hablamos de vos. Respondemos rápido. Estamos cuando aparecen las dudas.",
     },
   ],
-  imageUrl:
-    "https://images.pexels.com/photos/3768593/pexels-photo-3768593.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  imageUrl: "/images/sobre-mi.png",
 } as const;
