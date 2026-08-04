@@ -1,49 +1,47 @@
 "use client";
 
-import React from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { Quotes } from "@phosphor-icons/react";
-import { motion } from "framer-motion";
-import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
+import useEmblaCarousel from "embla-carousel-react";
+import { ArrowLeft, ArrowRight, Quotes } from "@phosphor-icons/react";
 import { STORIES, type SuccessStory } from "@/content/stories";
+import { cn } from "@/lib/utils";
 
 function StoryCard({ story }: { story: SuccessStory }) {
   return (
-    <article className="flex flex-col rounded-[var(--radius-card)] border border-mp-line overflow-hidden bg-mp-canvas w-72 shrink-0">
+    <article className="flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-canvas">
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={story.imageUrl}
-          alt={`Caso de ${story.name}`}
+          alt={`${story.name}, alumna del Reto 28 Días`}
           fill
-          sizes="288px"
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 85vw"
           className="object-cover"
         />
       </div>
-      <div className="flex flex-col gap-4 p-6 flex-1">
-        <div className="flex items-center justify-between">
-          <h3 className="font-display font-bold text-lg text-mp-ink">
-            {story.name}{" "}
-            <span className="text-mp-carbon/60 font-medium text-sm">
+
+      <div className="flex flex-1 flex-col gap-4 p-6">
+        <div className="flex flex-col gap-1">
+          <h3 className="font-display text-lg font-bold text-mp-ink">
+            {story.name}
+            <span className="ml-1.5 text-sm font-medium text-mp-carbon/60">
               · {story.age}
             </span>
           </h3>
-          <span className="text-[10px] uppercase tracking-[0.16em] text-mp-carbon/70 border border-mp-line rounded-full px-2.5 py-1 font-display font-semibold">
-            {story.duration}
-          </span>
+          <p className="text-xs font-medium text-mp-carbon/70">{story.job}</p>
         </div>
-        <p className="text-xs uppercase tracking-[0.14em] text-mp-orange font-display font-semibold">
-          {story.program}
-        </p>
-        <p className="text-sm text-mp-carbon leading-relaxed">
+
+        <p className="text-sm leading-relaxed text-mp-carbon">
           {story.caseSummary}
         </p>
-        <blockquote className="border-t border-mp-line pt-5 mt-auto flex gap-3">
+
+        <blockquote className="mt-auto flex gap-3 border-t border-mp-line pt-5">
           <Quotes
             weight="fill"
-            className="h-5 w-5 text-mp-orange shrink-0"
+            className="h-4 w-4 shrink-0 text-mp-orange"
             aria-hidden="true"
           />
-          <p className="text-sm text-mp-ink italic leading-relaxed">
+          <p className="text-sm italic leading-relaxed text-mp-carbon/80">
             {story.testimonial}
           </p>
         </blockquote>
@@ -52,74 +50,109 @@ function StoryCard({ story }: { story: SuccessStory }) {
   );
 }
 
-function StoriesColumn({
-  stories,
-  duration = 14,
-  className,
-}: {
-  stories: SuccessStory[];
-  duration?: number;
-  className?: string;
-}) {
-  return (
-    <div className={`overflow-hidden ${className ?? ""}`}>
-      <motion.div
-        animate={{ translateY: "-50%" }}
-        transition={{
-          duration,
-          repeat: Infinity,
-          ease: "linear",
-          repeatType: "loop",
-        }}
-        className="flex flex-col gap-6 pb-6"
-      >
-        {[...Array(2)].map((_, i) => (
-          <React.Fragment key={i}>
-            {stories.map((story) => (
-              <StoryCard key={`${i}-${story.id}`} story={story} />
-            ))}
-          </React.Fragment>
-        ))}
-      </motion.div>
-    </div>
-  );
-}
-
-const col1 = STORIES.slice(0, 3);
-const col2 = STORIES.slice(3, 6);
-const col3 = STORIES.slice(6, 9);
-
 export function Stories() {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    align: "start",
+    containScroll: "trimSnaps",
+  });
+  const [selected, setSelected] = useState(0);
+  const [snaps, setSnaps] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const sync = () => {
+      setSnaps(emblaApi.scrollSnapList());
+      setSelected(emblaApi.selectedScrollSnap());
+    };
+
+    emblaApi.on("select", sync);
+    emblaApi.on("reInit", sync);
+    // Embla sólo conoce sus snaps una vez montado: forzamos un reInit para
+    // que el estado inicial llegue por el mismo evento y no por el efecto.
+    emblaApi.reInit();
+
+    return () => {
+      emblaApi.off("select", sync);
+      emblaApi.off("reInit", sync);
+    };
+  }, [emblaApi]);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
   return (
     <section
-      id="casos"
-      aria-label="Casos de éxito"
+      id="testimonios"
+      aria-label="Testimonios de alumnas"
       className="section-pad border-t border-mp-line"
     >
       <div className="container-page">
-        <RevealOnScroll className="max-w-2xl flex flex-col gap-4 mb-14 md:mb-20">
-          <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-mp-carbon/70 font-medium">
-            <span
-              aria-hidden="true"
-              className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
-            />
-            Casos reales
-          </span>
-          <h2 className="font-display font-extrabold text-4xl md:text-5xl lg:text-[56px] leading-[1.05] tracking-tight">
-            Resultados que no dependen de la motivación, sino de un plan bien hecho.
-          </h2>
-          <p className="text-base md:text-lg text-mp-carbon/80 leading-relaxed">
-            Cada proceso combina entrenamiento personalizado, nutrición y seguimiento para que la
-            persona no solo vea cambios en su cuerpo, sino que también aprenda a sostenerlos en
-            su vida real.
-          </p>
-        </RevealOnScroll>
-      </div>
+        <div className="mb-8 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
+          <div className="flex max-w-2xl flex-col gap-4">
+            <span className="inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-mp-carbon/70">
+              <span
+                aria-hidden="true"
+                className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
+              />
+              Testimonios
+            </span>
+            <h2 className="font-display text-3xl font-extrabold leading-[1.08] tracking-tight md:text-4xl lg:text-5xl">
+              Mujeres con la misma agenda que vos.
+            </h2>
+          </div>
 
-      <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[760px] overflow-hidden px-4 md:px-8">
-        <StoriesColumn stories={col1} duration={50} />
-        <StoriesColumn stories={col2} duration={62} className="hidden md:block" />
-        <StoriesColumn stories={col3} duration={55} className="hidden lg:block" />
+          <div className="hidden shrink-0 gap-2 md:flex">
+            <button
+              type="button"
+              onClick={scrollPrev}
+              aria-label="Testimonio anterior"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-mp-line text-mp-ink transition-colors hover:border-mp-ink"
+            >
+              <ArrowLeft weight="bold" className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={scrollNext}
+              aria-label="Testimonio siguiente"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-mp-line text-mp-ink transition-colors hover:border-mp-ink"
+            >
+              <ArrowRight weight="bold" className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex gap-4 md:gap-6">
+            {STORIES.map((story) => (
+              <div
+                key={story.id}
+                className="min-w-0 shrink-0 grow-0 basis-[85%] sm:basis-1/2 lg:basis-1/3"
+              >
+                <StoryCard story={story} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-6 flex items-center justify-center gap-2">
+          {snaps.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => emblaApi?.scrollTo(index)}
+              aria-label={`Ir al testimonio ${index + 1}`}
+              aria-current={index === selected}
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-300",
+                index === selected
+                  ? "w-6 bg-mp-orange"
+                  : "w-1.5 bg-mp-line hover:bg-mp-carbon/30",
+              )}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

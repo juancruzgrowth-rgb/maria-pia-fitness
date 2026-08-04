@@ -22,13 +22,6 @@ export function RevealOnScroll({
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      setVisible(true);
-      return;
-    }
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -50,10 +43,8 @@ export function RevealOnScroll({
       ref={ref as never}
       style={{ transitionDelay: visible ? `${delay}ms` : undefined }}
       className={cn(
-        "transition-all duration-700 ease-out will-change-transform",
-        visible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-3",
+        "mp-reveal transition-all duration-700 ease-out will-change-transform",
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
         className,
       )}
     >

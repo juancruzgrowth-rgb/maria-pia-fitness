@@ -2,114 +2,103 @@ import Link from "next/link";
 import { InstagramLogo, TiktokLogo, YoutubeLogo } from "@phosphor-icons/react/dist/ssr";
 import { Logo } from "@/components/ui/Logo";
 import { CONTACT, SITE, NAV_SECTIONS } from "@/lib/site";
+import { GUARANTEE } from "@/lib/products";
 
 const LEGAL_LINKS = [
-  { href: "/politica-privacidad", label: "Política de Privacidad" },
+  { href: "/garantia", label: `Garantía de ${GUARANTEE.days} días` },
   { href: "/terminos-condiciones", label: "Términos y Condiciones" },
+  { href: "/politica-privacidad", label: "Política de Privacidad" },
   { href: "/proteccion-datos", label: "Protección de Datos" },
+];
+
+const SOCIALS = [
+  { url: CONTACT.instagramUrl, label: "Instagram de María Pía", Icon: InstagramLogo },
+  { url: CONTACT.tiktokUrl, label: "TikTok de María Pía", Icon: TiktokLogo },
+  { url: CONTACT.youtubeUrl, label: "YouTube de María Pía", Icon: YoutubeLogo },
 ];
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-mp-line mt-12">
-      <div className="container-page py-16 grid grid-cols-1 gap-12 md:grid-cols-12">
-        <div className="md:col-span-5 flex flex-col gap-6">
+    /* pb extra para que la barra flotante de compra no tape el contenido */
+    <footer className="mt-12 border-t border-mp-line pb-24 md:pb-28">
+      <div className="container-page grid grid-cols-1 gap-10 py-12 md:grid-cols-12 md:py-16">
+        <div className="flex flex-col gap-5 md:col-span-5">
           <Logo withTagline />
-          <p className="text-sm text-mp-carbon/80 max-w-sm leading-relaxed">
-            {SITE.fiscalName}. Acompañamos procesos de entrenamiento y
-            nutrición desde {SITE.city}, {SITE.country}.
+          <p className="max-w-sm text-sm leading-relaxed text-mp-carbon/80">
+            Entrenamiento y nutrición online para mujeres con jornadas largas y
+            poco tiempo libre. Desde {SITE.city}, {SITE.country}, para donde
+            estés.
           </p>
           <div className="flex items-center gap-2">
-            {CONTACT.instagramUrl && (
+            {SOCIALS.filter((social) => social.url).map(({ url, label, Icon }) => (
               <a
-                href={CONTACT.instagramUrl}
+                key={label}
+                href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Instagram de Maria Pia"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-mp-line text-mp-ink hover:border-mp-ink hover:text-mp-amber transition-colors"
+                aria-label={label}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-mp-line text-mp-ink transition-colors hover:border-mp-ink hover:text-mp-amber"
               >
-                <InstagramLogo weight="regular" className="h-5 w-5" />
+                <Icon weight="regular" className="h-5 w-5" aria-hidden="true" />
               </a>
-            )}
-            <a
-              href={CONTACT.tiktokUrl || "#"}
-              target={CONTACT.tiktokUrl ? "_blank" : undefined}
-              rel={CONTACT.tiktokUrl ? "noopener noreferrer" : undefined}
-              aria-label="TikTok"
-              aria-disabled={!CONTACT.tiktokUrl}
-              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-mp-line text-mp-ink transition-colors ${
-                CONTACT.tiktokUrl
-                  ? "hover:border-mp-ink hover:text-mp-amber"
-                  : "opacity-40 pointer-events-none"
-              }`}
-            >
-              <TiktokLogo weight="regular" className="h-5 w-5" />
-            </a>
-            <a
-              href={CONTACT.youtubeUrl || "#"}
-              target={CONTACT.youtubeUrl ? "_blank" : undefined}
-              rel={CONTACT.youtubeUrl ? "noopener noreferrer" : undefined}
-              aria-label="YouTube"
-              aria-disabled={!CONTACT.youtubeUrl}
-              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-mp-line text-mp-ink transition-colors ${
-                CONTACT.youtubeUrl
-                  ? "hover:border-mp-ink hover:text-mp-amber"
-                  : "opacity-40 pointer-events-none"
-              }`}
-            >
-              <YoutubeLogo weight="regular" className="h-5 w-5" />
-            </a>
+            ))}
           </div>
         </div>
 
-        <div className="md:col-span-3 flex flex-col gap-4">
-          <h4 className="text-xs uppercase tracking-[0.18em] text-mp-carbon/70">
-            Navegación
-          </h4>
+        <nav aria-label="Navegación del sitio" className="flex flex-col gap-4 md:col-span-3">
+          <h2 className="text-[11px] uppercase tracking-[0.18em] text-mp-carbon/70">
+            El reto
+          </h2>
           <ul className="flex flex-col gap-3">
             {NAV_SECTIONS.map((section) => (
               <li key={section.id}>
                 <a
-                  href={`#${section.id}`}
-                  className="text-sm text-mp-ink hover:text-mp-amber transition-colors"
+                  href={`/#${section.id}`}
+                  className="text-sm text-mp-ink transition-colors hover:text-mp-amber"
                 >
                   {section.label}
                 </a>
               </li>
             ))}
           </ul>
-        </div>
+        </nav>
 
-        <div className="md:col-span-4 flex flex-col gap-4">
-          <h4 className="text-xs uppercase tracking-[0.18em] text-mp-carbon/70">
+        <div className="flex flex-col gap-4 md:col-span-4">
+          <h2 className="text-[11px] uppercase tracking-[0.18em] text-mp-carbon/70">
             Legal
-          </h4>
+          </h2>
           <ul className="flex flex-col gap-3">
             {LEGAL_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-sm text-mp-ink hover:text-mp-amber transition-colors"
+                  className="text-sm text-mp-ink transition-colors hover:text-mp-amber"
                 >
                   {link.label}
                 </Link>
               </li>
             ))}
           </ul>
-          <p className="text-xs text-mp-carbon/70 mt-4 leading-relaxed">
-            Responsable: {SITE.ownerName} · {SITE.email}
+          <p className="mt-3 text-xs leading-relaxed text-mp-carbon/70">
+            Responsable del tratamiento de datos: {SITE.ownerName} ·{" "}
+            <a
+              href={`mailto:${SITE.email}`}
+              className="underline underline-offset-2 hover:text-mp-ink"
+            >
+              {SITE.email}
+            </a>
           </p>
         </div>
       </div>
 
       <div className="border-t border-mp-line">
-        <div className="container-page flex flex-col md:flex-row items-start md:items-center justify-between gap-2 py-6">
+        <div className="container-page flex flex-col items-start justify-between gap-2 py-6 md:flex-row md:items-center">
           <p className="text-xs text-mp-carbon/70">
             © {year} {SITE.fiscalName}. Todos los derechos reservados.
           </p>
-          <p className="text-xs text-mp-carbon/70 uppercase tracking-[0.14em]">
+          <p className="text-xs uppercase tracking-[0.14em] text-mp-carbon/70">
             {SITE.city} · {SITE.country}
           </p>
         </div>

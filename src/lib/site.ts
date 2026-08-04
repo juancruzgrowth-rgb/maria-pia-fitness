@@ -1,34 +1,69 @@
 import { publicEnv } from "@/lib/env";
+import { CHALLENGE, CTA_LABEL, formatARS, isCohortOpen } from "@/lib/products";
 
 export const SITE = {
   brand: "MP — Centro de Entrenamiento Personalizado",
   shortBrand: "MP CEP",
-  tagline: "Entrenamiento personalizado. Resultados con método.",
-  ownerName: "Maria Pia",
+  tagline: "Entrenamiento online para mujeres con poco tiempo.",
+  ownerName: "María Pía",
   city: "Rosario, Santa Fe",
   country: "Argentina",
   email: "hola@mpcep.com",
-  fiscalName: "Maria Pia — MP Centro de Entrenamiento Personalizado",
+  fiscalName: "María Pía — MP Centro de Entrenamiento Personalizado",
 } as const;
 
 export const NAV_SECTIONS = [
-  { id: "servicios", label: "Programas" },
-  { id: "casos", label: "Casos" },
+  { id: "el-reto", label: "El reto" },
+  { id: "que-recibis", label: "Qué recibís" },
+  { id: "testimonios", label: "Testimonios" },
   { id: "sobre-mi", label: "Sobre mí" },
-  { id: "newsletter", label: "Newsletter" },
+  { id: "faq", label: "Preguntas" },
 ] as const;
 
 const cleanedNumber = publicEnv.whatsappNumber.replace(/[^\d]/g, "");
 
+function waLink(message: string): string {
+  if (!cleanedNumber) return "#";
+  return `https://wa.me/${cleanedNumber}?text=${encodeURIComponent(message)}`;
+}
+
+/** Mensaje del botón de consulta general. */
+const ASK_MESSAGE = `Hola María Pía! Vi la web del ${CHALLENGE.name} y tengo una consulta antes de entrar.`;
+
+/**
+ * Mensaje precargado para enviar el comprobante de transferencia.
+ * Pide nombre y email explícitamente: sin esos datos la automatización
+ * no puede dar el acceso a Skool.
+ */
+const RECEIPT_MESSAGE = [
+  `Hola María Pía! Quiero entrar al ${CHALLENGE.name}.`,
+  `Ya hice la transferencia de ${formatARS(CHALLENGE.priceARS)} y te adjunto el comprobante.`,
+  "",
+  "Mi nombre:",
+  "Mi email:",
+].join("\n");
+
+/** Mensaje para anotarse en la lista de espera entre cohortes. */
+const WAITLIST_MESSAGE = `Hola María Pía! Quiero anotarme para la próxima cohorte del ${CHALLENGE.name}.`;
+
 export const CONTACT = {
   whatsappNumber: cleanedNumber,
-  whatsappUrl: cleanedNumber
-    ? `https://wa.me/${cleanedNumber}?text=${encodeURIComponent(
-        "Hola Maria Pia, vi tu web y quiero saber más sobre tus programas.",
-      )}`
-    : "#",
+  askUrl: waLink(ASK_MESSAGE),
+  receiptUrl: waLink(RECEIPT_MESSAGE),
+  waitlistUrl: waLink(WAITLIST_MESSAGE),
   instagramUrl: publicEnv.instagramUrl || "https://www.instagram.com/mp.cep",
   tiktokUrl: publicEnv.tiktokUrl,
   youtubeUrl: publicEnv.youtubeUrl,
   calendlyUrl: publicEnv.calendlyUrl,
+  mapsUrl:
+    "https://www.google.com/maps/place/MP+Centro+de+Entrenamiento+Personalizado/@-32.8984607,-60.684188,17z",
+} as const;
+
+/**
+ * Único CTA de compra del sitio. Si la cohorte está cerrada apunta a la
+ * lista de espera en lugar de a la página de compra.
+ */
+export const PRIMARY_CTA = {
+  label: CTA_LABEL,
+  href: isCohortOpen ? "/comprar" : CONTACT.waitlistUrl,
 } as const;

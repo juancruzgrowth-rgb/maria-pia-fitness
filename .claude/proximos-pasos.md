@@ -1,146 +1,186 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: 2026-05-12
+> Última actualización: **2026-08-04 (sesión 2)**
+> **Estado del proyecto:** Web terminada, compilando y subida a GitHub. Bloqueada sólo por 5 datos de negocio.
 
 ---
 
-## Estado del proyecto
+## 🔴 LEER PRIMERO AL RETOMAR
 
-**Fase actual:** MVP Web — Lanzamiento Low Ticket
-
-**Dev server:** `npm run dev` → http://localhost:3001
-**Repo:** https://github.com/juancruzgrowth-rgb/maria-pia-fitness
-
----
-
-## Producto activo
-
-**Programa 90 Días** — ARS 39.900/mes (lanzamiento)
-- Pago: MercadoPago (ARS) + Stripe (USD)
-- Entrega: Skool (comunidad paid, pendiente de crear)
-- Precio final acordado: suscripción 3 pagos iguales + opción pago único con descuento (~15%)
-
----
-
-## Pendientes inmediatos (próxima sesión)
-
-### 1. Precio dual (suscripción + pago único)
-- [ ] Agregar campo `pricingOptions` al tipo `ProductPackage` en `src/lib/products.ts`
-- [ ] Mostrar en `ProductCard` los dos modos: "3 pagos de ARS 39.900" y "Pago único ARS 101.700 (15% off)"
-- [ ] Crear preferencia MP con `installments: 3` para la opción cuotas
-- [ ] Crear preferencia MP con `unit_price` único para la opción pago único
-- [ ] Ruta: `src/app/api/checkout/mercadopago/route.ts`
-
-### 2. Videos a CDN (antes del deploy a producción)
-- [ ] GitHub advierte que los MP4 son > 50 MB. Mover videos a CDN (Vercel Blob, Cloudflare R2, o Cloudinary) y reemplazar rutas `/videos/*.mp4` por URLs de CDN
-- [ ] Mientras tanto funcionan localmente en dev sin problema
-
-### 3. VSL Hero — video real
-- [ ] Pendiente de subir video real del método (ya colocado el placeholder local)
-
----
-
-## Flujo de automatización post-pago (a implementar en Fase 2)
-
-### Stack recomendado
-- **n8n** (self-hosted o cloud) — orquestador principal
-- **ManyChat** — DMs automáticos en Instagram
-- **Brevo** — emails transaccionales + secuencias (ya integrado en el sitio)
-- **Google Sheets** — base de datos leads/ventas (ya integrado)
-- **Skool API** — invitación programática a la comunidad
-
-### Diagrama del flujo completo
-
-```
-Pago MP aprobado (webhook)
-  ├── Webhook valida firma → OK
-  ├── n8n/Make recibe evento
-  ├── → Email bienvenida → alumna (Brevo template: "bienvenida-programa")
-  ├── → Email notificación → María Pía (nuevo pago + datos alumna)
-  ├── → Email notificación → admin (Juan Cruz)
-  ├── → Fila nueva en Sheets tab "ventas" (nombre, email, plan, monto, fecha, estado)
-  ├── → Invitación a Skool (API: POST /api/v1/groups/{id}/members)
-  └── → WhatsApp mensaje bienvenida (WA Business API o ManyChat)
-```
-
-### Secuencias de nurturing (a crear en Brevo)
-
-| Trigger | Secuencia | Emails |
-|---|---|---|
-| Opt-in newsletter | Nurturing 5 días | Valor → Prueba social → Oferta |
-| Compra realizada | Onboarding 7 días | Bienvenida → Acceso → Tip día 3 → Check-in día 7 |
-| Día 45 activo | Testimonial request | Pedir feedback + historia |
-| Día 80 | Pre-renovación | Oferta de renovación o upsell plan personalizado |
-| Pago fallido | Recupero | 3 intentos en 72 hs |
-
-### Funnel de captación (fuera del sitio — ManyChat + IG)
-
-| Trigger | Automatización |
+| Documento | Qué contiene |
 |---|---|
-| Keyword en DM (ej: "quiero", "programa", "info") | ManyChat responde con link de pago |
-| Story reply | ManyChat cualifica con 2 preguntas → link |
-| Comentario en reel con keyword | DM automático con info |
-| Link bio | Directo a landing con UTM tracking |
-
-### Escalera de valor
-
-```
-Free content (IG, TikTok, YouTube)
-  ↓
-Newsletter (lead magnet pendiente)
-  ↓
-Programa 90 días — ARS 39.900/mes x3 [LOW TICKET]
-  ↓
-Plan personalizado 1:1 — price a definir [MID TICKET]
-  ↓
-Mentorship premium — price a definir [HIGH TICKET]
-```
+| **[`docs/MANUAL-DEL-PROYECTO.md`](../docs/MANUAL-DEL-PROYECTO.md)** | **Todo el proyecto explicado sin tecnicismos. Para Notion y para crear contenido.** |
+| `docs/estrategia/00-plan-maestro.md` | Fases, roles, métricas |
+| `docs/estrategia/01-web-arquitectura.md` | Auditoría de la home (⚠️ el quiz quedó descartado) |
+| `docs/estrategia/02-investigacion-mercado.md` | Qué convierte en coaching fitness online |
+| `docs/estrategia/03-lead-magnets-calendario.md` | Lead magnets + calendario |
+| `docs/estrategia/04-automatizaciones-n8n.md` | 22 automatizaciones (A1-A22) |
+| `docs/estrategia/05-skool-estructura.md` | Classroom + guion de grabación |
+| `docs/estrategia/06-comunidad-respuestas.md` | IG + WhatsApp automatizados |
+| `docs/estrategia/07-circuito-compra-y-garantia.md` | Cobro, garantía, devoluciones |
+| **`docs/estrategia/08-cohortes-y-cadencia.md`** | **Cadencia de 14 días + Semana 0** |
+| `docs/estrategia/MP-CEP-Plan-Lead-Magnets.xlsx` | Plan de contenido en Excel (6 hojas) |
 
 ---
 
-## Integraciones pendientes de configurar
+## ✅ Decisiones cerradas
 
-| Integración | Estado | Acción necesaria |
-|---|---|---|
-| MercadoPago | Credenciales pendientes | Cargar en Vercel env vars |
-| Stripe | Credenciales pendientes | Cargar en Vercel env vars |
-| Brevo | API key pendiente | Cargar en Vercel env vars |
-| Google Sheets | Service account pendiente | Crear SA + compartir sheet |
-| Skool | Comunidad por crear | MP crea comunidad paid |
-| Calendly | URL pendiente | Configurar `NEXT_PUBLIC_CALENDLY_URL` |
-| WhatsApp | +34625443926 (TEST) | Confirmar número AR definitivo |
-| Instagram | @mp.cep | OK |
-
----
-
-## Próximos deploys
-
-1. **Preview** — Vercel auto-deploy en cada push a `main`
-2. **Producción** — Tras cargar todas las env vars en Vercel dashboard
-3. **Webhooks** — Configurar en MP y Stripe con URL de producción
+| Tema | Decisión |
+|---|---|
+| Producto | **Reto 28 Días**, no personalizado. Programa 90 días → upsell |
+| Nicho | Mujeres que trabajan 8+ h/día |
+| Formato | Se vende como **reto** |
+| Métrica principal | **Tasa de finalización** |
+| Cobro | Transferencia + comprobante por WhatsApp |
+| **Activación del onboarding** | **Opción 1: MP responde `OK 1234` por WhatsApp** ✅ |
+| **Garantía** | **10 días** (alineada con art. 34 Ley 24.240) ✅ |
+| **Cohortes** | **Cada 14 días** + Semana 0. Lanzamiento 1 = cohorte fundadora ✅ |
+| Quiz / newsletter / formularios | **Ninguno en la web.** Cero formularios ✅ |
+| CTAs | Uno flotante (comprar) + uno de WhatsApp |
+| VSL | 10 minutos |
+| Prioridad | Mobile primero |
+| Rosario | Sólo como prueba de autoridad |
 
 ---
 
-## Decisiones tomadas
+## 🚧 BLOQUEANTES — 5 datos y desplegamos
 
-- Precio lanzamiento: ARS 39.900/mes x 3 cuotas automáticas + opción pago único (~15% dto)
-- Después del lanzamiento: ARS 49.900/mes x 3
-- Skool será comunidad "paid" — acceso solo tras compra
-- Pagos ARS → MercadoPago | Pagos USD → Stripe
-- Skool NO integra MP → pago siempre por la web, acceso a Skool via invitación automática
-- Funnel sin llamada previa en la mayoría de casos. Llamada solo para upsell/plan personalizado
+Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
+
+- [ ] **B1 · Precio.** Placeholder: ARS 29.900 → constante `PRICE_ARS`
+- [ ] **B2 · Datos bancarios.** `TRANSFER`: alias, CBU, titular
+- [ ] **B3 · WhatsApp AR.** Hoy hay un +34 español en `NEXT_PUBLIC_WHATSAPP_NUMBER`
+- [ ] **B4 · Nombre del producto.** "Reto 28 Días" es working name → `CHALLENGE.name`
+- [ ] **B5 · Fechas de la cohorte fundadora.** `COHORT`: `startsAt`, `closesAt`, `startsAtISO`, cupos
+
+> **Recomendación sobre B5:** cupo de la fundadora en **12-15**, no 25. El primer grupo es donde se rompen cosas, y de ahí salen los testimonios que venden los seis grupos siguientes.
+
+### Pendientes de contenido (no bloquean el deploy, sí la venta)
+- [ ] Grabar los 40-50 videos de ejercicios (2 medias jornadas)
+- [ ] Grabar módulos 0 y 1 (1 media jornada)
+- [ ] Grabar el VSL de 10 min → hoy apunta a un YouTube placeholder en `src/content/hero.ts`
+- [ ] Testimonios reales con foto y permiso escrito → `src/content/stories.ts`
+- [ ] Crear la comunidad en Skool
+- [ ] Revisión legal de las 4 páginas por abogado
+- [ ] Foto real del centro → `/images/centro-entrenamiento.png`
 
 ---
 
-## Contenido pendiente de María Pía
+## ✅ Hecho en la sesión 2 (2026-08-04)
 
-- [ ] Foto del centro de entrenamiento
-- [ ] Video real del VSL (método en 10 min)
-- [ ] Reels reales de Instagram para reemplazar placeholders
-- [ ] Foto de perfil "Sobre mí" final (ya colocada `sobre-mi.png`, provisoria)
-- [ ] Revisar y aprobar copy de todas las secciones
-- [ ] Revisar páginas legales con abogado antes de publicar
-- [ ] Confirmar número de WhatsApp definitivo (¿AR o mantener ES?)
-- [ ] URL de Calendly real
-- [ ] Crear comunidad en Skool
+**Verificado:** `lint`, `typecheck` y `build` sin errores. 9 rutas estáticas. Commiteado y subido a GitHub.
+
+### Garantía a 10 días
+Cambiada en `GUARANTEE.days` y propagada a toda la web y las legales. Se detectó que el art. 34 de la Ley 24.240 obliga a 10 días irrenunciables en ventas a distancia: ofrecer 7 no reducía la obligación, sólo generaba dos plazos distintos. Ahora coinciden y el mensaje es uno solo.
+
+### Sistema de cohortes escalonadas
+- `COHORT_CADENCE_DAYS = 14` → grupo nuevo cada dos semanas
+- `COHORT.isFounding` → cambia el copy del hero para el primer lanzamiento
+- **Semana 0** incorporada al copy: quien compra entra el mismo día a la preparación, así la espera hasta el día 1 no se siente como espera
+- FAQ nueva: "Si compro hoy, ¿cuándo empiezo?"
+
+### Circuito de compra
+Confirmada la opción 1: MP mira el banco y responde `OK 1234` por WhatsApp. Documentado en `07` §2.2.
+
+### Formularios
+Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proyecto.
+
+### Documentación
+- `docs/MANUAL-DEL-PROYECTO.md` — manual completo en lenguaje no técnico, con glosario, todo el razonamiento del negocio y un banco de ideas de contenido. Para Notion.
+- `docs/estrategia/08-cohortes-y-cadencia.md` — la decisión de cadencia con su fundamento
+
+---
+
+## 📋 Próximo bloque de trabajo
+
+### 1. Desplegar (bloqueado por B1-B5)
+- [ ] Cargar los 5 datos en `products.ts` y `.env`
+- [ ] Cargar env vars en Vercel (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_INSTAGRAM_URL`)
+- [ ] Smoke test en celular real: barra flotante, copiar alias, abrir WhatsApp con el mensaje precargado
+
+### 2. Automatizaciones n8n — orden de construcción
+- [ ] Instalar n8n + crear el Sheet con 4 pestañas (`leads`, `ventas`, `contenido`, `comunidad`)
+- [ ] **A1** · Captura de lead desde Instagram
+- [ ] **A3** · Recepción de comprobante + acuse automático + ID de 4 dígitos
+- [ ] **A3-bis** · Parser de `OK 1234` / `NO 1234` (idempotente: dos "OK" no pueden generar dos altas)
+- [ ] **A4** · Onboarding: Skool + email + WhatsApp + grupo + reloj de garantía
+- [ ] **A5** · Secuencia de 48 h (ahora es de Semana 0, no del reto)
+- [ ] **A6** · Detección de abandono — diario los primeros 10 días, cuenta desde el día 1 del reto
+- [ ] **A23** · Circuito de devolución
+- [ ] **A24** · Lista de espera entre cohortes
+- [ ] **A25** · Aviso 48 h antes del día 1
+- [ ] **A26** · Al día 1: activar módulo 2 y arrancar el check-in del grupo
+
+### 3. Producto (María Pía)
+- [ ] Skool: estructura completa en `05-skool-estructura.md` §3
+- [ ] Grabación por tandas — formato de video en `05` §4
+
+### 4. Contenido (Daiana)
+- [ ] Los 4 lead magnets ancla (Excel, hoja 1)
+- [ ] Plantilla base de PDF en Canva con tokens de marca
+- [ ] Arrancar el calendario (Excel, hoja 2)
+
+---
+
+## 🧠 A no olvidar
+
+1. **Nada de formularios en la web.** La captura va en Instagram vía ManyChat.
+2. **Vender "reto", no "curso".**
+3. **La Semana 0 es lo que hace tolerable la espera entre cohortes.** Sin eso, 13 días de espera cuestan devoluciones.
+4. **La espera nunca debe superar el plazo de la garantía.** Con 14 días de cadencia y 10 de garantía estamos justos: vigilar.
+5. **El acuse de recibo del comprobante es automático aunque la verificación sea manual.**
+6. **Una sola conversación por pedido de devolución.** Si insiste, se devuelve.
+7. **La cohorte 1 no es para facturar, es para generar testimonios.**
+8. **Automatizar la velocidad, no la relación.**
+9. **Graba cada ejercicio una sola vez** — programación y biblioteca van separadas.
+
+---
+
+## 🔧 Notas técnicas
+
+**Interruptor de cohorte:** `COHORT.status = "waitlist"` en `products.ts` convierte todos los CTAs del sitio en lista de espera y cambia `/comprar` por el mensaje de inscripción cerrada. Dos ediciones cada 14 días: una para cerrar, otra para abrir.
+
+**Dependencias sin usar** (no molestan, no van al bundle, pero se pueden limpiar): `framer-motion`, `zustand`, `embla-carousel-autoplay`, `react-hook-form`, `@hookform/resolvers`, `mercadopago`, `stripe`, `googleapis`.
+
+**Libs sin usar** que quedaron a propósito por si vuelve la pasarela: `src/lib/brevo.ts`, `sheets.ts`, `mercadopago.ts`, `stripe.ts`. Hoy esas integraciones las va a manejar n8n.
+
+**Lint:** 0 errores. Se corrigió `RevealOnScroll` moviendo el manejo de `prefers-reduced-motion` a CSS.
+
+---
+
+## 💰 Números
+
+| Concepto | Valor |
+|---|---|
+| Stack mensual | ~USD 160-185 |
+| Punto de equilibrio | 7-8 ventas/mes |
+| Objetivo cohorte 1 | 15 alumnas (cupo sugerido 12-15) |
+| Techo actual | ~25/mes (limitado por las llamadas 1:1) |
+| Horas manuales | 34 h/sem → 6 h/sem automatizado |
+
+---
+
+## 👥 Equipo
+
+- **María Pía** — cámara, llamadas 1:1, corrección de técnica, comunidad en bloques (L y J 18-19h + live miércoles 19h). ~12-15 h/sem.
+- **Daiana** — guiones, edición, publicación, lead magnets, primera línea de comentarios.
+- **Juan Cruz** — web, n8n, ManyChat, Brevo, métricas, estrategia y precio.
+
+**Regla:** si un humano hace la misma tarea >3 veces por semana, entra a la cola de automatización.
+
+---
+
+## ✅ Historial
+
+### Sesión 2 — 2026-08-04
+Garantía a 10 días · cohortes cada 14 días + Semana 0 · circuito de compra opción 1 confirmado · cero formularios · manual del proyecto para Notion · doc de cohortes · primer push a GitHub
+
+### Sesión 1 — 2026-08-04
+Web reconstruida completa: secciones nuevas, copy al nicho, CTA flotante único, carrusel de testimonios, `/comprar`, `/garantia`, legales argentinas, SEO técnico
+
+### Sesión 0 — 2026-08-03
+Investigación de mercado · 7 documentos de estrategia · modelo de negocio redefinido · Excel de lead magnets
+
+### Mayo 2026
+Landing inicial en Next.js con MercadoPago/Stripe/Brevo/Sheets (hoy removidos o desactivados) · branding aplicado

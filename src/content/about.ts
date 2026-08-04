@@ -1,27 +1,28 @@
 export const ABOUT = {
   heading: "Soy María Pía.",
   intro:
-    "Entrenadora personal y nutricionista en Rosario. Hace más de ocho años acompaño a personas que quieren entrenar con criterio y comer sin pelearse con la balanza.",
+    "Entrenadora personal y nutricionista. Hace más de ocho años acompaño a mujeres que trabajan todo el día y quieren entrenar con criterio, sin pelearse con la balanza ni con el reloj.",
   paragraphs: [
-    "Empecé a entrenar cuando lesionarme me obligó a estudiar el cuerpo en serio. Lo que aprendí en esos años de rehabilitación fue la base de mi método: progresión técnica, respeto por la fatiga y un plan que se adapta a la vida real.",
-    "Trabajo con mujeres y hombres adultos que tienen poco tiempo, mucha responsabilidad y ganas de sostener un cambio en serio. No prometo resultados imposibles. Prometo claridad, seguimiento y un plan que tiene sentido para tu semana.",
+    "Tengo un centro de entrenamiento en Rosario donde entreno personas todos los días. No soy una coach que aparece sólo en Instagram: lo que vas a hacer en estos 28 días es el mismo método que uso ahí, adaptado para que puedas seguirlo desde tu casa.",
+    "Empecé a estudiar el cuerpo en serio cuando una lesión me obligó a hacerlo. De esos años de rehabilitación salió mi forma de trabajar: progresión técnica, respeto por la fatiga y un plan que se adapta a la semana real, no a la semana ideal.",
+    "La mayoría de las mujeres que entreno tienen jornadas largas y muy poco tiempo libre. No les falta voluntad: les falta un sistema que entre en su día. Eso es exactamente lo que armamos acá.",
   ],
   pillars: [
     {
-      title: "Personalizado",
-      body: "No copiamos plantillas. Cada plan parte de tu historia, tu cuerpo y tus objetivos.",
+      title: "Corto y concreto",
+      body: "Sesiones de 30 minutos, con un plan B de 10 para los días imposibles.",
     },
     {
-      title: "Profesional",
-      body: "Formación continua en entrenamiento, nutrición deportiva y comportamiento.",
+      title: "Con criterio",
+      body: "Formación en entrenamiento, nutrición deportiva y cambio de hábitos. Sin recetas mágicas.",
     },
     {
       title: "Sostenible",
-      body: "Buscamos cambios que se queden — no resultados que se evaporen en seis semanas.",
+      body: "Buscamos cambios que se queden, no resultados que se evaporen a las seis semanas.",
     },
     {
-      title: "Cercano",
-      body: "Hablamos de vos. Respondemos rápido. Estamos cuando aparecen las dudas.",
+      title: "Acompañada",
+      body: "Corrijo tu técnica por video y estoy en la comunidad todas las semanas.",
     },
   ],
   imageUrl: "/images/sobre-mi.png",

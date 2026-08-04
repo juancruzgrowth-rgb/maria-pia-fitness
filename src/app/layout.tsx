@@ -3,9 +3,11 @@ import { Manrope, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
-import { CartDrawer } from "@/components/ui/CartDrawer";
+import { BuyBar } from "@/components/layout/BuyBar";
+import { JsonLd } from "@/components/JsonLd";
 import { SITE } from "@/lib/site";
+import { CHALLENGE } from "@/lib/products";
+import { homeDescription, organizationJsonLd } from "@/lib/seo";
 import { publicEnv } from "@/lib/env";
 
 const manrope = Manrope({
@@ -18,28 +20,46 @@ const manrope = Manrope({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(publicEnv.siteUrl),
   title: {
-    default: `${SITE.brand} · Entrenamiento personalizado en ${SITE.city}`,
+    default: `${CHALLENGE.name} · Entrenamiento online para mujeres con poco tiempo`,
     template: `%s · ${SITE.shortBrand}`,
   },
-  description:
-    "Programas de entrenamiento y nutrición personalizados con Maria Pia. Método, seguimiento real y resultados sostenibles.",
+  description: homeDescription(),
+  keywords: [
+    "entrenamiento online para mujeres",
+    "entrenar con poco tiempo",
+    "rutina de 30 minutos en casa",
+    "reto fitness 28 días",
+    "entrenamiento y nutrición online Argentina",
+    "María Pía entrenadora",
+  ],
+  authors: [{ name: SITE.ownerName }],
+  creator: SITE.ownerName,
   openGraph: {
-    title: SITE.brand,
-    description:
-      "Entrenamiento y nutrición personalizados con método y seguimiento real.",
+    title: `${CHALLENGE.name} · ${SITE.shortBrand}`,
+    description: CHALLENGE.promise,
     locale: "es_AR",
     type: "website",
+    siteName: SITE.brand,
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    title: `${CHALLENGE.name} · ${SITE.shortBrand}`,
+    description: CHALLENGE.promise,
+  },
   alternates: { canonical: "/" },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
@@ -57,12 +77,20 @@ export default function RootLayout({
       lang="es-AR"
       className={`${manrope.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-mp-canvas text-mp-ink">
+      <body className="flex min-h-full flex-col bg-mp-canvas text-mp-ink">
+        <a
+          href="#contenido"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-mp-ink focus:px-4 focus:py-2 focus:text-sm focus:text-mp-canvas"
+        >
+          Saltar al contenido
+        </a>
         <Navbar />
-        <main className="flex-1 pt-16 md:pt-20">{children}</main>
+        <main id="contenido" className="flex-1 pt-16 md:pt-20">
+          {children}
+        </main>
         <Footer />
-        <CartDrawer />
-        <WhatsAppFab />
+        <BuyBar />
+        <JsonLd data={organizationJsonLd()} />
       </body>
     </html>
   );

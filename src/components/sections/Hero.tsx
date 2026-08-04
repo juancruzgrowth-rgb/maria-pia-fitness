@@ -1,165 +1,138 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Play, X } from "@phosphor-icons/react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { Play, X, WhatsappLogo } from "@phosphor-icons/react";
 import { HERO } from "@/content/hero";
 import { CONTACT } from "@/lib/site";
-import { Button } from "@/components/ui/Button";
-
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as const },
-});
+import { COHORT, isCohortOpen } from "@/lib/products";
 
 export function Hero() {
   const [playing, setPlaying] = useState(false);
 
   return (
-    <section
-      id="inicio"
-      aria-label="Bienvenida"
-      className="relative section-pad pt-12 md:pt-20"
-    >
-      <AnimatePresence mode="wait">
-        {playing ? (
-          <motion.div
-            key="video-expanded"
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.97 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="container-page"
-          >
-            <div className="relative w-full aspect-video rounded-[var(--radius-card)] overflow-hidden border border-mp-line bg-mp-ink">
-              <iframe
-                src={`${HERO.videoUrl}?autoplay=1&rel=0`}
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                className="h-full w-full"
-                title="Video de presentación de Maria Pia"
+    <section id="inicio" aria-label="Presentación" className="pt-8 pb-16 md:pt-16 md:pb-24">
+      <div className="container-page">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16 lg:items-center">
+          <div className="flex flex-col gap-6 lg:col-span-6">
+            <span className="inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-mp-carbon/70">
+              <span
+                aria-hidden="true"
+                className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
               />
-              <button
-                type="button"
-                onClick={() => setPlaying(false)}
-                aria-label="Cerrar video"
-                className="absolute top-4 right-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-mp-canvas/90 text-mp-ink hover:bg-mp-canvas transition-colors"
-              >
-                <X weight="bold" className="h-5 w-5" aria-hidden="true" />
-              </button>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="hero-content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="container-page grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center"
-          >
-            <div className="lg:col-span-7 flex flex-col gap-8 max-w-2xl">
-              <motion.span
-                {...fadeUp(0.1)}
-                className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-mp-carbon/70 font-medium"
-              >
-                <span
-                  aria-hidden="true"
-                  className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
-                />
-                {HERO.eyebrow}
-              </motion.span>
+              {HERO.eyebrow}
+            </span>
 
-              <motion.h1
-                {...fadeUp(0.2)}
-                className="font-display font-extrabold text-5xl sm:text-6xl lg:text-[72px] tracking-tight leading-[1.05]"
-              >
-                <span className="block text-mp-ink">{HERO.headlineLead}</span>
-                <span className="block text-mp-orange">{HERO.headlineAccent}</span>
-              </motion.h1>
+            <h1 className="font-display text-[2.5rem] font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-[64px]">
+              <span className="block text-mp-ink">{HERO.headlineLead}</span>
+              <span className="block text-mp-orange">{HERO.headlineAccent}</span>
+            </h1>
 
-              <motion.p
-                {...fadeUp(0.3)}
-                className="text-base md:text-lg text-mp-carbon/80 leading-relaxed max-w-xl"
-              >
-                {HERO.description}
-              </motion.p>
+            <p className="max-w-xl text-base leading-relaxed text-mp-carbon/80 md:text-lg">
+              {HERO.description}
+            </p>
 
-              <motion.div
-                {...fadeUp(0.4)}
-                className="flex flex-col sm:flex-row gap-3 sm:items-center"
-              >
-                <Button
-                  href={CONTACT.whatsappUrl}
-                  size="lg"
-                  variant="primary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {HERO.primaryCtaLabel}
-                  <ArrowRight weight="bold" className="h-4 w-4" />
-                </Button>
-                <Button href="#servicios" size="lg" variant="ghost">
-                  {HERO.secondaryCtaLabel}
-                </Button>
-              </motion.div>
+            {isCohortOpen && (
+              <div className="flex flex-col gap-1.5 rounded-md border border-mp-line p-4">
+                <span className="inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-[0.14em] text-mp-orange">
+                  {COHORT.isFounding && (
+                    <span
+                      aria-hidden="true"
+                      className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
+                    />
+                  )}
+                  {COHORT.label}
+                </span>
+                <p className="text-sm leading-relaxed text-mp-carbon">
+                  Arranca el {COHORT.startsAt}. Inscripción abierta hasta el{" "}
+                  {COHORT.closesAt}.
+                  {COHORT.isFounding
+                    ? " Es el primer grupo: cupo reducido y acompañamiento más cercano."
+                    : ""}
+                </p>
+              </div>
+            )}
 
-              <motion.dl
-                {...fadeUp(0.5)}
-                className="mt-6 grid grid-cols-3 gap-6 border-t border-mp-line pt-8 max-w-md"
-              >
-                {HERO.trustPoints.map((point) => (
-                  <div key={point.label} className="flex flex-col">
-                    <dt className="font-display font-extrabold text-xl text-mp-ink">
-                      {point.label}
-                    </dt>
-                    <dd className="text-xs text-mp-carbon/70 mt-1 leading-snug">
-                      {point.caption}
-                    </dd>
-                  </div>
-                ))}
-              </motion.dl>
-            </div>
+            <a
+              href={CONTACT.askUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-mp-ink px-6 py-4 font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-ink transition-all duration-200 hover:bg-mp-ink hover:text-mp-canvas active:scale-[0.98] sm:w-auto"
+            >
+              <WhatsappLogo weight="fill" className="h-4 w-4" aria-hidden="true" />
+              Tengo una duda antes de entrar
+            </a>
 
-            <motion.div {...fadeUp(0.25)} className="lg:col-span-5">
-              <div className="relative aspect-[3/4] overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink">
-                <Image
-                  src={HERO.videoPosterUrl}
-                  alt="Maria Pia en sesión de entrenamiento"
-                  fill
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  priority
-                  className="object-cover opacity-90"
+            <dl className="mt-2 grid grid-cols-3 gap-4 border-t border-mp-line pt-6">
+              {HERO.trustPoints.map((point) => (
+                <div key={point.label} className="flex flex-col">
+                  <dt className="font-display text-lg font-extrabold text-mp-ink md:text-xl">
+                    {point.label}
+                  </dt>
+                  <dd className="mt-1 text-[11px] leading-snug text-mp-carbon/70 md:text-xs">
+                    {point.caption}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="lg:col-span-6">
+            {playing ? (
+              <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink">
+                <iframe
+                  src={`${HERO.videoUrl}?autoplay=1&rel=0`}
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  className="h-full w-full"
+                  title="María Pía explica el método del Reto 28 Días"
                 />
                 <button
                   type="button"
-                  onClick={() => setPlaying(true)}
-                  aria-label="Reproducir video de presentación"
-                  className="absolute inset-0 flex items-center justify-center group"
+                  onClick={() => setPlaying(false)}
+                  aria-label="Cerrar video"
+                  className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-mp-canvas/90 text-mp-ink transition-colors hover:bg-mp-canvas"
                 >
-                  <span className="absolute inset-0 bg-mp-ink/20 group-hover:bg-mp-ink/10 transition-colors" />
-                  <span className="relative inline-flex h-20 w-20 items-center justify-center rounded-full bg-mp-canvas text-mp-ink shadow-[0_0_0_1px_rgba(5,5,5,0.04)] group-hover:scale-95 transition-transform duration-300">
-                    <Play
-                      weight="fill"
-                      className="h-7 w-7 translate-x-0.5"
-                      aria-hidden="true"
-                    />
-                  </span>
+                  <X weight="bold" className="h-4 w-4" aria-hidden="true" />
                 </button>
-                <span className="absolute bottom-4 left-4 right-4 inline-flex items-center gap-2 rounded-md bg-mp-canvas/90 backdrop-blur-sm px-3 py-2 text-xs font-display font-semibold uppercase tracking-[0.14em] text-mp-ink">
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setPlaying(true)}
+                className="group relative block aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink sm:aspect-video lg:aspect-[4/5]"
+                aria-label="Reproducir el video donde María Pía explica el método"
+              >
+                <Image
+                  src={HERO.videoPosterUrl}
+                  alt="María Pía, entrenadora personal y nutricionista"
+                  fill
+                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  priority
+                  className="object-cover opacity-90"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-mp-ink/25 transition-colors group-hover:bg-mp-ink/15"
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute left-1/2 top-1/2 inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-mp-canvas text-mp-ink transition-transform duration-300 group-hover:scale-95 md:h-20 md:w-20"
+                >
+                  <Play weight="fill" className="h-6 w-6 translate-x-0.5 md:h-7 md:w-7" />
+                </span>
+                <span className="absolute inset-x-3 bottom-3 inline-flex items-center gap-2 rounded-md bg-mp-canvas/90 px-3 py-2 text-left font-display text-[11px] font-semibold uppercase tracking-[0.12em] text-mp-ink backdrop-blur-sm">
                   <span
                     aria-hidden="true"
-                    className="h-1.5 w-1.5 rounded-full bg-mp-orange"
+                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-mp-orange"
                   />
-                  Te explico mi método en 10 minutos
+                  {HERO.videoBadge}
                 </span>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

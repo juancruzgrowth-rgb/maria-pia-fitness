@@ -1,16 +1,15 @@
 export const HERO = {
-  eyebrow: "ENTRENAMIENTO PERSONALIZADO + NUTRICIÓN ONLINE Y PRESENCIAL",
-  headlineLead: "Entrená con método.",
-  headlineAccent: "Transformá tu cuerpo con acompañamiento real.",
+  eyebrow: "RETO 28 DÍAS · 100% ONLINE",
+  headlineLead: "Ocho horas de trabajo.",
+  headlineAccent: "Treinta minutos para vos.",
   description:
-    "Programas personalizados de entrenamiento y nutrición diseñados según tu cuerpo, tus objetivos y tu estilo de vida. Presencial en Rosario y online desde cualquier lugar.",
-  primaryCtaLabel: "WhatsApp",
-  secondaryCtaLabel: "Ver programas",
+    "Un reto de 28 días para mujeres que no tienen tiempo de sobra, pero sí ganas de sentirse bien. Rutinas de 30 minutos, comidas que se resuelven rápido y el seguimiento de María Pía todos los días.",
+  videoBadge: "Te explico el método completo en 10 minutos",
   videoPosterUrl: "/images/sobre-mi.png",
   videoUrl: "https://www.youtube.com/embed/ZBpxYGFmyL8",
   trustPoints: [
-    { label: "8+ años", caption: "acompañando procesos reales" },
-    { label: "+200", caption: "personas entrenaron con planificación personalizada" },
-    { label: "Rosario + Online", caption: "programas presenciales y a distancia" },
+    { label: "28 días", caption: "con fecha de inicio y de cierre" },
+    { label: "30 min", caption: "por día, cuatro veces por semana" },
+    { label: "100% online", caption: "desde donde estés, a tu horario" },
   ],
 } as const;

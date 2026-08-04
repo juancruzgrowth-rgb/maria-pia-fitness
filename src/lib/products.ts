@@ -1,46 +1,105 @@
-export type Currency = "ARS" | "USD";
+/**
+ * Single source of truth del producto, la cohorte y los datos de cobro.
+ * Nada de esto se hardcodea en componentes.
+ */
 
-export interface ProductPackage {
+// TODO(precio): valor provisorio a confirmar por María Pía. Cambiar sólo acá.
+const PRICE_ARS = 29900;
+
+export type CohortStatus = "open" | "waitlist" | "closed";
+
+export interface Challenge {
   id: string;
   name: string;
-  tagline: string;
+  shortName: string;
   duration: string;
-  prices: Record<Currency, number>;
-  goal: string;
-  includes: string[];
-  badge?: string;
-  recommended?: boolean;
-  audioUrl?: string;
+  promise: string;
+  forWhom: string;
+  priceARS: number;
+  includes: readonly string[];
 }
 
-export const PRODUCTS: ProductPackage[] = [
-  {
-    id: "programa-90-dias",
-    name: "Programa 90 Días",
-    tagline: "Mejorar hábitos, subir energía y tonificar el cuerpo en 90 días, sin depender de la motivación.",
-    duration: "90 días",
-    prices: { ARS: 39900, USD: 39 },
-    goal: "Un solo curso, un solo método, una sola promesa clara.",
-    includes: [
-      "Acceso a Skool por 90 días (comunidad + contenido)",
-      "Curso pregrabado paso a paso: Fase 1 Orden, Fase 2 Nutrición, Fase 3 Entrenamiento, Fase 4 Sostener",
-      "Llamada inicial 1:1 de bienvenida con María Pía",
-      "Comunidad en Skool + WhatsApp grupal",
-      "Planillas de seguimiento y rutinas semanales",
-      "Guías prácticas de nutrición y checklist diario",
-      "Rutinas grabadas con progresión por semanas",
-      "Corrección semanal de técnica por video (Loom o WhatsApp)",
-      "Recordatorios automáticos y check-ins de avance",
-    ],
-    recommended: true,
-    badge: "Lanzamiento",
-    audioUrl: "",
-  },
-];
+export const CHALLENGE: Challenge = {
+  id: "reto-28-dias",
+  name: "Reto 28 Días",
+  shortName: "el Reto",
+  duration: "28 días",
+  promise:
+    "Volver a entrenar y comer bien en 30 minutos por día, sin renunciar a tu trabajo ni a tu vida.",
+  forWhom:
+    "Mujeres que trabajan ocho horas o más y quieren sostener hábitos sin que les coma el día.",
+  priceARS: PRICE_ARS,
+  includes: [
+    "28 días de entrenamiento guiado, con rutinas de 30 minutos",
+    "Llamada 1:1 de bienvenida con María Pía",
+    "Corrección de técnica por video, todas las semanas",
+    "Guía de nutrición práctica para semanas con poco tiempo",
+    "Biblioteca de ejercicios en video, con variantes fácil y difícil",
+    "Plan B para los días imposibles: rutinas de 10 minutos",
+    "Comunidad privada con el grupo de tu cohorte",
+    "Planilla de seguimiento y check-in diario",
+  ],
+} as const;
 
-export function getProductById(id: string): ProductPackage | undefined {
-  return PRODUCTS.find((p) => p.id === id);
+/**
+ * Cadencia entre cohortes. Con 14 días nadie espera más de 13 días para
+ * empezar y el promedio de espera es de 7. Ver docs/estrategia/08-cohortes.md
+ */
+export const COHORT_CADENCE_DAYS = 14;
+
+/**
+ * Estado de la cohorte activa.
+ * Cambiar `status` a "waitlist" entre cohortes: todos los CTA del sitio se adaptan solos.
+ */
+export interface Cohort {
+  status: CohortStatus;
+  label: string;
+  /** Marca el lanzamiento fundacional: cambia el copy y habilita el badge. */
+  isFounding: boolean;
+  /** Texto que se muestra en la web. */
+  startsAt: string;
+  closesAt: string;
+  /** Formato YYYY-MM-DD, sólo para datos estructurados. */
+  startsAtISO: string;
+  spotsTotal: number;
+  spotsLeft: number;
 }
+
+// TODO(cohorte): completar con las fechas reales antes del lanzamiento.
+export const COHORT: Cohort = {
+  status: "open",
+  label: "Cohorte fundadora",
+  isFounding: true,
+  startsAt: "lunes 7 de septiembre",
+  closesAt: "viernes 4 de septiembre",
+  startsAtISO: "2026-09-07",
+  spotsTotal: 25,
+  spotsLeft: 25,
+};
+
+/**
+ * Garantía comercial alineada con el derecho de revocación del art. 34 de la
+ * Ley 24.240 (10 días corridos, irrenunciable). Al coincidir ambos plazos no
+ * hay letra chica que explicar ni riesgo de incumplimiento.
+ */
+export const GUARANTEE = {
+  days: 10,
+  headline: "10 días de garantía",
+  summary:
+    "Entrás, lo probás, y si no es para vos me escribís antes del día 10 y te devuelvo el 100%. Sin explicaciones ni condiciones.",
+} as const;
+
+/**
+ * Datos de la cuenta para transferencia.
+ * TODO(cobro): completar con los datos reales antes de publicar.
+ */
+export const TRANSFER = {
+  alias: "MP.CEP.RETO",
+  cbu: "0000000000000000000000",
+  holder: "María Pía",
+  bank: "",
+  responseWindow: "menos de 2 horas",
+} as const;
 
 const ARS_FORMATTER = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -48,14 +107,12 @@ const ARS_FORMATTER = new Intl.NumberFormat("es-AR", {
   maximumFractionDigits: 0,
 });
 
-const USD_FORMATTER = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-});
-
-export function formatPrice(amount: number, currency: Currency): string {
-  return currency === "ARS"
-    ? ARS_FORMATTER.format(amount)
-    : USD_FORMATTER.format(amount);
+export function formatARS(amount: number): string {
+  return ARS_FORMATTER.format(amount);
 }
+
+export const isCohortOpen = COHORT.status === "open";
+
+export const CTA_LABEL = isCohortOpen
+  ? "Quiero entrar al reto"
+  : "Anotarme para la próxima";

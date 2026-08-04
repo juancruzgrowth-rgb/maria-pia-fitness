@@ -80,6 +80,15 @@ h4,
   }
 }
 
+/* Sin animación de entrada para quien pide movimiento reducido. */
+@media (prefers-reduced-motion: reduce) {
+  .mp-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 @keyframes mp-marquee {
   from {
     transform: translateX(0);
