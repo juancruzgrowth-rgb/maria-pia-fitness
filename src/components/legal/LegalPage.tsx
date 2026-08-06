@@ -10,7 +10,7 @@ interface LegalPageProps {
 export function LegalPage({ title, updatedAt, intro, children }: LegalPageProps) {
   return (
     <article className="container-page section-pad max-w-3xl">
-      <p className="mb-4 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-mp-orange">
+      <p className="mb-4 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-mp-ember">
         Borrador — pendiente de revisión por abogado
       </p>
 

@@ -123,11 +123,20 @@ export function Stories() {
           </div>
         </div>
 
-        <div className="overflow-hidden" ref={emblaRef}>
+        <div
+          className="overflow-hidden"
+          ref={emblaRef}
+          role="group"
+          aria-roledescription="carrusel"
+          aria-label="Testimonios de alumnas"
+        >
           <div className="flex gap-4 md:gap-6">
-            {STORIES.map((story) => (
+            {STORIES.map((story, index) => (
               <div
                 key={story.id}
+                role="group"
+                aria-roledescription="testimonio"
+                aria-label={`${index + 1} de ${STORIES.length}`}
                 className="min-w-0 shrink-0 grow-0 basis-[85%] sm:basis-1/2 lg:basis-1/3"
               >
                 <StoryCard story={story} />
@@ -136,7 +145,7 @@ export function Stories() {
           </div>
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-2">
+        <div className="mt-4 flex items-center justify-center">
           {snaps.map((_, index) => (
             <button
               key={index}
@@ -144,13 +153,18 @@ export function Stories() {
               onClick={() => emblaApi?.scrollTo(index)}
               aria-label={`Ir al testimonio ${index + 1}`}
               aria-current={index === selected}
-              className={cn(
-                "h-1.5 rounded-full transition-all duration-300",
-                index === selected
-                  ? "w-6 bg-mp-orange"
-                  : "w-1.5 bg-mp-line hover:bg-mp-carbon/30",
-              )}
-            />
+              className="group inline-flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mp-orange"
+            >
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "block h-1.5 rounded-full transition-all duration-300",
+                  index === selected
+                    ? "w-6 bg-mp-ember"
+                    : "w-1.5 bg-mp-carbon/25 group-hover:bg-mp-carbon/50",
+                )}
+              />
+            </button>
           ))}
         </div>
       </div>

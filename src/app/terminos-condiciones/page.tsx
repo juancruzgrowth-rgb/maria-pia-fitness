@@ -37,7 +37,7 @@ export default function TerminosCondicionesPage() {
           <strong>
             El plan de entrenamiento y nutrición no es personalizado.
           </strong>{" "}
-          Es el mismo para todas las participantes de una misma cohorte. Los
+          Es el mismo para todas las participantes de un mismo grupo. Los
           componentes individuales del servicio son exclusivamente la llamada de
           bienvenida, la corrección de técnica y los ajustes que la prestadora
           realice durante el programa.
@@ -64,16 +64,16 @@ export default function TerminosCondicionesPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="4. Cohortes, cupos e inicio del programa">
+      <LegalSection heading="4. Grupos, cupos e inicio del programa">
         <p>
-          El programa se dicta por cohortes con fecha de inicio determinada y
+          El programa se dicta por grupos con fecha de inicio determinada y
           cupo limitado. La cantidad de lugares informada en el sitio es real y
           está limitada por la disponibilidad de la prestadora para realizar las
           llamadas individuales de bienvenida.
         </p>
         <p>
           Si la inscripción se encuentra cerrada, podés solicitar ser
-          incorporada a la lista de espera de la cohorte siguiente, sin costo ni
+          incorporada a la lista de espera del grupo siguiente, sin costo ni
           obligación.
         </p>
       </LegalSection>

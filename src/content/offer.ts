@@ -46,7 +46,7 @@ export const WHAT_YOU_GET = [
     body: "Rutinas de 10 minutos para cuando el día se rompe. Porque se va a romper, y eso no puede tirar abajo el proceso.",
   },
   {
-    title: "Comunidad privada de tu cohorte",
+    title: "Comunidad privada de tu grupo",
     body: "Arrancan todas el mismo día y van al mismo ritmo. Check-in diario y respuesta a tus dudas dos veces por semana.",
   },
   {

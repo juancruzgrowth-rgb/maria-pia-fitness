@@ -3,10 +3,10 @@ import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
 import { WHAT_YOU_GET } from "@/content/offer";
 import {
   CHALLENGE,
-  COHORT,
+  GROUP,
   GUARANTEE,
   formatARS,
-  isCohortOpen,
+  isGroupOpen,
 } from "@/lib/products";
 
 export function WhatYouGet() {
@@ -41,7 +41,7 @@ export function WhatYouGet() {
               delay={Math.min(index, 4) * 80}
               className="flex flex-col gap-2 bg-mp-canvas p-6 md:p-8"
             >
-              <span className="font-display text-[11px] font-semibold tracking-[0.14em] text-mp-orange">
+              <span className="font-display text-[11px] font-semibold tracking-[0.14em] text-mp-ember">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="font-display text-base font-bold text-mp-ink md:text-lg">
@@ -86,7 +86,7 @@ export function WhatYouGet() {
                 Si no es para vos, te devuelvo todo.
               </span>
             </li>
-            {isCohortOpen && (
+            {isGroupOpen && (
               <li className="flex items-start gap-2.5 text-sm text-mp-carbon">
                 <Users
                   weight="duotone"
@@ -95,10 +95,10 @@ export function WhatYouGet() {
                 />
                 <span>
                   <span className="font-display font-semibold text-mp-ink">
-                    {COHORT.spotsTotal} lugares
+                    {GROUP.spotsTotal} lugares
                   </span>
                   <br />
-                  Arranca el {COHORT.startsAt}.
+                  Arranca el {GROUP.startsAt}.
                 </span>
               </li>
             )}

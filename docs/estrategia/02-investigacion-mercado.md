@@ -41,7 +41,7 @@ La diferencia no es semántica:
 | Sin urgencia | Urgencia natural |
 | Retención baja | Retención alta |
 
-**Recomendación concreta:** renombrar el producto a "Reto 28 Días" (o similar), con cohortes de inicio fijo.
+**Recomendación concreta:** renombrar el producto a "Reto 28 Días" (o similar), con grupos de inicio fijo.
 
 ---
 
@@ -119,7 +119,7 @@ Candidatos de nicho, de más amplio a más rentable:
 | "Mujeres que entrenan hace tiempo pero no ven resultados" | Alto | Media |
 | "Mamás con poco tiempo que quieren volver a sentirse fuertes" | Alto | Muy alta — dolor específico y urgente |
 
-**Recomendación:** elegir uno y comprometerse durante toda la cohorte 1. El nicho define el copy de la web, los lead magnets, el contenido de Daiana y las preguntas del quiz. **Es la decisión de mayor apalancamiento que tenés pendiente**, y la única que no puedo tomar yo — depende de qué alumnas tiene María Pía hoy en el centro y con cuáles obtiene mejores resultados.
+**Recomendación:** elegir uno y comprometerse durante todal grupo 1. El nicho define el copy de la web, los lead magnets, el contenido de Daiana y las preguntas del quiz. **Es la decisión de mayor apalancamiento que tenés pendiente**, y la única que no puedo tomar yo — depende de qué alumnas tiene María Pía hoy en el centro y con cuáles obtiene mejores resultados.
 
 ---
 

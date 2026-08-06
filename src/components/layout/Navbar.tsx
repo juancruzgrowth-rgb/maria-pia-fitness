@@ -24,6 +24,15 @@ export function Navbar() {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mobileOpen]);
+
   return (
     <header
       className={cn(
@@ -44,7 +53,7 @@ export function Navbar() {
             <a
               key={section.id}
               href={`#${section.id}`}
-              className="text-sm font-medium text-mp-ink transition-colors hover:text-mp-amber"
+              className="text-sm font-medium text-mp-ink transition-colors hover:text-mp-ember"
             >
               {section.label}
             </a>

@@ -36,7 +36,7 @@ QUIZ / DIAGNÓSTICO (PDF personalizado)
         ▼
 ┌──────────────────────────────────────────────┐
 │ RETO 4 SEMANAS — producto de entrada         │  ← EL FOCO DE ESTA FASE
-│ No personalizado · cohortes · ARS 25-35k     │
+│ No personalizado · grupos · ARS 25-35k     │
 │ Personalizado SÓLO: llamada de bienvenida    │
 │ + corrección de técnica y ajuste nutricional │
 └──────────────────────────────────────────────┘
@@ -110,7 +110,7 @@ Nada se lanza hasta que esto esté.
 | Montar ManyChat con keywords comment-to-DM | Juan Cruz |
 | Ejecutar calendario de contenido (`03-lead-magnets-calendario.md`) | Daiana |
 | Secuencias de email en Brevo | Juan Cruz |
-| **Lanzamiento cohorte 1** | Todos |
+| **Lanzamiento grupo 1** | Todos |
 
 ### FASE 3 — Retención y upsell (semanas 9-12)
 
@@ -180,7 +180,7 @@ Si una tarea la hace un humano **más de 3 veces por semana de la misma forma**,
 
 Un solo Google Sheet con estas filas, actualizado automáticamente por n8n:
 
-| Métrica | Dónde se mide | Objetivo cohorte 1 |
+| Métrica | Dónde se mide | Objetivo grupo 1 |
 |---|---|---|
 | Alcance de reels | IG Insights | — (baseline) |
 | Comentarios con keyword | ManyChat | 100/semana |
@@ -192,7 +192,7 @@ Un solo Google Sheet con estas filas, actualizado automáticamente por n8n:
 | Tasa de finalización del reto | Skool | > 50% |
 | Upsell al escalón 2 | Sheet | > 25% de las que terminan |
 
-**La métrica que manda en Fase 1-2 es "ventas de la cohorte 1". Todo lo demás es diagnóstico.**
+**La métrica que manda en Fase 1-2 es "ventas del grupo 1". Todo lo demás es diagnóstico.**
 
 ---
 
@@ -203,8 +203,8 @@ Bloquean tareas concretas. Las agrupé por urgencia.
 ### Bloquean YA (Fase 0)
 1. **Precio del reto de 4 semanas.** Mi recomendación: ARS 29.900 pago único (USD 29). Rango sano: 25.000-35.000. ¿Confirmás?
 2. **Nombre del producto.** "Reto 28 Días" / "Método 4 Semanas" / otro. Afecta dominio, copy y Skool.
-3. **¿Cohortes con fecha de inicio fija, o acceso inmediato al comprar?** Cambia todo el embudo: cohortes permiten urgencia real y llamadas agrupadas; acceso inmediato vende más parejo pero pierde el gancho de escasez. **Recomiendo cohortes mensuales.**
-4. **Cupo máximo por cohorte.** La llamada 1:1 de bienvenida es el límite real. Si son 20 min por llamada y MP dedica 3 h/semana → ~25 alumnas/mes es el techo.
+3. ~~**¿Grupos con fecha de inicio fija, o acceso inmediato al comprar?**~~ **RESUELTO (2026-08-04):** grupos con fecha fija, **cada 14 días**, con Semana 0. Ver [`08-grupos-y-cadencia.md`](08-grupos-y-cadencia.md) y [`09-semana-cero.md`](09-semana-cero.md).
+4. **Cupo máximo por grupo.** La llamada 1:1 de bienvenida es el límite real. Si son 20 min por llamada y MP dedica 3 h/semana → ~25 alumnas/mes es el techo.
 5. **Datos de transferencia**: ¿alias/CBU a nombre de quién? ¿Se muestran en la web o sólo por WhatsApp?
 6. **Número de WhatsApp AR definitivo.**
 
@@ -216,7 +216,7 @@ Bloquean tareas concretas. Las agrupé por urgencia.
 
 ### Bloquean Fase 2
 11. ¿Cuenta de Instagram convertida a Business? (requisito de ManyChat)
-12. ¿TikTok se activa o se ignora en esta fase? Recomiendo ignorarlo hasta la cohorte 2 — foco.
+12. ¿TikTok se activa o se ignora en esta fase? Recomiendo ignorarlo hastal grupo 2 — foco.
 
 ---
 

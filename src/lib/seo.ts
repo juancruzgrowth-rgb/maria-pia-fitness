@@ -1,10 +1,10 @@
 import { FAQS } from "@/content/offer";
 import {
   CHALLENGE,
-  COHORT,
+  GROUP,
   GUARANTEE,
   formatARS,
-  isCohortOpen,
+  isGroupOpen,
 } from "@/lib/products";
 import { publicEnv } from "@/lib/env";
 import { SITE, CONTACT } from "@/lib/site";
@@ -46,7 +46,7 @@ export function challengeJsonLd() {
       "@type": "Offer",
       price: CHALLENGE.priceARS,
       priceCurrency: "ARS",
-      availability: isCohortOpen
+      availability: isGroupOpen
         ? "https://schema.org/InStock"
         : "https://schema.org/PreOrder",
       url: `${BASE_URL}/comprar`,
@@ -67,10 +67,10 @@ export function faqJsonLd() {
   };
 }
 
-/** Descripción usada en metadatos. Refleja el estado real de la cohorte. */
+/** Descripción usada en metadatos. Refleja el estado real del grupo. */
 export function homeDescription(): string {
   const price = formatARS(CHALLENGE.priceARS);
-  return isCohortOpen
-    ? `Reto de 28 días online para mujeres que trabajan 8 horas o más. Rutinas de 30 minutos, guía de nutrición y seguimiento de María Pía. ${COHORT.label}: arranca el ${COHORT.startsAt}. ${price}, con ${GUARANTEE.days} días de garantía.`
-    : `Reto de 28 días online para mujeres que trabajan 8 horas o más. Rutinas de 30 minutos, guía de nutrición y seguimiento de María Pía. Inscripción cerrada — anotate para la próxima cohorte.`;
+  return isGroupOpen
+    ? `Reto de 28 días online para mujeres que trabajan 8 horas o más. Rutinas de 30 minutos, guía de nutrición y seguimiento de María Pía. ${GROUP.label}: arranca el ${GROUP.startsAt}. ${price}, con ${GUARANTEE.days} días de garantía.`
+    : `Reto de 28 días online para mujeres que trabajan 8 horas o más. Rutinas de 30 minutos, guía de nutrición y seguimiento de María Pía. Inscripción cerrada — anotate para el próximo grupo.`;
 }

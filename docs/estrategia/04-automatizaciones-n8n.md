@@ -39,13 +39,13 @@ Un spreadsheet, cuatro pestañas. Es la base de datos del negocio hasta que just
 `fecha | nombre | email | whatsapp | origen | keyword | arquetipo_quiz | estado | ultimo_contacto`
 
 **`ventas`**
-`fecha | nombre | email | whatsapp | producto | monto | moneda | metodo_pago | comprobante_url | estado | cohorte | acceso_skool | fecha_llamada`
+`fecha | nombre | email | whatsapp | producto | monto | moneda | metodo_pago | comprobante_url | estado | grupo | acceso_skool | fecha_llamada`
 
 **`contenido`**
 `fecha | tipo | tema | keyword | alcance | comentarios | opt_ins | ventas_atribuidas`
 
 **`comunidad`**
-`alumna | cohorte | dia_actual | ultimo_checkin | rutinas_completadas | estado_riesgo`
+`alumna | grupo | dia_actual | ultimo_checkin | rutinas_completadas | estado_riesgo`
 
 > **Seguridad:** todas las pestañas contienen PII bajo Ley 25.326. Service account con acceso a este spreadsheet únicamente. Sanitizar todo input antes de escribir. Nunca loguear contenido de estas filas.
 
@@ -123,7 +123,7 @@ WhatsApp entrante con adjunto
 ```
 **Por qué la respuesta inmediata no es negociable:** la ventana de 5 minutos vale 100x más que la de 30. Una persona que transfiere y no recibe señal durante horas entra en ansiedad de compra y pide devolución. La verificación es manual; **el acuse de recibo no debe serlo.**
 
-**Mejora futura:** OCR sobre el comprobante para extraer monto y CBU destino, y auto-aprobar si coinciden. Reduce la verificación a cero. Dejarlo para después de la cohorte 1.
+**Mejora futura:** OCR sobre el comprobante para extraer monto y CBU destino, y auto-aprobar si coinciden. Reduce la verificación a cero. Dejarlo para después del grupo 1.
 
 ---
 
@@ -139,7 +139,7 @@ Pago aprobado
        · Qué hacer en las próximas 24 h (paso 1 concreto)
        · Link para agendar la llamada de bienvenida
   → WhatsApp de bienvenida con el link de Skool
-  → Agregar al grupo de WhatsApp de la cohorte
+  → Agregar al grupo de WhatsApp del grupo
   → Notificar a MP: "Nueva alumna: [nombre]"
   → Sacarla de todas las secuencias de venta
   → Programar los mensajes de las primeras 48 h (ver A5)
@@ -201,7 +201,7 @@ Los no-shows en llamadas gratuitas son altísimos sin recordatorio. Con recordat
 | Lead magnet genérico | Nurturing 5 días | Ver `03-lead-magnets-calendario.md` §6 |
 | Quiz completado | Nurturing segmentado por arquetipo | 5 emails con copy distinto por arquetipo |
 | Carrito abandonado (`/comprar` visitado, sin comprobante en 24 h) | Recupero | 3 mensajes en 72 h (email + WhatsApp) |
-| Cohorte cerrada | Lista de espera | 1 email/semana hasta la próxima apertura |
+| Grupo cerrada | Lista de espera | 1 email/semana hasta la próxima apertura |
 
 El **recupero de carrito abandonado es especialmente crítico en tu caso**: con pago por transferencia, la gente dice "después transfiero" y se olvida. Sin este flujo, esa venta se pierde entera.
 
@@ -242,8 +242,8 @@ Cruza qué reel generó qué keyword, qué keyword generó qué lead, y qué lea
 #### A13 · Respuesta automática a FAQ en WhatsApp
 Clasificador (IA o keywords) sobre mensajes entrantes → responde las 10 preguntas frecuentes con la respuesta de MP. Escala a humano si no hay match o si detecta intención de compra. Ver `06-comunidad-respuestas.md`.
 
-#### A14 · Gestión del grupo de WhatsApp de la cohorte
-Alta automática al comprar, mensaje diario de la rutina del día, baja automática al cerrar la cohorte, recordatorio del live semanal.
+#### A14 · Gestión del grupo de WhatsApp del grupo
+Alta automática al comprar, mensaje diario de la rutina del día, baja automática al cerrar el grupo, recordatorio del live semanal.
 
 #### A15 · Recordatorio de contenido a Daiana
 Cron semanal con el calendario editorial: qué toca esta semana, qué keyword configurar en ManyChat, qué lead magnet enlazar.
@@ -260,7 +260,7 @@ Cron semanal: copia del spreadsheet a Drive con fecha. La base del negocio en un
 | A17 | OCR de comprobantes con auto-aprobación |
 | A18 | Sincronización automática de reels de IG a la web |
 | A19 | Reactivación de leads fríos (>90 días) |
-| A20 | Encuesta NPS automática al finalizar cada cohorte |
+| A20 | Encuesta NPS automática al finalizar cada grupo |
 | A21 | Generación automática de clips a partir de los lives |
 | A22 | Migración de Sheets a base real (Supabase/Neon) cuando supere ~2.000 filas |
 
@@ -274,7 +274,7 @@ Semana 2  →  A2 (quiz + PDF)        ← la pieza más grande
 Semana 3  →  A3 + A4 (cobro y onboarding)
 Semana 4  →  A5 + A8 (48h + nurturing)
 Semana 5  →  A6 + A7 (retención y llamadas)
-Semana 6  →  LANZAMIENTO COHORTE 1
+Semana 6  →  LANZAMIENTO DEL GRUPO 1
 Semana 8  →  A9 + A10 (testimonios y upsell)
 Semana 10 →  A11 + A12 (métricas)
 Semana 12 →  A13-A16

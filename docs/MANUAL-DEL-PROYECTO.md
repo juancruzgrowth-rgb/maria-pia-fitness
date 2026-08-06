@@ -4,7 +4,7 @@
 
 > Este documento está escrito para que lo entienda cualquiera, incluso alguien que nunca escuchó hablar de automatizaciones, embudos de venta o inteligencia artificial. Está pensado para pegarse en Notion y para usarse como fuente de ideas de contenido.
 >
-> Última actualización: 4 de agosto de 2026
+> Última actualización: 6 de agosto de 2026
 
 ---
 
@@ -18,7 +18,7 @@
 6. [La página web, sección por sección](#6-la-página-web-sección-por-sección)
 7. [Cómo se compra y cómo se cobra](#7-cómo-se-compra-y-cómo-se-cobra)
 8. [La garantía de 10 días](#8-la-garantía-de-10-días)
-9. [Las cohortes: por qué arrancamos todas juntas](#9-las-cohortes)
+9. [Los grupos: por qué arrancamos todas juntas](#9-los-grupos)
 10. [Skool: donde vive el producto](#10-skool-donde-vive-el-producto)
 11. [Las automatizaciones, explicadas simple](#11-las-automatizaciones-explicadas-simple)
 12. [El contenido de Instagram y los lead magnets](#12-el-contenido-de-instagram-y-los-lead-magnets)
@@ -81,8 +81,8 @@ Testimonios, casos y cualquier cosa que demuestre que otros ya lo hicieron y les
 **Objeción**
 El motivo por el que alguien no compra. "No tengo tiempo", "es caro", "no sé si me va a servir". Buena parte del trabajo de la web es responder objeciones antes de que aparezcan.
 
-**Cohorte**
-Un grupo de alumnas que arrancan el mismo día y van al mismo ritmo. Como una camada o una promoción.
+**Grupo**
+La tanda de alumnas que arrancan el mismo día y van al mismo ritmo. Como una camada o una promoción. Antes lo llamábamos "cohorte", pero "grupo" se entiende mejor.
 
 **Churn / abandono**
 La gente que deja el programa antes de terminarlo. Es el enemigo número uno de este negocio.
@@ -146,7 +146,7 @@ Un programa de **28 días, 100% online**, donde la alumna entrena 30 minutos por
 | Guía de nutrición | Desayunos de 5 minutos, cenas de 15, qué hacer cuando come afuera. Sin contar calorías. |
 | Biblioteca de ejercicios en video | Cada movimiento explicado, con versión más fácil y más difícil. |
 | Plan B de 10 minutos | Para los días imposibles. |
-| Comunidad privada | El grupo de su cohorte. |
+| Comunidad privada | El grupo de su grupo. |
 | Seguimiento diario | Planilla simple. Si deja de aparecer, María Pía le escribe. |
 
 ### Lo importante: qué es personalizado y qué no
@@ -280,6 +280,14 @@ Ocho de cada diez personas van a entrar desde el teléfono. Todas las decisiones
 **Rosario está, pero no como servicio local.**
 El reto es online y lo puede hacer alguien de Salta o de Madrid. El gimnasio aparece con un mensaje distinto: *"No soy una coach de Instagram, tengo un centro donde entreno gente todos los días"*. Es prueba de autoridad, no una oferta presencial.
 
+**Los testimonios están repartidos en dos lugares, no en uno.**
+Debajo del video hay una franja compacta con dos citas cortas, y el carrusel completo va inmediatamente después del precio. El motivo: la prueba social arriba baja el rebote entre 15 y 20%, pero el bloque grande rinde más donde está el pico de duda, que es el precio. Combinar los dos lugares rinde un 31% más que poner todo arriba. Además, un testimonio que dice "sostuve cuatro entrenamientos por semana" pega mucho más *después* de que leíste que son 4 sesiones de 30 minutos.
+
+**La web es accesible, y eso se verifica.**
+Google mide la accesibilidad de la página con una herramienta llamada Lighthouse. Arreglamos todo lo que marcaba: el naranja de la marca no tenía suficiente contraste para usarse en texto (se lee mal, sobre todo con sol o con vista cansada), los botoncitos del carrusel eran demasiado chicos para el dedo, y la lista de "cómo funciona" estaba mal armada para los lectores de pantalla que usan las personas ciegas. También revisamos a mano los diez puntos que la herramienta no puede comprobar sola: orden de los títulos, navegación con teclado, y que cada botón diga qué hace.
+
+Detalle importante: **el naranja de la marca sigue estando** en los botones, los íconos y los detalles. Lo que cambió es que el *texto* naranja ahora usa un ámbar más oscuro, que es el mismo color pero legible.
+
 ### Lo que sacamos, y por qué
 
 | Qué sacamos | Por qué |
@@ -344,7 +352,7 @@ Eso es todo. Ese mensajito dispara automáticamente:
 - La invitación a Skool
 - El mail de bienvenida
 - El mensaje de WhatsApp con el acceso
-- El alta en el grupo de la cohorte
+- El alta en el grupo del grupo
 - El aviso para agendar la llamada de bienvenida
 - El arranque del reloj de la garantía
 
@@ -426,7 +434,7 @@ Una alumna que pide la devolución el día 5 y se queda después de una charla d
 
 ---
 
-## 9. Las cohortes
+## 9. Los grupos
 
 ### Qué son
 
@@ -434,9 +442,9 @@ Todas las alumnas arrancan **el mismo día** y van al mismo ritmo. Como una cama
 
 La alternativa sería que cada una entre cuando compra y esté en un día distinto.
 
-### Por qué elegimos cohortes
+### Por qué elegimos grupos
 
-Porque nuestra métrica principal es **cuánta gente termina el programa**, y las cohortes son la palanca más fuerte que existe sobre eso.
+Porque nuestra métrica principal es **cuánta gente termina el programa**, y los grupos son la palanca más fuerte que existe sobre eso.
 
 El motivo es humano, no técnico: **en un reto lo que sostiene a la gente no es el contenido, es ver que otras están en el mismo día que ella.** Si tu alumna afloja el día 9 y nadie más está en el día 9, nadie lo nota. Si hay 15 mujeres ahí mismo, su ausencia se ve, y ella lo sabe.
 
@@ -447,7 +455,7 @@ Además resuelve tres cosas operativas:
 
 ### Cada cuánto abrimos un grupo nuevo: cada 14 días
 
-Esta era una decisión delicada, porque las cohortes tienen un costo: **quien compra tiene que esperar hasta que arranque su grupo.** Y cada día de espera es un día en el que puede enfriarse o arrepentirse.
+Esta era una decisión delicada, porque los grupos tienen un costo: **quien compra tiene que esperar hasta que arranque su grupo.** Y cada día de espera es un día en el que puede enfriarse o arrepentirse.
 
 Comparamos las opciones:
 
@@ -461,19 +469,61 @@ Comparamos las opciones:
 
 ### La pieza clave: la Semana 0
 
-**Esto es lo que elimina el problema de la espera.** Quien compra hoy, **entra hoy**. No al reto, sino a la Semana 0:
+**Esto es lo que elimina el problema de la espera.** Quien compra hoy **entra hoy**. No al reto, sino a la Semana 0.
 
-- Video de bienvenida de María Pía
-- Agenda y hace su llamada 1:1
-- Elige sus 4 horarios reales de la semana
-- Arma la lista de compras
-- Se presenta en la comunidad
-- Hace un test de movilidad de 5 minutos
+**La regla que ordena todo:** la Semana 0 **prepara y mide, pero no entrena ni enseña el contenido del reto.** Esto no es un detalle. Si liberás las rutinas antes del día 1, el grupo deja de arrancar junto y perdés justo lo que los grupos vienen a dar. Y si liberás todo de entrada, habilitás el "me lo veo en tres días y pido la devolución", que es un patrón conocido en cursos online.
 
-Consigue tres cosas:
-1. **Nadie siente que está esperando.** Está haciendo cosas desde el minuto uno.
-2. **La llamada se saca de encima antes del día 1.** El reto arranca con todas ya conocidas.
-3. **Llega comprometida al día 1**, no tibia.
+#### Las 5 cosas obligatorias (unos 90 minutos en total)
+
+| # | Qué | Tiempo | Para qué |
+|---|---|---|---|
+| 1 | Video "Empezá acá" | 3 min | Qué va a pasar, cómo se usa la plataforma, cuándo arranca |
+| 2 | Cuestionario de ingreso | 10 min | Historial, lesiones, horarios reales, objetivo |
+| 3 | Llamada 1:1 con María Pía | 30 min | Lo único verdaderamente personalizado del producto |
+| 4 | Tu Mapa de Semana | 15 min | Elegir y bloquear los 4 horarios reales |
+| 5 | Tu punto de partida | 30 min | Medidas, fotos y tests — la base contra la que se compara el día 28 |
+
+#### Los 5 mini-retos (para llenar la espera larga)
+
+Uno por día, ninguno es un entrenamiento, todos terminan con un check-in en la comunidad:
+
+1. **Movilidad de la mañana** — 6 movimientos, 6 minutos
+2. **Foto de tu desayuno** — sin cambiar nada, sólo mostrarlo
+3. **Caminata de 15 minutos** — sin música, sin pantalla
+4. **Armá tu rincón** — dejar todo listo para el día 1
+5. **Escribí tu porqué** — 3 líneas que se postean en el grupo
+
+Cada uno lleva menos de 15 minutos, deja una victoria visible y termina con una publicación. Antes del día 1 la persona ya tiene la costumbre de abrir la plataforma, de postear, conoce a sus compañeras y tiene una racha que da pena romper.
+
+#### Qué se mide
+
+**Del cuerpo:** peso (una vez, encuadrado como dato y no como nota), circunferencias de cintura, cadera, muslo y brazo, y fotos de frente, perfil y espalda. *Las fotos quedan en el celular de ella, no se suben a ningún lado — y eso se dice explícitamente.*
+
+**De la capacidad** (se repiten el día 28 y son las que producen el "no lo puedo creer"): sentadillas en 60 segundos, plancha máxima, flexiones apoyadas y un test de movilidad de 4 posiciones.
+
+**De los hábitos, durante 7 días y sin cambiar nada:** energía percibida del 1 al 10, horas de sueño, pasos, vasos de agua, foto de las comidas, en qué momento del día aparece más hambre y cuántas veces come afuera.
+
+> **Dos cosas importantes acá.** Primero: la instrucción es *"no cambies nada, sólo anotá"* — cambiar antes de medir hace imposible saber después qué funcionó, y observar sin cambiar ya genera conciencia por sí solo. Segundo: **nada de contar calorías ni pesar comida.** El nicho son mujeres con jornadas de 8+ horas; pedirles eso la semana previa a empezar es la forma más rápida de que abandonen antes del día 1. Una foto lleva 10 segundos y da mejor información.
+
+Cuando llega el día 1, María Pía tiene de cada alumna su historial, sus horarios bloqueados, su punto de partida, su capacidad medida, su patrón de comidas real y su porqué escrito. La llamada de bienvenida deja de ser una charla genérica.
+
+#### ¿Y si compra dos días antes de que arranque el grupo?
+
+**No pierde la Semana 0: se reordena.** Nadie se queda sin nada.
+
+- **El mismo día:** video, cuestionario de ingreso y Mapa de Semana. Estas tres no se mueven — sin ellas el día 1 arranca improvisando.
+- **El día 1:** las medidas, las fotos y los tests, antes del primer entrenamiento.
+- **Durante la primera semana del reto:** la llamada 1:1. Es lo único que se reprograma.
+
+Y se le dice con todas las letras en el mensaje de bienvenida: *"Entrás justo antes de que arranque el grupo, así que hacemos la preparación en modo exprés. No te perdés nada, sólo cambia el orden."* Nombrar la situación evita que sienta que le tocó una versión peor.
+
+**Si compra el día del inicio o después**, elige ella: entrar con 1-3 días de atraso, o esperar al próximo grupo con la Semana 0 completa. Si el atraso pasa de 3 días recomendamos activamente esperar — arrancar corriendo desde atrás es una de las causas más frecuentes de abandono.
+
+#### El número que hay que vigilar
+
+**Devoluciones antes del día 1: menos del 2%.** Es el termómetro de todo el sistema. Si sube de ahí, la respuesta no es mejorar la Semana 0: es acortar la cadencia de 14 a 7 días.
+
+El diseño completo está en `docs/estrategia/09-semana-cero.md`.
 
 ### El primer lanzamiento es distinto
 
@@ -481,7 +531,7 @@ El grupo fundador tiene ventana de inscripción más larga (10-14 días en vez d
 
 **Una recomendación incómoda sobre el cupo:** apuntar a **12-15 alumnas, no 25.** El primer grupo es donde se rompen cosas — va a faltar contenido, va a haber instrucciones confusas. Con 15 se maneja y sale bien; con 25 se te va de las manos y arruinás justo el grupo del que van a salir tus primeros testimonios.
 
-> **La cohorte 1 no es para facturar. Es para generar los 10 testimonios con los que vas a vender las siguientes seis.**
+> **El grupo 1 no es para facturar. Es para generar los 10 testimonios con los que vas a vender las siguientes seis.**
 
 ### Cómo se opera
 
@@ -618,7 +668,7 @@ Invitación a Skool, mail de bienvenida, mensaje de WhatsApp, alta en el grupo, 
 - Primer contacto → menú de 4 opciones
 - Comprobante → acuse de recibo instantáneo
 - Alumna activa con una duda → respuestas a las preguntas repetidas
-- Grupo de la cohorte → rutina del día a las 7, recordatorio a las 20
+- Grupo de WhatsApp del grupo → rutina del día a las 7, recordatorio a las 20
 
 ### Las reglas de las respuestas automáticas
 
@@ -898,6 +948,7 @@ Todo lo de arriba se puede convertir en contenido. Algunos ángulos que salen di
 | `docs/estrategia/05-skool-estructura.md` | Estructura de Skool y guion de grabación |
 | `docs/estrategia/06-comunidad-respuestas.md` | Instagram y WhatsApp automatizados |
 | `docs/estrategia/07-circuito-compra-y-garantia.md` | Cobro, garantía y devoluciones |
-| `docs/estrategia/08-cohortes-y-cadencia.md` | Cada cuánto abrir grupos nuevos |
+| `docs/estrategia/08-grupos-y-cadencia.md` | Cada cuánto abrir grupos nuevos |
+| `docs/estrategia/09-semana-cero.md` | Qué hace la persona entre que paga y arranca |
 | `docs/estrategia/MP-CEP-Plan-Lead-Magnets.xlsx` | El plan de contenido en Excel |
 | `.claude/proximos-pasos.md` | Qué sigue, actualizado cada sesión |

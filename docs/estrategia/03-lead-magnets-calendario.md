@@ -83,7 +83,7 @@ Estos cuatro se usan todo el trimestre, rotando. No hace falta uno nuevo por sem
 | 5 | 🎯 Reel: técnica de sentadilla — 3 errores | 📢 Reel: "lo que nadie te cuenta de empezar de cero" | LM-5 *Guía de técnica: tren inferior* | `TECNICA` |
 | 6 | 🎯 Reel: "Cómo armo el plato" | 📢 Story: Q&A abierto | LM-6 *Plantilla del plato + lista de compras* | `PLATO` |
 | 7 | 🎯 Reel: "No es falta de voluntad, es falta de sistema" | 📢 Carrusel: testimonio detallado | LM-1 Quiz | `DIAGNOSTICO` |
-| 8 | 🎯 **Anuncio de la cohorte** + reel de resultados | 📢 Live: "Cómo funciona el Reto 28 Días" | LM-3 | `RUTINA` |
+| 8 | 🎯 **Anuncio del grupo** + reel de resultados | 📢 Live: "Cómo funciona el Reto 28 Días" | LM-3 | `RUTINA` |
 
 ### Mes 3 — Lanzamiento y cierre
 
@@ -92,7 +92,7 @@ Estos cuatro se usan todo el trimestre, rotando. No hace falta uno nuevo por sem
 | 9 | 🎯 **Carrito abierto** — reel de la oferta | 📢 Stories: preguntas frecuentes en video | Directo a `/comprar` | `RETO` |
 | 10 | 🎯 Reel: "Quedan X lugares" + testimonio | 📢 Reel de objeción: "¿y si no tengo tiempo?" | Directo a `/comprar` | `RETO` |
 | 11 | 🎯 **Último día** — urgencia real | 📢 Story: cuenta regresiva | Directo a `/comprar` | `RETO` |
-| 12 | 📢 Arranque de cohorte: contenido de la comunidad | 📢 Reel: primeros días de las alumnas | LM-1 Quiz (lista de espera) | `DIAGNOSTICO` |
+| 12 | 📢 Arranque de grupo: contenido de la comunidad | 📢 Reel: primeros días de las alumnas | LM-1 Quiz (lista de espera) | `DIAGNOSTICO` |
 
 **Nota sobre las semanas 9-11:** durante el carrito abierto, la keyword `RETO` no entrega un lead magnet — manda directo al link de compra con un mensaje de venta. Es la única excepción a la regla de "siempre dar valor primero", y funciona porque a esa altura la audiencia ya recibió 8 semanas de valor.
 

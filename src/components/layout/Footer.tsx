@@ -39,7 +39,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-mp-line text-mp-ink transition-colors hover:border-mp-ink hover:text-mp-amber"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-mp-line text-mp-ink transition-colors hover:border-mp-ink hover:text-mp-ember"
               >
                 <Icon weight="regular" className="h-5 w-5" aria-hidden="true" />
               </a>
@@ -56,7 +56,7 @@ export function Footer() {
               <li key={section.id}>
                 <a
                   href={`/#${section.id}`}
-                  className="text-sm text-mp-ink transition-colors hover:text-mp-amber"
+                  className="text-sm text-mp-ink transition-colors hover:text-mp-ember"
                 >
                   {section.label}
                 </a>
@@ -74,7 +74,7 @@ export function Footer() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-sm text-mp-ink transition-colors hover:text-mp-amber"
+                  className="text-sm text-mp-ink transition-colors hover:text-mp-ember"
                 >
                   {link.label}
                 </Link>

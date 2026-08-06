@@ -10,11 +10,11 @@ import { CopyField } from "@/components/ui/CopyField";
 import { CONTACT } from "@/lib/site";
 import {
   CHALLENGE,
-  COHORT,
+  GROUP,
   GUARANTEE,
   TRANSFER,
   formatARS,
-  isCohortOpen,
+  isGroupOpen,
 } from "@/lib/products";
 
 export const metadata: Metadata = {
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
 };
 
 export default function ComprarPage() {
-  if (!isCohortOpen) {
+  if (!isGroupOpen) {
     return (
       <section className="container-page section-pad max-w-2xl">
         <h1 className="font-display text-3xl font-extrabold tracking-tight md:text-4xl">
           La inscripción está cerrada por ahora.
         </h1>
         <p className="mt-4 text-base leading-relaxed text-mp-carbon/80">
-          El {CHALLENGE.name} funciona por cohortes: todas arrancamos el mismo
+          El {CHALLENGE.name} funciona por grupos: todas arrancamos el mismo
           día. Dejame tu contacto y te aviso apenas abra la próxima.
         </p>
         <a
@@ -71,8 +71,8 @@ export default function ComprarPage() {
           </span>
         </div>
         <p className="text-sm leading-relaxed text-mp-carbon/80">
-          Pago único. {COHORT.label}: arranca el {COHORT.startsAt} y quedan{" "}
-          {COHORT.spotsLeft} de {COHORT.spotsTotal} lugares. El acceso a la
+          Pago único. {GROUP.label}: arranca el {GROUP.startsAt} y quedan{" "}
+          {GROUP.spotsLeft} de {GROUP.spotsTotal} lugares. El acceso a la
           Semana 0 lo tenés hoy mismo.
         </p>
       </div>

@@ -1,5 +1,5 @@
 import { publicEnv } from "@/lib/env";
-import { CHALLENGE, CTA_LABEL, formatARS, isCohortOpen } from "@/lib/products";
+import { CHALLENGE, CTA_LABEL, formatARS, isGroupOpen } from "@/lib/products";
 
 export const SITE = {
   brand: "MP — Centro de Entrenamiento Personalizado",
@@ -43,8 +43,8 @@ const RECEIPT_MESSAGE = [
   "Mi email:",
 ].join("\n");
 
-/** Mensaje para anotarse en la lista de espera entre cohortes. */
-const WAITLIST_MESSAGE = `Hola María Pía! Quiero anotarme para la próxima cohorte del ${CHALLENGE.name}.`;
+/** Mensaje para anotarse en la lista de espera entre grupos. */
+const WAITLIST_MESSAGE = `Hola María Pía! Quiero anotarme para el próximo grupo del ${CHALLENGE.name}.`;
 
 export const CONTACT = {
   whatsappNumber: cleanedNumber,
@@ -60,10 +60,10 @@ export const CONTACT = {
 } as const;
 
 /**
- * Único CTA de compra del sitio. Si la cohorte está cerrada apunta a la
+ * Único CTA de compra del sitio. Si el grupo está cerrado apunta a la
  * lista de espera en lugar de a la página de compra.
  */
 export const PRIMARY_CTA = {
   label: CTA_LABEL,
-  href: isCohortOpen ? "/comprar" : CONTACT.waitlistUrl,
+  href: isGroupOpen ? "/comprar" : CONTACT.waitlistUrl,
 } as const;

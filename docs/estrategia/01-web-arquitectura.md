@@ -187,7 +187,7 @@ MP confirma el pago (una respuesta, un click)
 Automatización: invitación a Skool + email de bienvenida + link a la llamada
 ```
 
-**Advertencia honesta:** este circuito cuesta conversión frente a un checkout automático. Se pierde gente entre "quiero" y "transferí", y más aún de noche o fin de semana. Es una decisión válida para validar sin trámites, pero **cuando la cohorte 1 valide el producto, reactivar MercadoPago debería ser prioridad uno.** Mientras tanto, minimizá la fricción: alias fácil de recordar y copiable, monto exacto en pantalla, y respuesta de WhatsApp en minutos (automatizable — ver A3).
+**Advertencia honesta:** este circuito cuesta conversión frente a un checkout automático. Se pierde gente entre "quiero" y "transferí", y más aún de noche o fin de semana. Es una decisión válida para validar sin trámites, pero **cuando el grupo 1 valide el producto, reactivar MercadoPago debería ser prioridad uno.** Mientras tanto, minimizá la fricción: alias fácil de recordar y copiable, monto exacto en pantalla, y respuesta de WhatsApp en minutos (automatizable — ver A3).
 
 ### F2. Barra de CTA fija en mobile
 
@@ -203,7 +203,7 @@ Después del precio. Reduce la ansiedad de "¿y después de pagar qué?": Compr�
 
 ### F5. Urgencia real
 
-Si vas por cohortes (recomendado), tenés escasez genuina: la llamada 1:1 limita el cupo. "Cohorte de septiembre — 25 lugares, quedan 8." **Nunca falsees esto.** La urgencia falsa se detecta y destruye la confianza en un nicho donde la confianza es todo el activo.
+Si vas por grupos (recomendado), tenés escasez genuina: la llamada 1:1 limita el cupo. "Grupo de septiembre — 25 lugares, quedan 8." **Nunca falsees esto.** La urgencia falsa se detecta y destruye la confianza en un nicho donde la confianza es todo el activo.
 
 ### F6. Página puente para el link en bio
 
@@ -301,3 +301,75 @@ El código actual tiene secciones que ya no corresponden al modelo de negocio.
 - [Quiz Conversion Rate Report 2026 — Interact](https://www.tryinteract.com/blog/quiz-conversion-rate-report/)
 - [Quiz Funnels vs Lead Magnets — KyLeads](https://www.kyleads.com/blog/quiz-funnels-vs-lead-magnets/)
 - [Quiz Funnels vs Static Lead Magnets 2026 — Dashform](https://getaiform.com/blog/quiz-funnels-vs-static-lead-magnets-interactive-content-conversion-2026)
+
+---
+
+# Actualización 2026-08-06 — Dónde van los testimonios
+
+> Consulta concreta: ¿la prueba social debería ir inmediatamente después del VSL, antes de "qué recibís" y "cómo funciona"?
+
+## Respuesta corta
+
+**No la completa, pero sí una parte.** La solución que mejor rinde no es elegir entre "arriba" o "abajo": es **repartirla en dos puntos**.
+
+## Qué dice la evidencia
+
+| Hallazgo | Implicancia |
+|---|---|
+| La prueba social sobre el pliegue **reduce el rebote un 15-20%** | Algo tiene que haber inmediatamente después del video |
+| Los testimonios **junto al CTA suben los clics un 25%** | El bloque grande va donde se decide, no al principio |
+| Combinar arriba **y** al final rinde **+31% frente a sólo arriba** | Repartir gana a concentrar |
+| La estructura de los VSL que convierten es **gancho → historia → oferta → prueba → cierre** | La prueba llega *después* de la oferta, no antes |
+| Las pruebas de ubicación producen las mayores diferencias de conversión (10-30%) | Es una decisión de alto impacto, vale medirla |
+
+## Por qué el bloque completo NO va justo después del video
+
+Tres razones concretas:
+
+1. **Retrasa la oferta.** Seis testimonios largos entre el video y el precio agregan scroll antes de que la persona sepa qué se vende y cuánto cuesta. En mobile eso son varias pantallas.
+2. **La prueba social sin contexto pesa menos.** Un testimonio que dice "sostuve cuatro entrenamientos por semana" impacta mucho más *después* de que la persona leyó que son 4 sesiones de 30 minutos. Antes, es una frase suelta.
+3. **El pico de duda está en el precio, no en el video.** Es ahí donde hay que poner la reserva de credibilidad.
+
+## Lo que implementamos
+
+```
+Hero + VSL
+   ↓
+SocialProofBar        ← NUEVO · 2 testimonios cortos, compactos
+   ↓                    reduce rebote sin retrasar la oferta
+¿Es para vos?
+   ↓
+Qué recibís + PRECIO
+   ↓
+Testimonios (carrusel) ← MOVIDO ACÁ · antes estaba después de "Cómo funciona"
+   ↓                     es el punto de máxima duda
+Cómo funciona
+   ↓
+Sobre mí · El centro · Garantía · FAQ · WhatsApp
+```
+
+**Los dos cambios:**
+
+1. **`SocialProofBar` nuevo**, justo debajo del hero: dos citas cortas con nombre y ocupación (misma jornada laboral que la lectora), más un link a los testimonios completos. Ocupa poco y ataca el rebote.
+2. **El carrusel completo se movió** de después de "Cómo funciona" a inmediatamente después del bloque de precio.
+
+## Qué medir para confirmarlo
+
+Esta decisión está tomada sobre evidencia general, no sobre datos de MP CEP. Cuando haya tráfico, vale la pena probar:
+
+- **Variante A (actual):** franja arriba + carrusel después del precio
+- **Variante B:** carrusel completo inmediatamente después del VSL
+
+Métrica: clics a `/comprar` sobre visitas. Se necesitan unas 300-400 visitas por variante para que el resultado signifique algo.
+
+## Requisito que sigue pendiente
+
+Nada de esto rinde con testimonios inventados. **Los seis actuales son provisorios.** El orden importa mucho menos que tener 4-6 casos reales con nombre, foto, ocupación y un resultado concreto. Video > captura de WhatsApp > texto con foto > texto solo.
+
+## Fuentes
+
+- [How to A/B Test Testimonials for Higher Conversions — NotiProof](https://notiproof.com/resources/testimonials/testimonial-ab-testing/)
+- [How to Display Testimonials on Your Website — Shoutjar](https://shoutjar.com/guides/display-testimonials-website)
+- [I Tested 10 Social Proof Landing Page Tactics — WiserNotify](https://wisernotify.com/blog/landing-page-social-proof/)
+- [Video Sales Letter Funnel: The Ultimate Guide 2026](https://www.myfunnelsecrets.com/sales-funnel/types/video-sales-letter-funnel/)
+- [How to A/B Test Landing Pages — Leadpages](https://leadpages.com/landing-pages-guide/ab-testing)

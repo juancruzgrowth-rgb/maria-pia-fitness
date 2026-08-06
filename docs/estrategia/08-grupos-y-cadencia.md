@@ -1,4 +1,4 @@
-# Cohortes y Cadencia de Lanzamientos
+# Grupos y Cadencia de Lanzamientos
 
 > Decidido el 2026-08-04. Responde a: ¿cada cuánto abrimos un grupo nuevo para no hacer esperar a quien quiere comprar?
 
@@ -6,9 +6,9 @@
 
 ## El problema en una frase
 
-Las cohortes suben la tasa de finalización, pero **cada día que alguien espera entre que paga y arranca es un día en el que puede arrepentirse, enfriarse o pedir la devolución.**
+Los grupos suben la tasa de finalización, pero **cada día que alguien espera entre que paga y arranca es un día en el que puede arrepentirse, enfriarse o pedir la devolución.**
 
-Hay que elegir una cadencia que conserve el beneficio de la cohorte sin pagar el costo de la espera.
+Hay que elegir una cadencia que conserve el beneficio del grupo sin pagar el costo de la espera.
 
 ---
 
@@ -34,7 +34,7 @@ Tres cosas pasan entre el pago y el día 1:
 
 **Mensual queda descartada:** 29 días de espera máxima es inaceptable. Perdés gente antes de que empiece y quemás la garantía en la sala de espera.
 
-**Semanal parece la más amable, pero no lo es:** con 4 grupos por mes cada uno tiene 5-8 personas. Un grupo de 6 no genera accountability — genera silencio. Y María Pía queda haciendo llamadas de bienvenida todas las semanas, que es justo lo que las cohortes venían a resolver.
+**Semanal parece la más amable, pero no lo es:** con 4 grupos por mes cada uno tiene 5-8 personas. Un grupo de 6 no genera accountability — genera silencio. Y María Pía queda haciendo llamadas de bienvenida todas las semanas, que es justo lo que los grupos venían a resolver.
 
 ---
 
@@ -50,7 +50,7 @@ Tres cosas pasan entre el pago y el día 1:
 | Tamaño esperado del grupo | 12-15 personas |
 | Llamadas de MP | Agrupadas en 2 días, cada 15 |
 
-Es el punto donde el grupo tiene masa crítica suficiente para que el accountability funcione, y la espera sigue siendo tolerable.
+Es el punto dondel grupo tiene masa crítica suficiente para que el accountability funcione, y la espera sigue siendo tolerable.
 
 ---
 
@@ -83,11 +83,11 @@ La Semana 0 es el Módulo 0 del classroom de Skool, que ya está previsto en [`0
 
 ---
 
-## El lanzamiento 1: cohorte fundadora
+## El lanzamiento 1: grupo fundador
 
 El primero no sigue la cadencia. Es distinto a propósito:
 
-| Parámetro | Cohorte fundadora | Cohortes siguientes |
+| Parámetro | Grupo fundador | Grupos siguientes |
 |---|---|---|
 | Ventana de inscripción | 10-14 días | 7 días |
 | Cupo | 25 (o menos, ver abajo) | 15-20 |
@@ -100,7 +100,7 @@ El primero no sigue la cadencia. Es distinto a propósito:
 
 **Sobre el cupo de la fundadora — una recomendación incómoda:** apuntá a **12-15 alumnas, no 25.** El primer grupo es donde se rompen cosas: va a haber contenido que falta, instrucciones confusas, preguntas que no anticipaste. Con 15 personas eso se maneja y sale bien; con 25 se te va de las manos y arruinás justo el grupo del que van a salir tus primeros testimonios.
 
-La cohorte 1 no es para facturar. **Es para generar los 10 testimonios con los que vas a vender las siguientes seis.**
+El grupo 1 no es para facturar. **Es para generar los 10 testimonios con los que vas a vender las siguientes seis.**
 
 ---
 
@@ -124,11 +124,11 @@ Siempre hay un grupo entrenando y una inscripción abierta o por abrir. La web n
 
 | Situación | Qué hacer |
 |---|---|
-| Compra faltando más de 3 días para el día 1 | Entra a esa cohorte. Semana 0 completa. |
+| Compra faltando más de 3 días para el día 1 | Entra a ese grupo. Semana 0 completa. |
 | Compra faltando 1-3 días | Entra igual. La llamada de bienvenida se hace durante la semana 1. |
 | Compra el mismo día del inicio o después | Entra a la siguiente. Se le ofrece explícitamente elegir: arrancar tarde con este grupo o esperar al próximo con la Semana 0 completa. **Que elija ella.** |
-| Pide cambiar de cohorte | Se permite una vez, sin costo, avisando antes del día 3. |
-| Se atrasa y no termina | Puede repetir una cohorte sin costo, por única vez. Sale barato y salva la relación. |
+| Pide cambiar de grupo | Se permite una vez, sin costo, avisando antes del día 3. |
+| Se atrasa y no termina | Puede repetir un grupo sin costo, por única vez. Sale barato y salva la relación. |
 
 Ese último punto es deliberado: **una alumna que repite y termina te da un testimonio; una que abandona no te da nada.**
 
@@ -139,11 +139,11 @@ Ese último punto es deliberado: **una alumna que repite y termina te da un test
 Ya está implementado en [`src/lib/products.ts`](../../src/lib/products.ts):
 
 ```ts
-export const COHORT_CADENCE_DAYS = 14;
+export const GROUP_CADENCE_DAYS = 14;
 
-export const COHORT = {
+export const GROUP = {
   status: "open",        // "open" | "waitlist" | "closed"
-  label: "Cohorte fundadora",
+  label: "Grupo fundador",
   isFounding: true,      // cambia el copy del hero
   startsAt: "lunes 7 de septiembre",
   closesAt: "viernes 4 de septiembre",
@@ -153,7 +153,7 @@ export const COHORT = {
 };
 ```
 
-**Operación entre cohortes:** poner `status: "waitlist"` convierte automáticamente todos los CTAs del sitio en lista de espera, y `/comprar` pasa a mostrar el mensaje de "inscripción cerrada". Al abrir la siguiente se actualizan las fechas y se vuelve a `"open"`.
+**Operación entre grupos:** poner `status: "waitlist"` convierte automáticamente todos los CTAs del sitio en lista de espera, y `/comprar` pasa a mostrar el mensaje de "inscripción cerrada". Al abrir la siguiente se actualizan las fechas y se vuelve a `"open"`.
 
 **Ritmo de trabajo real: dos ediciones cada 14 días.** Una para cerrar, otra para abrir. Nada más.
 
@@ -163,10 +163,10 @@ export const COHORT = {
 
 | Flujo | Cambio |
 |---|---|
-| **A4** (onboarding) | Asignar `cohorte` en la fila de Sheets y dar acceso al Módulo 0 (Semana 0), no al reto |
+| **A4** (onboarding) | Asignar `grupo` en la fila de Sheets y dar acceso al Módulo 0 (Semana 0), no al reto |
 | **A5** (48 h) | Los mensajes ahora son de la Semana 0: agendá la llamada, armá tu semana, presentate |
 | **A6** (abandono) | Cuenta los días desde el **día 1 del reto**, no desde la compra |
-| **A24** (lista de espera) | Al cerrar una cohorte, quien llega recibe la fecha del próximo grupo, no un "cerrado" a secas |
+| **A24** (lista de espera) | Al cerrar un grupo, quien llega recibe la fecha del próximo grupo, no un "cerrado" a secas |
 | **A25** (nuevo) | Aviso automático 48 h antes del día 1: "Arrancamos el lunes, ¿tenés todo listo?" |
 | **A26** (nuevo) | Al día 1: activar el acceso al Módulo 2 y arrancar el check-in diario del grupo |
 

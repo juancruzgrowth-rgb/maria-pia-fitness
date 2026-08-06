@@ -1,6 +1,6 @@
 import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
 import { HOW_IT_WORKS } from "@/content/offer";
-import { COHORT_CADENCE_DAYS, TRANSFER } from "@/lib/products";
+import { GROUP_CADENCE_DAYS, TRANSFER } from "@/lib/products";
 
 export function HowItWorks() {
   return (
@@ -26,20 +26,19 @@ export function HowItWorks() {
           {HOW_IT_WORKS.map((item, index) => (
             <RevealOnScroll
               key={item.step}
+              as="li"
               delay={index * 100}
               className="flex flex-col gap-3 bg-mp-canvas p-6 md:p-8"
             >
-              <li className="flex flex-col gap-3">
-                <span className="font-display text-3xl font-extrabold leading-none text-mp-orange">
-                  {item.step}
-                </span>
-                <h3 className="font-display text-lg font-bold text-mp-ink">
-                  {item.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-mp-carbon/80">
-                  {item.body}
-                </p>
-              </li>
+              <span className="font-display text-3xl font-extrabold leading-none text-mp-ember">
+                {item.step}
+              </span>
+              <h3 className="font-display text-lg font-bold text-mp-ink">
+                {item.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-mp-carbon/80">
+                {item.body}
+              </p>
             </RevealOnScroll>
           ))}
         </ol>
@@ -48,7 +47,7 @@ export function HowItWorks() {
           <p className="mt-6 text-sm leading-relaxed text-mp-carbon/70">
             El pago es por transferencia bancaria y confirmo el acceso en{" "}
             {TRANSFER.responseWindow} desde que recibo el comprobante. Abro un
-            grupo nuevo cada {COHORT_CADENCE_DAYS} días, así que entre que
+            grupo nuevo cada {GROUP_CADENCE_DAYS} días, así que entre que
             comprás y arranca tu día 1 nunca pasan más de dos semanas — y ese
             tiempo lo usás en la Semana 0, no esperando.
           </p>

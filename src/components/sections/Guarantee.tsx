@@ -40,7 +40,7 @@ export function Guarantee() {
             </p>
             <Link
               href="/garantia"
-              className="text-sm font-medium text-mp-ink underline decoration-mp-orange decoration-2 underline-offset-4 transition-colors hover:text-mp-amber"
+              className="text-sm font-medium text-mp-ink underline decoration-mp-orange decoration-2 underline-offset-4 transition-colors hover:text-mp-ember"
             >
               Ver los términos completos de la garantía
             </Link>

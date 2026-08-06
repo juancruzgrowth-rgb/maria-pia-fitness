@@ -1,8 +1,9 @@
 import { Hero } from "@/components/sections/Hero";
+import { SocialProofBar } from "@/components/sections/SocialProofBar";
 import { ForWhom } from "@/components/sections/ForWhom";
 import { WhatYouGet } from "@/components/sections/WhatYouGet";
-import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Stories } from "@/components/sections/Stories";
+import { HowItWorks } from "@/components/sections/HowItWorks";
 import { About } from "@/components/sections/About";
 import { Gym } from "@/components/sections/Gym";
 import { Guarantee } from "@/components/sections/Guarantee";
@@ -16,11 +17,12 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <SocialProofBar />
       <PulseDivider className="container-page py-2" />
       <ForWhom />
       <WhatYouGet />
-      <HowItWorks />
       <Stories />
+      <HowItWorks />
       <About />
       <Gym />
       <Guarantee />

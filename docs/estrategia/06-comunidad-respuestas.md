@@ -12,7 +12,7 @@ Un error frecuente es intentar tener comunidad en todos lados. **Cada plataforma
 |---|---|---|
 | **Instagram** | Captación. Contenido público y comment-to-DM. | Automatización + Daiana |
 | **WhatsApp 1:1** | Venta y soporte individual. El canal de mayor conversión en Argentina. | Automatización + escalado a MP |
-| **WhatsApp grupal (cohorte)** | Pulso diario, urgencia, sensación de grupo | Automatización + MP en bloques |
+| **WhatsApp grupal del grupo** | Pulso diario, urgencia, sensación de grupo | Automatización + MP en bloques |
 | **Skool** | El producto. Contenido, accountability, progreso, comunidad de largo plazo. | MP en bloques |
 | **Email (Brevo)** | Nurturing largo, gente que no compró todavía | 100% automatizado |
 
@@ -107,7 +107,7 @@ Máximo 3 toques. Más que eso genera bloqueos y reportes, que dañan el alcance
 | **Evolution API** (self-hosted) | Mismo día | ~USD 6/mes VPS | No oficial. Riesgo de baneo del número. Menos estable. |
 | **Meta WhatsApp Business API** | 1-4 semanas de aprobación | Por conversación | Oficial y estable. Plantillas requieren aprobación previa. |
 
-**Recomendación:** arrancar con Evolution API para validar los flujos durante la cohorte 1, y migrar a Meta cuando el volumen lo justifique. Es el camino habitual de las PyMEs argentinas. **Usar un número dedicado al negocio, nunca el personal de María Pía** — si el número se bloquea, no querés perder tus contactos personales.
+**Recomendación:** arrancar con Evolution API para validar los flujos durante el grupo 1, y migrar a Meta cuando el volumen lo justifique. Es el camino habitual de las PyMEs argentinas. **Usar un número dedicado al negocio, nunca el personal de María Pía** — si el número se bloquea, no querés perder tus contactos personales.
 
 **Formato de número para Argentina:** `549` + código de área sin 0 + número sin 15. Ej: `5493411234567`.
 
@@ -140,7 +140,7 @@ Clasificador sobre el mensaje entrante que responde las consultas repetidas:
 | Consulta | Respuesta automática |
 |---|---|
 | "No puedo entrar a Skool" | Instrucciones paso a paso + link |
-| "¿Qué rutina toca hoy?" | Link al día actual según su cohorte |
+| "¿Qué rutina toca hoy?" | Link al día actual según su grupo |
 | "Me duele X" | Guía general + **derivación obligatoria a MP**. Nunca dar consejo médico automatizado. |
 | "No pude entrenar hoy" | Mensaje de aliento + cómo retomar |
 | "¿Cuándo es el live?" | Fecha, hora y link |
@@ -149,7 +149,7 @@ Clasificador sobre el mensaje entrante que responde las consultas repetidas:
 
 **Límite duro:** todo lo que roce dolor, lesión, embarazo, medicación o condición médica **escala a humano siempre**, sin excepción y sin intentar responder. Es un límite de responsabilidad profesional, no de calidad del bot.
 
-#### WA-5 · Grupo de la cohorte
+#### WA-5 · Grupo de WhatsApp del grupo
 ```
 07:00 · Rutina del día + link
 20:00 · (sólo L/M/V) Recordatorio de check-in

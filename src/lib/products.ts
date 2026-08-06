@@ -1,12 +1,12 @@
 /**
- * Single source of truth del producto, la cohorte y los datos de cobro.
+ * Single source of truth del producto, el grupo y los datos de cobro.
  * Nada de esto se hardcodea en componentes.
  */
 
 // TODO(precio): valor provisorio a confirmar por María Pía. Cambiar sólo acá.
 const PRICE_ARS = 29900;
 
-export type CohortStatus = "open" | "waitlist" | "closed";
+export type GroupStatus = "open" | "waitlist" | "closed";
 
 export interface Challenge {
   id: string;
@@ -36,23 +36,23 @@ export const CHALLENGE: Challenge = {
     "Guía de nutrición práctica para semanas con poco tiempo",
     "Biblioteca de ejercicios en video, con variantes fácil y difícil",
     "Plan B para los días imposibles: rutinas de 10 minutos",
-    "Comunidad privada con el grupo de tu cohorte",
+    "Comunidad privada con tu grupo",
     "Planilla de seguimiento y check-in diario",
   ],
 } as const;
 
 /**
- * Cadencia entre cohortes. Con 14 días nadie espera más de 13 días para
- * empezar y el promedio de espera es de 7. Ver docs/estrategia/08-cohortes.md
+ * Cadencia entre grupos. Con 14 días nadie espera más de 13 días para
+ * empezar y el promedio de espera es de 7. Ver docs/estrategia/08-grupos-y-cadencia.md
  */
-export const COHORT_CADENCE_DAYS = 14;
+export const GROUP_CADENCE_DAYS = 14;
 
 /**
- * Estado de la cohorte activa.
- * Cambiar `status` a "waitlist" entre cohortes: todos los CTA del sitio se adaptan solos.
+ * Estado del grupo activo.
+ * Cambiar `status` a "waitlist" entre grupos: todos los CTA del sitio se adaptan solos.
  */
-export interface Cohort {
-  status: CohortStatus;
+export interface Group {
+  status: GroupStatus;
   label: string;
   /** Marca el lanzamiento fundacional: cambia el copy y habilita el badge. */
   isFounding: boolean;
@@ -65,10 +65,10 @@ export interface Cohort {
   spotsLeft: number;
 }
 
-// TODO(cohorte): completar con las fechas reales antes del lanzamiento.
-export const COHORT: Cohort = {
+// TODO(grupo): completar con las fechas reales antes del lanzamiento.
+export const GROUP: Group = {
   status: "open",
-  label: "Cohorte fundadora",
+  label: "Grupo fundador",
   isFounding: true,
   startsAt: "lunes 7 de septiembre",
   closesAt: "viernes 4 de septiembre",
@@ -111,8 +111,8 @@ export function formatARS(amount: number): string {
   return ARS_FORMATTER.format(amount);
 }
 
-export const isCohortOpen = COHORT.status === "open";
+export const isGroupOpen = GROUP.status === "open";
 
-export const CTA_LABEL = isCohortOpen
+export const CTA_LABEL = isGroupOpen
   ? "Quiero entrar al reto"
   : "Anotarme para la próxima";

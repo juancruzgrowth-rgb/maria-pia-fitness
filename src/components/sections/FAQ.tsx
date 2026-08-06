@@ -19,10 +19,10 @@ function FaqRow({ item, index }: { item: FaqItem; index: number }) {
           aria-controls={panelId}
           className="group flex w-full items-start justify-between gap-4 py-5 text-left md:py-6"
         >
-          <span className="font-display text-base font-semibold leading-snug text-mp-ink transition-colors group-hover:text-mp-orange md:text-lg">
+          <span className="font-display text-base font-semibold leading-snug text-mp-ink transition-colors group-hover:text-mp-ember md:text-lg">
             {item.question}
           </span>
-          <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-mp-line text-mp-carbon transition-colors group-hover:border-mp-orange group-hover:text-mp-orange">
+          <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-mp-line text-mp-carbon transition-colors group-hover:border-mp-orange group-hover:text-mp-ember">
             {open ? (
               <Minus weight="bold" className="h-3 w-3" aria-hidden="true" />
             ) : (

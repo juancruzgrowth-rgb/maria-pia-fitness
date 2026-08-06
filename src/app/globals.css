@@ -6,6 +6,9 @@
   --color-mp-carbon: #161616;
   --color-mp-orange: #f2a31b;
   --color-mp-amber: #d98a17;
+  /* Ámbar oscuro para TEXTO sobre canvas: 5.4:1 (WCAG AA).
+     El naranja de marca sólo llega a 1.9:1 y no puede usarse en texto. */
+  --color-mp-ember: #8f5600;
   --color-mp-sky: #bfdfff;
   --color-mp-line: #eaeaea;
 
@@ -43,6 +46,13 @@ h4,
 ::selection {
   background-color: var(--color-mp-ink);
   color: var(--color-mp-canvas);
+}
+
+/* Foco visible garantizado en todo control, para navegación por teclado. */
+:focus-visible {
+  outline: 2px solid var(--color-mp-ember);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 @utility container-page {

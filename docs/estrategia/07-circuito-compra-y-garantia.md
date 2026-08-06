@@ -1,4 +1,4 @@
-# Circuito de Compra, Garantía y Cohortes
+# Circuito de Compra, Garantía y Grupos
 
 > Decisiones tomadas el 2026-08-04. Reemplaza lo que decía `01-web-arquitectura.md` sobre el quiz.
 
@@ -13,7 +13,7 @@
 | Cobro | Transferencia + comprobante por WhatsApp |
 | Activación del onboarding | **Opción 1: María Pía responde `OK 1234` por WhatsApp** (ver §2.2) |
 | Garantía | **10 días** — alineada con el art. 34 de la Ley 24.240 (ver §4) |
-| Cadencia de cohortes | **Cada 14 días** + Semana 0 (ver [`08-cohortes-y-cadencia.md`](08-cohortes-y-cadencia.md)) |
+| Cadencia de grupos | **Cada 14 días** + Semana 0 (ver [`08-grupos-y-cadencia.md`](08-grupos-y-cadencia.md)) |
 | CTAs | Uno solo flotante fijo (comprar) + uno de WhatsApp no flotante |
 | VSL | 10 minutos (decisión del cliente) |
 | Formato | Se vende como **reto** |
@@ -24,19 +24,19 @@
 
 ---
 
-## 1. Qué son las cohortes (y por qué conviene)
+## 1. Qué son los grupos (y por qué conviene)
 
 ### Las dos formas de vender el reto
 
 **Acceso inmediato (evergreen)**
 La persona paga y entra ese mismo día. Cada alumna está en un día distinto del programa: una arranca el 3, otra el 17, otra el 29.
 
-**Cohortes**
+**Grupos**
 Todas arrancan el mismo día. Se abre la inscripción, se cierra, y el grupo entero hace el día 1 el mismo lunes, el día 14 el mismo lunes, y termina junto.
 
 ### Comparación
 
-| | Acceso inmediato | Cohortes |
+| | Acceso inmediato | Grupos |
 |---|---|---|
 | Facturación | Pareja todo el mes | Concentrada en la semana de apertura |
 | Urgencia para comprar | Ninguna — "lo compro el mes que viene" | Real — "cierra el viernes" |
@@ -49,7 +49,7 @@ Todas arrancan el mismo día. Se abre la inscripción, se cierra, y el grupo ent
 
 ### Por qué te conviene, específicamente
 
-**Elegiste la tasa de finalización como métrica principal. Las cohortes son la palanca más directa que existe sobre esa métrica.**
+**Elegiste la tasa de finalización como métrica principal. Los grupos son la palanca más directa que existe sobre esa métrica.**
 
 El motivo es simple: en un reto lo que sostiene a la gente no es el contenido, es ver que otras están en el mismo día que ella. Si tu alumna abandona el día 9 y en el grupo nadie está en el día 9, nadie lo nota y nadie la busca. Si las 20 están en el día 9, su ausencia se ve, y ella lo sabe.
 
@@ -58,15 +58,15 @@ Además te resuelve tres problemas operativos de un saque:
 - **La urgencia es genuina.** No tenés que inventar un contador falso: los cupos cierran de verdad porque las llamadas tienen un techo.
 - **El upsell del día 28** se hace una vez, a todo el grupo, en vez de 20 conversaciones separadas.
 
-### El costo de las cohortes
+### El costo de los grupos
 
-Es honesto decirlo: **entre cohorte y cohorte no facturás.** Si alguien llega a la web el día 6 de un ciclo cerrado, no puede comprar.
+Es honesto decirlo: **entre grupo y grupo no facturás.** Si alguien llega a la web el día 6 de un ciclo cerrado, no puede comprar.
 
-Eso se resuelve con **lista de espera**: el botón cambia de "Quiero entrar" a "Anotarme para la próxima", captura el contacto, y esa persona recibe el aviso el día que abre. En la práctica la lista de espera arranca el siguiente lanzamiento con demanda acumulada — es una ventaja disfrazada de problema.
+Eso se resuelve con **lista de espera**: el botón cambia de "Quiero entrar" a "Anotarme para el próximo", captura el contacto, y esa persona recibe el aviso el día que abre. En la práctica la lista de espera arranca el siguiente lanzamiento con demanda acumulada — es una ventaja disfrazada de problema.
 
 ### Recomendación concreta
 
-**Superado por [`08-cohortes-y-cadencia.md`](08-cohortes-y-cadencia.md):** la decisión final fue **cohortes cada 14 días** con Semana 0, no mensuales. Se mantiene el razonamiento de abajo porque la lógica de por qué conviene cohortear sigue siendo válida.
+**Superado por [`08-grupos-y-cadencia.md`](08-grupos-y-cadencia.md):** la decisión final fue **grupos cada 14 días** con Semana 0, no mensuales. Se mantiene el razonamiento de abajo porque la lógica de por qué conviene agrupar sigue siendo válida.
 
 ```
 Semana 1  ·  Contenido de calentamiento en IG
@@ -76,7 +76,7 @@ Semana 4  ·  Arranca el reto (día 1, lunes)
 +28 días  ·  Cierre del reto + oferta de upsell + testimonios
 ```
 
-La web ya está construida para soportar las dos modalidades: el estado de la cohorte vive en `src/lib/products.ts` (`COHORT`), y cambiar `status` a `"waitlist"` transforma todos los CTAs automáticamente.
+La web ya está construida para soportar las dos modalidades: el estado del grupo vive en `src/lib/products.ts` (`GROUP`), y cambiar `status` a `"waitlist"` transforma todos los CTAs automáticamente.
 
 ---
 
@@ -199,7 +199,7 @@ n8n corre cada 5 minutos, detecta filas nuevas con el tilde puesto y estado "pen
 **A favor:** vista completa de todas las ventas, fácil de auditar, sirve de panel de control.
 **En contra:** MP tiene que abrir Sheets en el celular. Con 25 ventas concentradas en la semana de apertura es cómodo; con ventas salteadas es más fricción que el WhatsApp.
 
-**Cuándo migrar acá:** cuando las ventas por cohorte pasen de ~30 y convenga procesarlas en lote sentada frente a la compu.
+**Cuándo migrar acá:** cuando las ventas por grupo pasen de ~30 y convenga procesarlas en lote sentada frente a la compu.
 
 ---
 
@@ -223,7 +223,7 @@ Cuando MP responde "OK 4821", en cadena:
 | 2 | Invitación a Skool | Email de Skool |
 | 3 | "¡Estás adentro!" + link de Skool + qué hacer primero | WhatsApp |
 | 4 | Email de bienvenida con acceso y link para agendar la llamada | Brevo |
-| 5 | Alta en el grupo de WhatsApp de la cohorte | WhatsApp |
+| 5 | Alta en el grupo de WhatsApp del grupo | WhatsApp |
 | 6 | Sale de todas las secuencias de venta | Brevo |
 | 7 | Se programan los mensajes de las 48 h (flujo A5) | n8n |
 | 8 | Arranca el reloj de la garantía (día 0) | Interno |
@@ -341,7 +341,7 @@ Esto hace tres cosas a la vez: confirma que la devolución no está en discusió
 | **"Es más difícil de lo que esperaba"** | Miedo, no producto. | "Todas empiezan por la versión más fácil de cada ejercicio. ¿Viste las variantes del módulo 1? Te mando cuáles hacer esta semana." → **Ajuste concreto.** |
 | **"No entendí cómo funciona"** | Falla de onboarding, es tuya. | "Eso es culpa mía, no tuya. Te hago un video de 2 minutos ahora mismo mostrándote dónde está todo." → **Resolver en el momento.** |
 | **"Esperaba que fuera personalizado"** | Falla de expectativa en la venta. **Revisar el copy.** | "Tenés razón en que el plan es el mismo para todas — eso lo aclaro en la web, y si no quedó claro es un problema mío. Lo tuyo es la llamada y las correcciones. ¿Querés que hagamos la llamada ahora y vemos?" → Si igual no le sirve, **devolver sin discutir**. |
-| **"Problema de plata"** | No es objeción de producto. | "Sin problema, te lo devuelvo hoy. Cuando puedas, la puerta queda abierta y te aviso de la próxima cohorte." → **Devolver, y dejarla en la lista.** Suele volver. |
+| **"Problema de plata"** | No es objeción de producto. | "Sin problema, te lo devuelvo hoy. Cuando puedas, la puerta queda abierta y te aviso de la próxima grupo." → **Devolver, y dejarla en la lista.** Suele volver. |
 | **"No me gustó / no es lo que buscaba"** | Sin arreglo. | "Gracias por probarlo. Te lo devuelvo hoy." → **Devolver, cero fricción.** |
 
 **Las cuatro reglas:**
@@ -371,4 +371,4 @@ Por eso el flujo A6 (detección de abandono) debe correr **con más frecuencia d
 | **A4** | Agregar el arranque del reloj de garantía |
 | **A6** | Chequeo diario durante los primeros 10 días, cada 2 días después |
 | **A23** | **NUEVO** — circuito de devolución completo |
-| **A24** | **NUEVO** — lista de espera entre cohortes |
+| **A24** | **NUEVO** — lista de espera entre grupos |

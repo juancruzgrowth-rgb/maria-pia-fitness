@@ -212,11 +212,11 @@ Todo lo que caiga fuera de esos bloques y sea urgente, lo detecta la automatizac
 
 | # | Qué | Estado de la API |
 |---|---|---|
-| A4 | Invitación automática al aprobar el pago | Skool no tiene API pública estable. Alternativas: Zapier/Make con integración no oficial, automatización de navegador (Browserless), o **invitación manual en lote 2x/día** como plan B aceptable para la cohorte 1 |
-| A6 | Leer actividad para detectar abandono | Vía scraping controlado o export manual semanal en la cohorte 1 |
+| A4 | Invitación automática al aprobar el pago | Skool no tiene API pública estable. Alternativas: Zapier/Make con integración no oficial, automatización de navegador (Browserless), o **invitación manual en lote 2x/día** como plan B aceptable paral grupo 1 |
+| A6 | Leer actividad para detectar abandono | Vía scraping controlado o export manual semanal en el grupo 1 |
 | — | Post diario del check-in | Programable dentro de Skool, sin necesidad de n8n |
 
-**Advertencia honesta:** Skool es la pieza del stack con peor soporte de automatización. Planificá la cohorte 1 asumiendo que **el alta y el seguimiento pueden ser semi-manuales** (10-15 min/día). Con 25 alumnas es perfectamente manejable. Si escala a 100+, hay que reevaluar la plataforma o invertir en automatización de navegador.
+**Advertencia honesta:** Skool es la pieza del stack con peor soporte de automatización. Planificá el grupo 1 asumiendo que **el alta y el seguimiento pueden ser semi-manuales** (10-15 min/día). Con 25 alumnas es perfectamente manejable. Si escala a 100+, hay que reevaluar la plataforma o invertir en automatización de navegador.
 
 ---
 
@@ -234,7 +234,7 @@ Todo lo que caiga fuera de esos bloques y sea urgente, lo detecta la automatizac
 - [ ] Configurar categorías del feed
 - [ ] **Prueba en frío:** que alguien externo entre y siga el módulo 0 sin ayuda
 
-**Regla:** los módulos 2 a 5 pueden publicarse semana a semana durante la primera cohorte. **Los módulos 0, 1 y 8 tienen que estar 100% completos antes de la primera venta.** Vender acceso a un classroom vacío es la forma más rápida de arruinar la reputación.
+**Regla:** los módulos 2 a 5 pueden publicarse semana a semana durante la primera grupo. **Los módulos 0, 1 y 8 tienen que estar 100% completos antes de la primera venta.** Vender acceso a un classroom vacío es la forma más rápida de arruinar la reputación.
 
 ---
 

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Play, X, WhatsappLogo } from "@phosphor-icons/react";
 import { HERO } from "@/content/hero";
 import { CONTACT } from "@/lib/site";
-import { COHORT, isCohortOpen } from "@/lib/products";
+import { GROUP, isGroupOpen } from "@/lib/products";
 
 export function Hero() {
   const [playing, setPlaying] = useState(false);
@@ -25,28 +25,28 @@ export function Hero() {
 
             <h1 className="font-display text-[2.5rem] font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-[64px]">
               <span className="block text-mp-ink">{HERO.headlineLead}</span>
-              <span className="block text-mp-orange">{HERO.headlineAccent}</span>
+              <span className="block text-mp-ember">{HERO.headlineAccent}</span>
             </h1>
 
             <p className="max-w-xl text-base leading-relaxed text-mp-carbon/80 md:text-lg">
               {HERO.description}
             </p>
 
-            {isCohortOpen && (
+            {isGroupOpen && (
               <div className="flex flex-col gap-1.5 rounded-md border border-mp-line p-4">
-                <span className="inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-[0.14em] text-mp-orange">
-                  {COHORT.isFounding && (
+                <span className="inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-[0.14em] text-mp-ember">
+                  {GROUP.isFounding && (
                     <span
                       aria-hidden="true"
                       className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
                     />
                   )}
-                  {COHORT.label}
+                  {GROUP.label}
                 </span>
                 <p className="text-sm leading-relaxed text-mp-carbon">
-                  Arranca el {COHORT.startsAt}. Inscripción abierta hasta el{" "}
-                  {COHORT.closesAt}.
-                  {COHORT.isFounding
+                  Arranca el {GROUP.startsAt}. Inscripción abierta hasta el{" "}
+                  {GROUP.closesAt}.
+                  {GROUP.isFounding
                     ? " Es el primer grupo: cupo reducido y acompañamiento más cercano."
                     : ""}
                 </p>
