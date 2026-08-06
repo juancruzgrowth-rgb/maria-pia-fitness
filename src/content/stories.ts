@@ -23,9 +23,9 @@ export const STORIES: SuccessStory[] = [
     imageUrl:
       "https://images.pexels.com/photos/3768916/pexels-photo-3768916.jpeg?auto=compress&cs=tinysrgb&w=900",
     caseSummary:
-      "Dos hijos y jornada completa. Hacía tres años que no entrenaba. Terminó el reto con cuatro sesiones semanales sostenidas.",
+      "Dos hijos y jornada completa. Hacía tres años que no entrenaba. Terminó el reto con las tres sesiones semanales sostenidas.",
     testimonial:
-      "Pensé que era cuestión de fuerza de voluntad. Era cuestión de que alguien me dijera qué hacer en los 30 minutos que tenía.",
+      "Pensé que era cuestión de fuerza de voluntad. Era cuestión de que alguien me dijera qué hacer en los tres días que tenía.",
   },
   {
     id: "carolina",
@@ -51,7 +51,7 @@ export const STORIES: SuccessStory[] = [
     caseSummary:
       "Doce horas frente a la pantalla y cero movimiento. Empezó con tres días y terminó el reto pidiendo el programa largo.",
     testimonial:
-      "Entrenar 30 minutos me devolvió la energía para el resto del día. No lo hago por el espejo, lo hago porque llego a las 7 de la tarde entera.",
+      "Entrenar tres veces por semana me devolvió la energía para el resto del día. No lo hago por el espejo, lo hago porque llego a las 7 de la tarde entera.",
   },
   {
     id: "valentina",

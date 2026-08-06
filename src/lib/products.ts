@@ -3,8 +3,18 @@
  * Nada de esto se hardcodea en componentes.
  */
 
-// TODO(precio): valor provisorio a confirmar por María Pía. Cambiar sólo acá.
-const PRICE_ARS = 29900;
+/** Precio de un nivel (un mes). Confirmado por María Pía el 2026-08-06. */
+const PRICE_ARS = 40000;
+
+/**
+ * Pack de 3 niveles.
+ * TODO(precio): María Pía propuso $130.000, pero 3 meses sueltos cuestan
+ * $120.000 — el pack saldría MÁS CARO y no puede anunciarse como descuento
+ * (art. 8 Ley 24.240). Propuesta pendiente de aprobación: $99.000 (17,5% off).
+ * Ver docs/estrategia/10-planes-y-niveles.md §2. No mostrar hasta resolverlo.
+ */
+const PACK_PRICE_ARS = 99000;
+const PACK_PRICE_CONFIRMED = false;
 
 export type GroupStatus = "open" | "waitlist" | "closed";
 
@@ -25,21 +35,75 @@ export const CHALLENGE: Challenge = {
   shortName: "el Reto",
   duration: "28 días",
   promise:
-    "Volver a entrenar y comer bien en 30 minutos por día, sin renunciar a tu trabajo ni a tu vida.",
+    "Volver a entrenar y comer bien con tres sesiones por semana, sin renunciar a tu trabajo ni a tu vida.",
   forWhom:
     "Mujeres que trabajan ocho horas o más y quieren sostener hábitos sin que les coma el día.",
   priceARS: PRICE_ARS,
+  /**
+   * TODO(alcance): sólo los dos primeros puntos están confirmados por María Pía.
+   * El resto son propuestas nuestras pendientes de validar — especialmente la
+   * llamada 1:1 y la guía de nutrición, que podrían pertenecer únicamente a la
+   * asesoría. Ver docs/estrategia/10-planes-y-niveles.md §3.
+   * NO PUBLICAR hasta confirmarlas una por una.
+   */
   includes: [
-    "28 días de entrenamiento guiado, con rutinas de 30 minutos",
-    "Llamada 1:1 de bienvenida con María Pía",
-    "Corrección de técnica por video, todas las semanas",
-    "Guía de nutrición práctica para semanas con poco tiempo",
+    "3 sesiones por semana de 50 a 60 minutos",
+    "Cada rutina en dos versiones: gimnasio y casa",
+    "Corrección de técnica por video",
     "Biblioteca de ejercicios en video, con variantes fácil y difícil",
-    "Plan B para los días imposibles: rutinas de 10 minutos",
     "Comunidad privada con tu grupo",
     "Planilla de seguimiento y check-in diario",
   ],
 } as const;
+
+/** Cuántas sesiones tiene un nivel. TODO(producto): confirmar con María Pía. */
+export const SESSIONS_PER_LEVEL = 12;
+
+/**
+ * Reglas de acceso al pack de 3 niveles.
+ * Ver docs/estrategia/10-planes-y-niveles.md §5.
+ */
+export const LEVEL_ACCESS = {
+  totalLevels: 3,
+  /** Porcentaje del nivel anterior que hay que completar para desbloquear el siguiente. */
+  unlockThresholdPct: 80,
+  /** Meses desde la compra para usar los 3 niveles. */
+  windowMonths: 6,
+  /** Días de pausa que se pueden pedir una vez, sin justificar. */
+  pauseDays: 30,
+} as const;
+
+export interface Plan {
+  id: string;
+  name: string;
+  priceARS: number;
+  /** Si es false, no se muestra en la web. */
+  visible: boolean;
+  summary: string;
+}
+
+/**
+ * Formas de comprar. El pack queda oculto hasta que se resuelva su precio.
+ * La asesoría 1:1 se vende sólo por WhatsApp, sin precio público.
+ */
+export const PLANS: Plan[] = [
+  {
+    id: "nivel-mensual",
+    name: "Un nivel",
+    priceARS: PRICE_ARS,
+    visible: true,
+    summary: "Pagás un nivel. Al completarlo podés seguir con el siguiente.",
+  },
+  {
+    id: "pack-3-niveles",
+    name: "Los 3 niveles",
+    priceARS: PACK_PRICE_ARS,
+    visible: PACK_PRICE_CONFIRMED,
+    summary: `Los 3 niveles, que se desbloquean a medida que los completás. Tenés ${LEVEL_ACCESS.windowMonths} meses para usarlos.`,
+  },
+];
+
+export const VISIBLE_PLANS = PLANS.filter((plan) => plan.visible);
 
 /**
  * Cadencia entre grupos. Con 14 días nadie espera más de 13 días para

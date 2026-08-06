@@ -1,7 +1,7 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-06 (sesión 3)**
+> Última actualización: **2026-08-06 (sesión 4)**
 > **Estado del proyecto:** Web terminada, accesible (Lighthouse) y subida a GitHub. Bloqueada sólo por 5 datos de negocio.
 
 ---
@@ -21,6 +21,7 @@
 | `docs/estrategia/07-circuito-compra-y-garantia.md` | Cobro, garantía, devoluciones |
 | **`docs/estrategia/08-grupos-y-cadencia.md`** | **Cadencia de 14 días** |
 | **`docs/estrategia/09-semana-cero.md`** | **Qué hace la persona entre que paga y arranca** |
+| **`docs/estrategia/10-planes-y-niveles.md`** | **Precios, niveles, desbloqueo y qué pasa si tarda de más** |
 | `docs/estrategia/MP-CEP-Plan-Lead-Magnets.xlsx` | Plan de contenido en Excel (6 hojas) |
 
 ---
@@ -53,13 +54,20 @@
 
 Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
-- [ ] **B1 · Precio.** Placeholder: ARS 29.900 → constante `PRICE_ARS`
+- [x] ~~**B1 · Precio.**~~ **RESUELTO:** $40.000 por nivel (mes). Ya cargado en `PRICE_ARS`
 - [ ] **B2 · Datos bancarios.** `TRANSFER`: alias, CBU, titular
 - [ ] **B3 · WhatsApp AR.** Hoy hay un +34 español en `NEXT_PUBLIC_WHATSAPP_NUMBER`
 - [ ] **B4 · Nombre del producto.** "Reto 28 Días" es working name → `CHALLENGE.name`
 - [ ] **B5 · Fechas del grupo fundador.** `GROUP`: `startsAt`, `closesAt`, `startsAtISO`, cupos
 
 > **Recomendación sobre B5:** cupo de la fundadora en **12-15**, no 25. El primer grupo es donde se rompen cosas, y de ahí salen los testimonios que venden los seis grupos siguientes.
+
+### 🚨 Bloqueantes nuevos de la sesión 4
+
+- [ ] **B6 · Precio del pack de 3 niveles.** María Pía propuso $130.000, pero **3 meses sueltos son $120.000** — el pack sale más caro y no puede anunciarse como descuento (art. 8 Ley 24.240). **Propuesta: $99.000.** El pack está oculto en la web hasta resolverlo (`PACK_PRICE_CONFIRMED = false`)
+- [ ] **B7 · Qué incluye realmente el plan de $40.000.** La web promete llamada 1:1 de bienvenida y guía de nutrición, pero María Pía menciona las llamadas y el plan nutricional **sólo en la asesoría 1:1**. Hay que confirmar punto por punto. Ver `10-planes-y-niveles.md` §3
+- [ ] **B8 · Modelo de la asesoría 1:1.** ¿$280.000 es mensual o paquete? ¿Cuántos cupos? ¿Se vende desde la web o sólo por WhatsApp?
+- [ ] **B9 · ¿Para cuándo está grabado el nivel 2?** Define si se puede vender el pack de 3 desde el día uno. El primer grupo lo necesita a los 28 días del arranque
 
 ### Pendientes de contenido (no bloquean el deploy, sí la venta)
 - [ ] Grabar los 40-50 videos de ejercicios (2 medias jornadas)
@@ -72,6 +80,28 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
 ---
 
+
+
+## ✅ Hecho en la sesión 4 (2026-08-06)
+
+**Verificado:** `lint`, `typecheck` y `build` sin errores.
+
+### Modelo de producto actualizado con los datos de María Pía
+- **Precio: $40.000 por nivel** (antes había un placeholder de $29.900)
+- **3 sesiones semanales de 50 a 60 minutos**, no 4 de 30 → corregido en todo el copy
+- **Cada rutina en versión gimnasio y versión casa** → agregado como diferencial
+- Estructura de niveles y reglas de acceso cargadas en `products.ts`: `LEVEL_ACCESS`, `PLANS`, `SESSIONS_PER_LEVEL`
+
+### Copy realineado
+El hero pasa de *"Treinta minutos para vos"* a **"Tres días para vos"**. Para alguien con jornada de 8+ horas, tres días fijos es un gancho más fuerte que la duración de cada sesión — y ahora además es verdad. Actualizados hero, about, testimonios, FAQ, SEO y keywords.
+
+### Lo que NO se tocó, a propósito
+La llamada 1:1 de bienvenida y la guía de nutrición **siguen en el copy con un TODO en el código**, porque María Pía no las confirmó para el plan de $40.000 y tampoco las descartó. No las saqué para no adivinar, pero **no se puede publicar el sitio hasta resolver B7**.
+
+### Doc nuevo
+`10-planes-y-niveles.md`: escalera completa, reglas de desbloqueo, las 5 reglas para quien tarda de más, y los dos bloqueantes de precio y alcance.
+
+---
 
 ## ✅ Hecho en la sesión 3 (2026-08-06)
 
@@ -203,6 +233,9 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 ---
 
 ## ✅ Historial
+
+### Sesión 4 — 2026-08-06
+Modelo de niveles · precio $40.000 · 3 sesiones de 50-60 min · gym o casa · detectadas dos inconsistencias (pack más caro que mensual, y alcance del plan sin confirmar)
 
 ### Sesión 3 — 2026-08-06
 Cohorte → grupo · accesibilidad (contraste, listas, áreas táctiles, checks manuales) · prueba social repartida · diseño de la Semana 0

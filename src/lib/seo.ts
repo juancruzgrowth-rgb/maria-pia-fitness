@@ -71,6 +71,6 @@ export function faqJsonLd() {
 export function homeDescription(): string {
   const price = formatARS(CHALLENGE.priceARS);
   return isGroupOpen
-    ? `Reto de 28 días online para mujeres que trabajan 8 horas o más. Rutinas de 30 minutos, guía de nutrición y seguimiento de María Pía. ${GROUP.label}: arranca el ${GROUP.startsAt}. ${price}, con ${GUARANTEE.days} días de garantía.`
-    : `Reto de 28 días online para mujeres que trabajan 8 horas o más. Rutinas de 30 minutos, guía de nutrición y seguimiento de María Pía. Inscripción cerrada — anotate para el próximo grupo.`;
+    ? `Reto de 28 días online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, en gimnasio o en casa, con el seguimiento de María Pía. ${GROUP.label}: arranca el ${GROUP.startsAt}. ${price}, con ${GUARANTEE.days} días de garantía.`
+    : `Reto de 28 días online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, en gimnasio o en casa, con el seguimiento de María Pía. Inscripción cerrada — anotate para el próximo grupo.`;
 }

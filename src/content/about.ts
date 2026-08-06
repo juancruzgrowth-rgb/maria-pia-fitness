@@ -9,8 +9,8 @@ export const ABOUT = {
   ],
   pillars: [
     {
-      title: "Corto y concreto",
-      body: "Sesiones de 30 minutos, con un plan B de 10 para los días imposibles.",
+      title: "Tres días, no siete",
+      body: "Tres sesiones por semana, cada una en versión gimnasio y versión casa.",
     },
     {
       title: "Con criterio",

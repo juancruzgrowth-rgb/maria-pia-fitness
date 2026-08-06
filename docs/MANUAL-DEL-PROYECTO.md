@@ -138,9 +138,14 @@ Un programa de **28 días, 100% online**, donde la alumna entrena 30 minutos por
 
 ### Qué incluye
 
+> **Actualizado el 6 de agosto de 2026** con las especificaciones que pasó María Pía: son **3 sesiones semanales de 50 a 60 minutos**, y cada rutina viene en versión gimnasio y versión casa. Antes el sitio decía 4 sesiones de 30 minutos, que era una propuesta nuestra sin confirmar.
+>
+> ⚠️ **Hay dos puntos abiertos que frenan la publicación:** el precio del pack de 3 niveles y qué incluye exactamente el plan de $40.000. Están detallados en `docs/estrategia/10-planes-y-niveles.md`.
+
 | Lo que recibe | Detalle |
 |---|---|
-| 28 días de entrenamiento guiado | 4 sesiones por semana de 30 minutos. Cada día le decimos exactamente qué hacer. |
+| 3 sesiones por semana | De 50 a 60 minutos cada una. Cada sesión le dice exactamente qué hacer. |
+| Versión gimnasio y versión casa | La misma rutina adaptada a lo que tenga disponible ese día. |
 | Llamada 1:1 de bienvenida | Media hora con María Pía antes de arrancar. |
 | Corrección de técnica semanal | Graba su ejercicio, lo manda, María Pía le devuelve qué corregir. |
 | Guía de nutrición | Desayunos de 5 minutos, cenas de 15, qué hacer cuando come afuera. Sin contar calorías. |
@@ -159,11 +164,17 @@ Esto lo decimos **explícitamente en la web y en los términos legales**. No es 
 
 ### Precio
 
-**Pendiente de definir.** En el código hay un valor provisorio de $29.900 argentinos, pago único, que se cambia en un solo lugar.
+**$40.000 por nivel.** Un nivel es un mes. No hay débito automático: cada nivel se compra cuando la persona decide seguir.
 
-### Qué viene después
+Existe además un pack de los 3 niveles con descuento, **pendiente de definir el precio**: María Pía propuso $130.000, pero tres meses sueltos cuestan $120.000, así que el pack saldría más caro. Está oculto en la web hasta resolverlo.
 
-El reto es la puerta de entrada. Quien lo termina recibe la oferta del **programa largo de 90 días**, más profundo y más caro. Y más adelante habrá un servicio 1:1 verdaderamente personalizado, para pocas personas y a precio alto.
+### Qué viene después: los niveles
+
+El reto es el **nivel 1**. Cuando la alumna lo completa se desbloquea el **nivel 2**, y después el **nivel 3**. Cada uno dura un mes.
+
+Esto tiene un beneficio operativo importante: **el desbloqueo progresivo le da a María Pía el tiempo de grabar el nivel 2 mientras el primer grupo cursa el nivel 1.** No hace falta tener los tres meses grabados antes de vender.
+
+Y arriba de los niveles está la **asesoría 1:1**, para quien busca objetivos más específicos: WhatsApp ilimitado y llamada mensual, con la opción de sumar plan nutricional.
 
 ```
 Contenido gratis en Instagram
@@ -950,5 +961,6 @@ Todo lo de arriba se puede convertir en contenido. Algunos ángulos que salen di
 | `docs/estrategia/07-circuito-compra-y-garantia.md` | Cobro, garantía y devoluciones |
 | `docs/estrategia/08-grupos-y-cadencia.md` | Cada cuánto abrir grupos nuevos |
 | `docs/estrategia/09-semana-cero.md` | Qué hace la persona entre que paga y arranca |
+| `docs/estrategia/10-planes-y-niveles.md` | Precios, niveles y qué pasa si alguien tarda de más |
 | `docs/estrategia/MP-CEP-Plan-Lead-Magnets.xlsx` | El plan de contenido en Excel |
 | `.claude/proximos-pasos.md` | Qué sigue, actualizado cada sesión |

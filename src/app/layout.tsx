@@ -34,7 +34,8 @@ export const metadata: Metadata = {
   keywords: [
     "entrenamiento online para mujeres",
     "entrenar con poco tiempo",
-    "rutina de 30 minutos en casa",
+    "rutina de gimnasio y de casa",
+    "entrenar 3 veces por semana",
     "reto fitness 28 días",
     "entrenamiento y nutrición online Argentina",
     "María Pía entrenadora",

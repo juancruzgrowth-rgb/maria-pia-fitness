@@ -14,7 +14,7 @@ export const FOR_WHOM = {
     items: [
       "Buscás un plan hecho a medida sólo para tu caso: este es el mismo para todas.",
       "Querés bajar diez kilos en un mes. Acá no vendemos eso.",
-      "No estás dispuesta a reservar 30 minutos, cuatro veces por semana.",
+      "No estás dispuesta a reservar tres horarios fijos por semana.",
       "Preferís entrenar sin ningún tipo de seguimiento ni comunidad.",
     ],
   },
@@ -22,8 +22,12 @@ export const FOR_WHOM = {
 
 export const WHAT_YOU_GET = [
   {
-    title: "28 días de entrenamiento guiado",
-    body: "Cuatro sesiones por semana de 30 minutos. Cada día te digo exactamente qué hacer: no tenés que decidir nada.",
+    title: "3 sesiones por semana",
+    body: "De 50 a 60 minutos cada una, durante 28 días. Cada sesión te dice exactamente qué hacer: no tenés que decidir nada.",
+  },
+  {
+    title: "Versión gimnasio y versión casa",
+    body: "La misma rutina, adaptada a lo que tengas. Si un día no llegás al gym, hacés la de casa y seguís igual.",
   },
   {
     title: "Llamada 1:1 de bienvenida",
@@ -69,7 +73,7 @@ export const HOW_IT_WORKS = [
   {
     step: "03",
     title: "Arranca el reto con tu grupo",
-    body: "El día 1 entrenan todas juntas y van al mismo ritmo. A partir de ahí, 30 minutos por día durante cuatro semanas.",
+    body: "El día 1 entrenan todas juntas y van al mismo ritmo. A partir de ahí, tres sesiones por semana durante cuatro semanas.",
   },
 ] as const;
 
@@ -82,7 +86,7 @@ export const FAQS: FaqItem[] = [
   {
     question: "Trabajo ocho horas por día. ¿De verdad me alcanza el tiempo?",
     answer:
-      "Sí, y es exactamente para lo que está diseñado el reto. Son cuatro sesiones semanales de 30 minutos, que podés hacer a la mañana temprano, al mediodía o cuando llegás. Además tenés rutinas de 10 minutos para los días en que el tiempo directamente no aparece. La idea no es que entrenes más: es que entrenes lo justo, bien y de forma sostenida.",
+      "Sí, y es exactamente para lo que está diseñado. Son tres sesiones por semana de 50 a 60 minutos: tres días, no siete. Podés hacerlas a la mañana temprano, al mediodía o cuando llegás, y cada una viene en versión gimnasio y versión casa, así que no perdés el día si no llegás a salir. La idea no es que entrenes más: es que entrenes lo justo, bien y de forma sostenida."
   },
   {
     question: "Nunca entrené o hace años que no lo hago. ¿Puedo hacerlo igual?",
@@ -92,7 +96,7 @@ export const FAQS: FaqItem[] = [
   {
     question: "¿Necesito gimnasio o equipamiento?",
     answer:
-      "No. El reto está pensado para hacerse en casa con el peso del cuerpo y, como mucho, una banda elástica o un par de mancuernas livianas. Si tenés gimnasio, también te dejo las variantes con máquinas y pesos libres.",
+      "No hace falta. Cada rutina viene en dos versiones: una para hacer en el gimnasio con máquinas y pesos libres, y otra para hacer en casa con el peso del cuerpo y, como mucho, una banda elástica o un par de mancuernas livianas. Elegís la que te sirva cada día.",
   },
   {
     question: "¿Es un plan personalizado para mí?",
@@ -122,6 +126,6 @@ export const FAQS: FaqItem[] = [
   {
     question: "¿Qué pasa cuando terminan los 28 días?",
     answer:
-      "Terminás el reto con el hábito instalado y sabiendo entrenar sola. Si querés seguir acompañada, al final te ofrezco el programa largo para profundizar, con un precio preferencial por haber completado el reto. No es obligatorio ni hay renovación automática de nada.",
+      "El reto es el nivel 1. Cuando lo completás se desbloquea el nivel 2, que sube la exigencia y trabaja sobre lo que ya construiste, y después el nivel 3. Podés seguir nivel por nivel o parar donde quieras: no hay renovación automática ni débito de nada, cada nivel lo comprás vos cuando decidís seguir.",
   },
 ];
