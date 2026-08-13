@@ -1,8 +1,9 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-06 (sesión 4)**
-> **Estado del proyecto:** Web terminada, accesible (Lighthouse) y subida a GitHub. Bloqueada sólo por 5 datos de negocio.
+> Última actualización: **2026-08-13 (sesión 5)**
+> **Estado del proyecto:** Web terminada, accesible (Lighthouse) y subida a GitHub. Producto y precios cerrados.
+> **Para publicar faltan 3 datos: B2 (datos bancarios), B3 (WhatsApp argentino) y B5 (fechas y cupos del grupo fundador).**
 
 ---
 
@@ -47,10 +48,15 @@
 | **Semana 0** | **Prepara y mide, no entrena.** Diseño completo en doc 09 ✅ |
 | **Prueba social** | **Repartida:** franja bajo el video + carrusel después del precio ✅ |
 | **Accesibilidad** | **Token `mp-ember` para texto.** El naranja de marca no pasa contraste ✅ |
+| **Precios** | **$40.000 un nivel · $99.000 los 3 niveles** (–17,5% real) ✅ |
+| **Corrección de técnica** | **Sesión grupal de 1 h, día fijo (viernes)** — no envíos individuales ✅ |
+| **Guía de nutrición** | **Estándar, no personalizada.** Explicitado en FAQ y Términos ✅ |
+| **Asesoría 1:1** | **$280.000/mes · $350.000 con nutrición · 5 cupos · sin precio público** ✅ |
+| **Acceso a los niveles** | **Ventana de 6 meses · desbloqueo al 80% · una pausa de 30 días** ✅ |
 
 ---
 
-## 🚧 BLOQUEANTES — 5 datos y desplegamos
+## 🚧 BLOQUEANTES — 3 datos y publicamos
 
 Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
