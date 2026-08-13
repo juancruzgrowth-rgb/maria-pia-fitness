@@ -7,14 +7,17 @@
 const PRICE_ARS = 40000;
 
 /**
- * Pack de 3 niveles.
- * TODO(precio): María Pía propuso $130.000, pero 3 meses sueltos cuestan
- * $120.000 — el pack saldría MÁS CARO y no puede anunciarse como descuento
- * (art. 8 Ley 24.240). Propuesta pendiente de aprobación: $99.000 (17,5% off).
- * Ver docs/estrategia/10-planes-y-niveles.md §2. No mostrar hasta resolverlo.
+ * Pack de 3 niveles. Confirmado el 2026-08-13.
+ * Los $130.000 que se habían hablado costaban MÁS que 3 niveles sueltos
+ * ($120.000) y no podían anunciarse como descuento sin incurrir en publicidad
+ * engañosa (art. 8 Ley 24.240). Ver docs/estrategia/10-planes-y-niveles.md §2.
  */
 const PACK_PRICE_ARS = 99000;
-const PACK_PRICE_CONFIRMED = false;
+
+/** Descuento real del pack contra pagar nivel por nivel. Se calcula, no se afirma. */
+export const PACK_DISCOUNT_PCT = Math.round(
+  (1 - PACK_PRICE_ARS / (PRICE_ARS * 3)) * 100,
+);
 
 export type GroupStatus = "open" | "waitlist" | "closed";
 
@@ -39,28 +42,34 @@ export const CHALLENGE: Challenge = {
   forWhom:
     "Mujeres que trabajan ocho horas o más y quieren sostener hábitos sin que les coma el día.",
   priceARS: PRICE_ARS,
-  /**
-   * TODO(alcance): sólo los dos primeros puntos están confirmados por María Pía.
-   * El resto son propuestas nuestras pendientes de validar — especialmente la
-   * llamada 1:1 y la guía de nutrición, que podrían pertenecer únicamente a la
-   * asesoría. Ver docs/estrategia/10-planes-y-niveles.md §3.
-   * NO PUBLICAR hasta confirmarlas una por una.
-   */
+  /** Alcance confirmado punto por punto con María Pía el 2026-08-13. */
   includes: [
     "3 sesiones por semana de 50 a 60 minutos",
     "Cada rutina en dos versiones: gimnasio y casa",
-    "Corrección de técnica por video",
+    "Llamada 1:1 de bienvenida en la Semana 0",
+    "Sesión grupal de corrección de técnica, todos los viernes",
+    "Guía de nutrición del reto, igual para todo el grupo",
     "Biblioteca de ejercicios en video, con variantes fácil y difícil",
-    "Comunidad privada con tu grupo",
+    "Comunidad privada en Skool y grupo de WhatsApp",
     "Planilla de seguimiento y check-in diario",
   ],
 } as const;
 
-/** Cuántas sesiones tiene un nivel. TODO(producto): confirmar con María Pía. */
+/** 3 sesiones por semana durante 4 semanas. Confirmado el 2026-08-13. */
 export const SESSIONS_PER_LEVEL = 12;
 
 /**
- * Reglas de acceso al pack de 3 niveles.
+ * Día fijo de la sesión grupal de corrección de técnica. Se hace después de
+ * que todas completaron sus 3 sesiones de la semana.
+ * TODO(operativa): confirmar el horario exacto con María Pía.
+ */
+export const TECHNIQUE_SESSION = {
+  day: "viernes",
+  durationMinutes: 60,
+} as const;
+
+/**
+ * Reglas de acceso al pack de 3 niveles. Confirmadas el 2026-08-13.
  * Ver docs/estrategia/10-planes-y-niveles.md §5.
  */
 export const LEVEL_ACCESS = {
@@ -82,10 +91,7 @@ export interface Plan {
   summary: string;
 }
 
-/**
- * Formas de comprar. El pack queda oculto hasta que se resuelva su precio.
- * La asesoría 1:1 se vende sólo por WhatsApp, sin precio público.
- */
+/** Formas de comprar el reto. La asesoría 1:1 no entra acá: se vende aparte. */
 export const PLANS: Plan[] = [
   {
     id: "nivel-mensual",
@@ -98,12 +104,38 @@ export const PLANS: Plan[] = [
     id: "pack-3-niveles",
     name: "Los 3 niveles",
     priceARS: PACK_PRICE_ARS,
-    visible: PACK_PRICE_CONFIRMED,
+    visible: true,
     summary: `Los 3 niveles, que se desbloquean a medida que los completás. Tenés ${LEVEL_ACCESS.windowMonths} meses para usarlos.`,
   },
 ];
 
 export const VISIBLE_PLANS = PLANS.filter((plan) => plan.visible);
+
+/**
+ * Asesoría 1:1. Producto de ticket alto, mensual y personalizado.
+ *
+ * Decisión comercial (2026-08-13): NO se publica el precio en la web. A este
+ * ticket la venta necesita conversación, y mostrar $280.000 al lado de $40.000
+ * convierte al reto en "la opción barata" en vez de "la opción correcta".
+ * Los precios viven acá igual porque este archivo es el single source of truth,
+ * pero ningún componente los renderiza.
+ */
+export const ADVISORY = {
+  name: "Asesoría 1:1",
+  priceARS: 280000,
+  priceWithNutritionARS: 350000,
+  /** Arranca en 5 para medir la carga real de atención antes de escalar. */
+  spotsTotal: 5,
+  showPrice: false,
+  includes: [
+    "Plan de entrenamiento armado para tu caso, con más días por semana",
+    "Objetivos puntuales más allá de la recomposición corporal",
+    "Plan de nutrición personalizado (opcional)",
+    "Corrección de ejercicios por WhatsApp",
+    "Consultas ilimitadas por WhatsApp",
+    "Llamada 1:1 a los 20 días de arrancar",
+  ],
+} as const;
 
 /**
  * Cadencia entre grupos. Con 14 días nadie espera más de 13 días para

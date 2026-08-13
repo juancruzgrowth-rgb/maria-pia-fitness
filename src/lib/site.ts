@@ -1,5 +1,5 @@
 import { publicEnv } from "@/lib/env";
-import { CHALLENGE, CTA_LABEL, formatARS, isGroupOpen } from "@/lib/products";
+import { CHALLENGE, CTA_LABEL, isGroupOpen } from "@/lib/products";
 
 export const SITE = {
   brand: "MP — Centro de Entrenamiento Personalizado",
@@ -37,20 +37,28 @@ const ASK_MESSAGE = `Hola María Pía! Vi la web del ${CHALLENGE.name} y tengo u
  */
 const RECEIPT_MESSAGE = [
   `Hola María Pía! Quiero entrar al ${CHALLENGE.name}.`,
-  `Ya hice la transferencia de ${formatARS(CHALLENGE.priceARS)} y te adjunto el comprobante.`,
+  "Ya hice la transferencia y te adjunto el comprobante.",
   "",
   "Mi nombre:",
   "Mi email:",
+  "Plan (un nivel / los 3 niveles):",
 ].join("\n");
 
 /** Mensaje para anotarse en la lista de espera entre grupos. */
 const WAITLIST_MESSAGE = `Hola María Pía! Quiero anotarme para el próximo grupo del ${CHALLENGE.name}.`;
+
+/**
+ * Consulta por la asesoría 1:1. No se publica precio: la conversación
+ * arranca por acá. Ver ADVISORY en @/lib/products.
+ */
+const ADVISORY_MESSAGE = `Hola María Pía! Me interesa la asesoría 1:1 y quiero saber cómo funciona y cuánto sale.`;
 
 export const CONTACT = {
   whatsappNumber: cleanedNumber,
   askUrl: waLink(ASK_MESSAGE),
   receiptUrl: waLink(RECEIPT_MESSAGE),
   waitlistUrl: waLink(WAITLIST_MESSAGE),
+  advisoryUrl: waLink(ADVISORY_MESSAGE),
   instagramUrl: publicEnv.instagramUrl || "https://www.instagram.com/mp.cep",
   tiktokUrl: publicEnv.tiktokUrl,
   youtubeUrl: publicEnv.youtubeUrl,

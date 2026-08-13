@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage, LegalSection } from "@/components/legal/LegalPage";
 import { SITE } from "@/lib/site";
-import { CHALLENGE, GUARANTEE, TRANSFER, formatARS } from "@/lib/products";
+import {
+  CHALLENGE,
+  GUARANTEE,
+  LEVEL_ACCESS,
+  TRANSFER,
+  VISIBLE_PLANS,
+  formatARS,
+} from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "Términos y Condiciones",
@@ -13,7 +20,7 @@ export default function TerminosCondicionesPage() {
   return (
     <LegalPage
       title="Términos y Condiciones"
-      updatedAt="4 de agosto de 2026"
+      updatedAt="13 de agosto de 2026"
       intro={`Estos términos regulan la contratación del ${CHALLENGE.name} ofrecido por ${SITE.fiscalName}. Al contratar el servicio declarás haberlos leído y aceptado.`}
     >
       <LegalSection heading="1. Identificación del prestador">
@@ -30,17 +37,23 @@ export default function TerminosCondicionesPage() {
           orientación nutricional de {CHALLENGE.duration} de duración, prestado
           de forma íntegramente online. Incluye acceso a contenidos
           audiovisuales, material descargable, una llamada individual de
-          bienvenida, corrección de técnica por video y participación en una
-          comunidad privada durante la vigencia del programa.
+          bienvenida, una sesión grupal semanal de corrección de técnica y
+          participación en una comunidad privada durante la vigencia del
+          programa.
         </p>
         <p>
           <strong>
-            El plan de entrenamiento y nutrición no es personalizado.
+            El plan de entrenamiento y la guía nutricional no son
+            personalizados.
           </strong>{" "}
-          Es el mismo para todas las participantes de un mismo grupo. Los
-          componentes individuales del servicio son exclusivamente la llamada de
-          bienvenida, la corrección de técnica y los ajustes que la prestadora
-          realice durante el programa.
+          Son los mismos para todas las participantes de un mismo grupo. El
+          único componente individual del servicio es la llamada de bienvenida.
+          La corrección de técnica se realiza en una sesión grupal, en día fijo
+          y con periodicidad semanal.
+        </p>
+        <p>
+          La asesoría 1:1 es un servicio distinto, con alcance, duración y
+          precio propios, que se contrata por separado.
         </p>
         <p>
           El servicio no constituye una prestación médica ni reemplaza el
@@ -50,10 +63,19 @@ export default function TerminosCondicionesPage() {
 
       <LegalSection heading="3. Precio y forma de pago">
         <p>
-          El precio vigente del {CHALLENGE.name} es de{" "}
-          {formatARS(CHALLENGE.priceARS)}, en un pago único, con impuestos
-          incluidos. No existe suscripción, débito automático ni renovación
-          automática de ningún tipo.
+          Los precios vigentes, con impuestos incluidos, son:{" "}
+          {VISIBLE_PLANS.map((plan) => `${plan.name}, ${formatARS(plan.priceARS)}`).join("; ")}.
+          En todos los casos se trata de un pago único: no existe suscripción,
+          débito automático ni renovación automática de ningún tipo.
+        </p>
+        <p>
+          Quien contrate los {LEVEL_ACCESS.totalLevels} niveles dispone de{" "}
+          {LEVEL_ACCESS.windowMonths} meses corridos desde el pago para
+          completarlos. Cada nivel se habilita al completar el{" "}
+          {LEVEL_ACCESS.unlockThresholdPct}% de las sesiones del anterior. La
+          participante puede solicitar, por única vez y sin necesidad de
+          justificación, la suspensión del plazo por {LEVEL_ACCESS.pauseDays}{" "}
+          días corridos.
         </p>
         <p>
           El pago se realiza mediante transferencia bancaria a la cuenta

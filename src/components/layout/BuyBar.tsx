@@ -16,11 +16,13 @@ export function BuyBar() {
     <>
       <span className="flex flex-col text-left leading-tight">
         <span className="font-display font-extrabold text-base sm:text-lg">
-          {isGroupOpen ? formatARS(CHALLENGE.priceARS) : "Lista de espera"}
+          {isGroupOpen
+            ? `Desde ${formatARS(CHALLENGE.priceARS)}`
+            : "Lista de espera"}
         </span>
         <span className="text-[11px] font-medium text-mp-canvas/70">
           {isGroupOpen
-            ? `${CHALLENGE.name} · pago único`
+            ? `${CHALLENGE.name} · sin renovación automática`
             : "Te aviso cuando abra"}
         </span>
       </span>

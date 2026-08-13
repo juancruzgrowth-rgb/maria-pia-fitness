@@ -62,12 +62,18 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
 > **Recomendación sobre B5:** cupo de la fundadora en **12-15**, no 25. El primer grupo es donde se rompen cosas, y de ahí salen los testimonios que venden los seis grupos siguientes.
 
-### 🚨 Bloqueantes nuevos de la sesión 4
+### Bloqueantes de la sesión 4 — resueltos en la sesión 5
 
-- [ ] **B6 · Precio del pack de 3 niveles.** María Pía propuso $130.000, pero **3 meses sueltos son $120.000** — el pack sale más caro y no puede anunciarse como descuento (art. 8 Ley 24.240). **Propuesta: $99.000.** El pack está oculto en la web hasta resolverlo (`PACK_PRICE_CONFIRMED = false`)
-- [ ] **B7 · Qué incluye realmente el plan de $40.000.** La web promete llamada 1:1 de bienvenida y guía de nutrición, pero María Pía menciona las llamadas y el plan nutricional **sólo en la asesoría 1:1**. Hay que confirmar punto por punto. Ver `10-planes-y-niveles.md` §3
-- [ ] **B8 · Modelo de la asesoría 1:1.** ¿$280.000 es mensual o paquete? ¿Cuántos cupos? ¿Se vende desde la web o sólo por WhatsApp?
-- [ ] **B9 · ¿Para cuándo está grabado el nivel 2?** Define si se puede vender el pack de 3 desde el día uno. El primer grupo lo necesita a los 28 días del arranque
+- [x] ~~**B6 · Precio del pack.**~~ **RESUELTO: $99.000.** Los $130.000 eran un error de cálculo. El pack ya está visible en la web y el `%` de descuento se calcula solo desde los dos precios (`PACK_DISCOUNT_PCT`)
+- [x] ~~**B7 · Alcance del plan de $40.000.**~~ **RESUELTO.** Incluye todo lo que la web prometía: llamada 1:1 de bienvenida (Semana 0), guía de nutrición **estándar**, corrección de técnica en **sesión grupal semanal de 1 h los viernes**, comunidad en Skool + WhatsApp
+- [x] ~~**B8 · Modelo de la asesoría 1:1.**~~ **RESUELTO.** $280.000/mes (mensual, no paquete), $350.000 con nutrición, **5 cupos** para la primera camada. **Sin precio público** — se vende sólo por conversación de WhatsApp
+- [ ] **B9 · ¿Para cuándo está grabado el nivel 2?** Estimado: mediados de septiembre, **pendiente de confirmar con María Pía**. El grupo fundador termina el nivel 1 a los 28 días del arranque: ese es el deadline real
+
+### 🚨 Bloqueantes nuevos de la sesión 5
+
+- [ ] **B10 · Contenido de la guía de nutrición estándar.** Está prometida en la web y en los Términos. Hay que poder entregarla el día 1
+- [ ] **B11 · Horario fijo de la sesión de los viernes.** Se anuncia antes de vender: es parte de lo que la persona compra. Cargar en `TECHNIQUE_SESSION`
+- [ ] **B12 · Dónde termina Daiana y dónde empieza María Pía en el WhatsApp de la asesoría.** Se vende como contacto directo con ella; hay que definir la línea antes de vender el primer lugar, no después. Ver `10-planes-y-niveles.md` §8
 
 ### Pendientes de contenido (no bloquean el deploy, sí la venta)
 - [ ] Grabar los 40-50 videos de ejercicios (2 medias jornadas)
@@ -100,6 +106,33 @@ La llamada 1:1 de bienvenida y la guía de nutrición **siguen en el copy con un
 
 ### Doc nuevo
 `10-planes-y-niveles.md`: escalera completa, reglas de desbloqueo, las 5 reglas para quien tarda de más, y los dos bloqueantes de precio y alcance.
+
+---
+
+## ✅ Hecho en la sesión 5 (2026-08-13)
+
+**Verificado:** `lint`, `typecheck` y `build` sin errores.
+
+María Pía confirmó los 9 puntos que estaban abiertos. Los dos bloqueantes que impedían publicar (**B6** precio del pack, **B7** alcance del plan) quedaron cerrados.
+
+### Precios
+- **Pack de 3 niveles: $99.000**, visible en la web. Los $130.000 eran un error de cálculo
+- El porcentaje de descuento **no se escribe a mano**: `PACK_DISCOUNT_PCT` lo deriva de los dos precios. Si mañana cambia alguno, el descuento anunciado se corrige solo y nunca puede quedar mintiendo
+- La página `/comprar` pasa de mostrar un precio único a dejar **elegir entre los dos planes**
+- La barra flotante dice **"Desde $40.000"**, porque ahora hay dos precios
+
+### Alcance confirmado — y un cambio de copy importante
+Todo lo que la web prometía está incluido, con **una diferencia de fondo**: la corrección de técnica no es "grabás y te devuelvo", es una **sesión grupal de 1 hora, día fijo (viernes)**.
+
+Reescrito como argumento de venta: *"se aprende tanto de tu video como del de las demás"*. Y es la decisión operativa correcta — la corrección individual asincrónica no escala (25 alumnas = 25 conversaciones abiertas toda la semana), la sesión grupal tiene costo fijo, genera comunidad y le da ritual a la semana.
+
+La guía de nutrición queda explicitada como **estándar, no personalizada**, tanto en el FAQ como en los Términos. Esa frase corta la única devolución previsible en ese punto.
+
+### Asesoría 1:1
+$280.000/mes y $350.000 con nutrición, **5 cupos**, **sin precio público**. Se menciona sólo dentro del FAQ "¿es personalizado?" y deriva a WhatsApp (`CONTACT.advisoryUrl`, mensaje precargado listo).
+
+### Términos y Condiciones actualizados
+Ya no describen un producto que no existe: dos planes con sus precios, ventana de 6 meses, desbloqueo al 80%, pausa de 30 días, corrección grupal y no individual, y la asesoría 1:1 declarada como servicio aparte.
 
 ---
 

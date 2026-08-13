@@ -22,7 +22,7 @@ export const ABOUT = {
     },
     {
       title: "Acompañada",
-      body: "Corrijo tu técnica por video y estoy en la comunidad todas las semanas.",
+      body: "Sesión de corrección de técnica todas las semanas y comunidad activa todos los días.",
     },
   ],
   imageUrl: "/images/sobre-mi.png",

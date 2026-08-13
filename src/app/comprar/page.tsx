@@ -12,7 +12,9 @@ import {
   CHALLENGE,
   GROUP,
   GUARANTEE,
+  PACK_DISCOUNT_PCT,
   TRANSFER,
+  VISIBLE_PLANS,
   formatARS,
   isGroupOpen,
 } from "@/lib/products";
@@ -61,21 +63,40 @@ export default function ComprarPage() {
         Reservá tu lugar.
       </h1>
 
-      <div className="mt-6 flex flex-col gap-3 rounded-[var(--radius-card)] border border-mp-ink p-6">
-        <div className="flex items-baseline justify-between gap-4">
-          <span className="font-display text-sm font-semibold text-mp-ink">
-            {CHALLENGE.name}
-          </span>
-          <span className="font-display text-2xl font-extrabold text-mp-ink md:text-3xl">
-            {formatARS(CHALLENGE.priceARS)}
-          </span>
-        </div>
-        <p className="text-sm leading-relaxed text-mp-carbon/80">
-          Pago único. {GROUP.label}: arranca el {GROUP.startsAt} y quedan{" "}
-          {GROUP.spotsLeft} de {GROUP.spotsTotal} lugares. El acceso a la
-          Semana 0 lo tenés hoy mismo.
-        </p>
-      </div>
+      <p className="mt-4 text-base leading-relaxed text-mp-carbon/80">
+        {GROUP.label}: arranca el {GROUP.startsAt} y quedan {GROUP.spotsLeft} de{" "}
+        {GROUP.spotsTotal} lugares. El acceso a la Semana 0 lo tenés hoy mismo.
+      </p>
+
+      <h2 className="mt-10 font-display text-lg font-bold text-mp-ink md:text-xl">
+        Elegí cómo entrar
+      </h2>
+
+      <ul className="mt-4 flex flex-col gap-4">
+        {VISIBLE_PLANS.map((plan) => (
+          <li
+            key={plan.id}
+            className="flex flex-col gap-3 rounded-[var(--radius-card)] border border-mp-line p-6"
+          >
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="font-display text-sm font-semibold text-mp-ink">
+                {plan.name}
+              </span>
+              <span className="font-display text-2xl font-extrabold text-mp-ink md:text-3xl">
+                {formatARS(plan.priceARS)}
+              </span>
+            </div>
+            <p className="text-sm leading-relaxed text-mp-carbon/80">
+              {plan.summary}
+            </p>
+            {plan.id === "pack-3-niveles" && (
+              <p className="font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-ember">
+                {PACK_DISCOUNT_PCT}% menos que comprarlos de a uno
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
 
       <ol className="mt-10 flex flex-col gap-8">
         <li className="flex flex-col gap-4">
@@ -84,7 +105,7 @@ export default function ComprarPage() {
               1
             </span>
             <h2 className="font-display text-lg font-bold text-mp-ink md:text-xl">
-              Transferí {formatARS(CHALLENGE.priceARS)}
+              Transferí el monto de tu plan
             </h2>
           </div>
 
@@ -106,8 +127,8 @@ export default function ComprarPage() {
           </div>
           <p className="text-sm leading-relaxed text-mp-carbon/80">
             El botón abre WhatsApp con el mensaje ya escrito. Adjuntá el
-            comprobante y completá tu nombre y tu email: los necesito para darte
-            el acceso.
+            comprobante y completá tu nombre, tu email y qué plan elegiste: los
+            necesito para darte el acceso.
           </p>
           <a
             href={CONTACT.receiptUrl}

@@ -1,72 +1,53 @@
 # Planes, Niveles y Reglas de Desbloqueo
 
 > Basado en el mensaje de María Pía del 2026-08-06.
-> **Este documento contiene 2 bloqueantes que hay que resolver antes de publicar precios.**
+> **Actualizado el 2026-08-13: los 2 bloqueantes que tenía este documento están resueltos.**
 
 ---
 
-## 1. La escalera de precios que definió María Pía
+## 1. La escalera de precios — CONFIRMADA
 
-| Producto | Precio | Qué incluye (según su mensaje) |
-|---|---|---|
-| **Plan mensual** (con renovación) | **$40.000/mes** | 3 sesiones semanales de 50-60 min · gimnasio o casa |
-| **Plan 3 niveles** ("trimestral") | **$130.000** | Los 3 niveles, desbloqueados a medida que se completan |
-| **Asesoría 1:1** | **$280.000** | WhatsApp ilimitado · llamada mensual a los 20 días de iniciado |
-| **Asesoría 1:1 + nutrición** | **$350.000** | Lo anterior + plan nutricional |
-
----
-
-## 2. 🚨 BLOQUEANTE 1 — el "trimestral" cuesta más que pagar mes a mes
-
-```
-3 meses sueltos:  3 × $40.000 = $120.000
-Plan trimestral:              = $130.000
-                                ─────────
-Diferencia:                     +$10.000
-```
-
-**No es un 20% de descuento: es un 8,3% de recargo.** Quien haga la cuenta lo va a ver, y hoy la hace todo el mundo.
-
-Hay un problema adicional y más serio: **anunciar un descuento que no existe es publicidad engañosa** bajo el art. 8 de la Ley 24.240. No es sólo una mala idea comercial, es una exposición legal real, justo en el punto donde la marca se juega la confianza.
-
-### Las tres salidas
-
-| Opción | Números | Comentario |
-|---|---|---|
-| **A — Bajar el trimestral** ⭐ | Mensual $40.000 · 3 niveles **$99.000** | 17,5% off real. Número redondo y creíble. **Recomendada** |
-| **B — Subir el mensual** | Mensual **$54.000** · 3 niveles $130.000 | Da 20% exacto, pero $54.000 es un salto grande para el producto de entrada y contradice la lógica de low ticket |
-| **C — Dejar $130.000 sin llamarlo descuento** | Se vende como "acceso asegurado a los 3 niveles" | Honesto, pero débil: nadie paga un recargo por comprar más |
-
-**Recomendación: opción A, $99.000.** Mantiene el mensual accesible, el descuento es real y verificable, y el número entra bien en la cabeza.
-
-Si María Pía quiere sostener los $130.000, la única forma coherente es la opción B — pero entonces el producto de entrada deja de ser low ticket y hay que revisar todo el embudo.
+| Producto | Precio | Qué incluye | En la web |
+|---|---|---|---|
+| **Un nivel** (4 semanas) | **$40.000** | 3 sesiones semanales de 50-60 min · gimnasio o casa · llamada 1:1 de bienvenida · corrección de técnica semanal · guía de nutrición estándar · Skool + WhatsApp | ✅ Precio visible |
+| **Los 3 niveles** | **$99.000** | Los 3 niveles, desbloqueados a medida que se completan · 6 meses de ventana | ✅ Precio visible |
+| **Asesoría 1:1** | **$280.000/mes** | Plan personalizado · más días · WhatsApp ilimitado · llamada a los 20 días | ❌ **Sin precio público** |
+| **Asesoría 1:1 + nutrición** | **$350.000/mes** | Lo anterior + plan nutricional personalizado | ❌ **Sin precio público** |
 
 ---
 
-## 3. 🚨 BLOQUEANTE 2 — la web promete cosas que María Pía no confirmó
+## 2. ✅ RESUELTO — el precio del pack
 
-Cuando armamos el sitio, la lista de "qué recibís" se escribió como propuesta a validar. Ahora que llegaron las especificaciones reales, **cinco de los ocho puntos no están confirmados**, y dos parecen contradecir lo que ella describe.
+El "trimestral" de $130.000 costaba **más** que pagar 3 niveles sueltos ($120.000): un 8,3% de recargo vendido como 20% de descuento. Anunciarlo así habría sido publicidad engañosa bajo el art. 8 de la Ley 24.240.
 
-| Lo que dice la web hoy | Estado | Observación |
+**Decisión (2026-08-13): $99.000.** Es un 17,5% de descuento real y verificable contra pagar nivel por nivel.
+
+> El porcentaje no se escribe a mano en ningún lado: `PACK_DISCOUNT_PCT` en `src/lib/products.ts` lo calcula desde los dos precios. Si mañana cambia alguno, el descuento anunciado se corrige solo y nunca puede quedar desfasado de la realidad.
+
+---
+
+## 3. ✅ RESUELTO — el alcance del plan de $40.000
+
+Confirmado punto por punto con María Pía. **El plan incluye más de lo que temíamos**, así que no hubo que recortar la propuesta de valor:
+
+| Componente | Estado | Detalle |
 |---|---|---|
-| 3 sesiones semanales de 50-60 min | ✅ Confirmado | Hoy la web dice 4 × 30 min — **hay que corregirlo** |
-| Versión gimnasio y versión casa | ✅ Confirmado | Es un diferencial fuerte, hoy no está en el copy |
-| **Llamada 1:1 de bienvenida** | ⚠️ **En duda** | MP menciona llamadas **sólo en la asesoría 1:1**. Si el plan de $40.000 no la incluye, cae también la Semana 0 y el techo de 25 cupos |
-| **Guía de nutrición** | ⚠️ **En duda** | El plan nutricional aparece como adicional de $70.000 sobre la asesoría. Si es un servicio pago aparte, **no puede estar incluido en el plan base** |
-| Corrección de técnica semanal | ⚠️ Sin confirmar | Propuesta nuestra |
-| Comunidad privada del grupo | ⚠️ Sin confirmar | Propuesta nuestra |
-| Plan B de rutinas de 10 minutos | ⚠️ Sin confirmar | Propuesta nuestra |
-| Biblioteca de ejercicios en video | ⚠️ Sin confirmar | Propuesta nuestra |
+| 3 sesiones semanales de 50-60 min | ✅ Incluido | 12 sesiones por nivel |
+| Versión gimnasio y versión casa | ✅ Incluido | Diferencial fuerte |
+| **Llamada 1:1 de bienvenida** | ✅ Incluido | En la Semana 0. Sostiene el diseño de la Semana 0 y el techo de cupos |
+| **Guía de nutrición** | ✅ Incluido | **Estándar, no personalizada.** A definir en detalle con María Pía |
+| **Corrección de técnica** | ✅ Incluido | **Sesión grupal semanal de 1 h, día fijo (viernes)** — no envíos individuales |
+| Comunidad | ✅ Incluido | Skool (contenido, progreso) + grupo de WhatsApp (día a día) |
+| Biblioteca de ejercicios en video | ✅ Incluido | Con variante fácil y difícil |
+| Plan B de rutinas de 10 minutos | ✅ Incluido | Para los días que se rompen |
 
-**Por qué esto es urgente:** prometer una llamada 1:1 y una guía de nutrición que después no se entregan es la vía más rápida a devoluciones masivas y a malos comentarios. Y con la garantía de 10 días, la persona tiene todo el derecho de pedir la plata de vuelta señalando exactamente eso.
+### El cambio de copy que trajo esto
 
-**No toqué esos puntos del copy en esta sesión.** Necesito que María Pía confirme, uno por uno, qué entra en el plan de $40.000.
+La corrección de técnica **no es** "grabás y te devuelvo", como decía la web: es una **sesión grupal en día fijo**. El copy quedó reescrito así, y además se convirtió en argumento de venta: *"se aprende tanto de tu video como del de las demás"*.
 
-### La pregunta de fondo
+**Por qué el día fijo es la decisión correcta:** la corrección individual asincrónica no escala — con 25 alumnas son 25 conversaciones abiertas toda la semana. Una hora grupal los viernes tiene costo fijo, genera comunidad y crea un ritual semanal que sostiene la asistencia. Además le da a la semana una estructura clara: lunes a jueves entrenás, viernes revisamos.
 
-Si el plan de $40.000 termina siendo **sólo las rutinas** (sin llamada, sin nutrición, sin corrección de técnica), entonces es un producto distinto del que armamos: es un **plan de entrenamiento**, no un **programa acompañado**. Eso cambia el posicionamiento, el copy y probablemente el precio.
-
-Mi recomendación, si hay que elegir qué sostener con $40.000: **la comunidad y la corrección de técnica sí; la llamada 1:1 y el plan nutricional individual, no.** Los dos primeros escalan (una corrección sirve de ejemplo para todo el grupo); los dos últimos son horas de María Pía que no escalan y que justifican el salto a la asesoría.
+**La guía de nutrición es estándar.** Está dicho explícitamente en la web y en los Términos: *"Es la misma guía para todo el grupo, no un plan armado para tu caso"*. Esa frase protege de la única devolución previsible en este punto.
 
 ---
 
@@ -168,16 +149,32 @@ Vale la pena ofrecer ahí el **upgrade al pack de 3 niveles descontando lo ya pa
 
 ---
 
-## 8. La asesoría 1:1 — lo que falta definir
+## 8. La asesoría 1:1 — definida
 
-$280.000, y $350.000 con plan nutricional. Antes de poder ponerlo en la web hace falta saber:
+**$280.000 por mes**, y **$350.000 por mes** con plan nutricional. Es un producto mensual y personalizado, no un paquete.
 
-1. **¿Es mensual o es un paquete?** "Llamada mensual" sugiere recurrente, pero $280.000/mes es siete veces el plan grupal. Si es un paquete, ¿de cuántos meses?
-2. **¿Cuántos cupos?** Con WhatsApp ilimitado, el techo lo pone la cabeza de María Pía, no la agenda. Hay que ponerle número.
-3. **¿Los $350.000 son con nutrición mensual o el plan nutricional se entrega una vez?**
-4. **¿Se vende desde la web o sólo por WhatsApp?** Recomiendo **sólo por WhatsApp, sin precio público**: a ese ticket la venta necesita conversación, y publicar $280.000 al lado de $40.000 hace que el plan grupal parezca la opción barata en vez de la opción correcta.
+| Qué incluye |
+|---|
+| Plan de entrenamiento armado para su caso, con más días por semana |
+| Objetivos puntuales más allá de la recomposición corporal |
+| Plan de nutrición personalizado (en la versión de $350.000) |
+| Corrección de ejercicios por WhatsApp |
+| Consultas ilimitadas por WhatsApp |
+| Llamada 1:1 a los 20 días de arrancar |
 
-**Recomendación de posicionamiento:** en la web sólo se menciona que existe la asesoría 1:1 para quien busca algo más específico, con un botón de WhatsApp. Sin precio. El precio se da en la conversación, después de calificar.
+### Cupos: arrancamos con 5
+
+Con WhatsApp ilimitado el techo no lo pone la agenda, lo pone la cabeza. **5 lugares la primera vez**, para medir la carga real antes de escalar. Si se desborda, Daiana y nosotros podemos absorber la parte operativa (ordenar consultas, recordatorios, seguimiento) y dejarle a María Pía sólo lo que requiere criterio profesional.
+
+> **Ojo con esto:** delegar la respuesta de WhatsApp en un producto que se vende como "contacto directo con María Pía" es una promesa que se rompe fácil. La forma sana de repartirlo es que Daiana maneje lo administrativo y el triage, y que **toda respuesta técnica salga de María Pía**, aunque el mensaje lo escriba otra persona. Conviene definir esa línea antes de vender el primer lugar, no después.
+
+### Sin precio público — decisión tomada
+
+En la web sólo se menciona que la asesoría existe, dentro de la respuesta "¿es personalizado?" del FAQ, y se deriva a WhatsApp. **El precio se da en la conversación, después de calificar.**
+
+Dos razones: a ese ticket la venta necesita conversación, y publicar $280.000 al lado de $40.000 hace que el reto parezca "la opción barata" en vez de "la opción correcta". El mensaje de WhatsApp precargado ya existe (`CONTACT.advisoryUrl`).
+
+Además, **la asesoría no compite con el reto: lo sucede.** El momento natural para ofrecerla es cuando alguien terminó el nivel 3, o cuando en la conversación de venta aparece un objetivo que el reto explícitamente no cubre (una lesión, una competencia, un embarazo, un objetivo de rendimiento).
 
 ---
 
@@ -189,32 +186,38 @@ Contenido gratis (Instagram)
 NIVEL 1 · Reto 28 Días — $40.000
    grupos cada 14 días · Semana 0
         ↓                        ↘
-NIVEL 2 · $40.000          PACK 3 NIVELES · $99.000 (a confirmar)
-        ↓                     se desbloquean al completar
+NIVEL 2 · $40.000          PACK 3 NIVELES · $99.000  (–17,5%)
+        ↓                     se desbloquean al completar el 80%
 NIVEL 3 · $40.000                 ventana de 6 meses
         ↓
-ASESORÍA 1:1 — $280.000 · sólo por WhatsApp, sin precio público
+ASESORÍA 1:1 — $280.000/mes · 5 cupos · sólo WhatsApp, sin precio público
         ↓
-ASESORÍA 1:1 + NUTRICIÓN — $350.000
+ASESORÍA 1:1 + NUTRICIÓN — $350.000/mes
 ```
 
 ---
 
-## 10. Preguntas para María Pía
+## 10. Estado de las definiciones
 
-### Bloquean la publicación de precios
-1. **El pack de 3 niveles a $130.000 sale más caro que pagar 3 meses sueltos ($120.000). ¿Lo bajamos a $99.000?**
-2. ¿El plan de $40.000 incluye **llamada 1:1 de bienvenida**? (Hoy la web la promete)
-3. ¿El plan de $40.000 incluye **guía de nutrición**? (Hoy la web la promete, y el plan nutricional aparece como adicional pago de la asesoría)
-4. ¿Incluye **corrección de técnica por video**? ¿Con qué frecuencia?
-5. ¿Incluye **comunidad / grupo**?
+### ✅ Confirmado el 2026-08-13
 
-### Bloquean la asesoría 1:1
-6. ¿Los $280.000 son mensuales o un paquete? ¿De cuántos meses?
-7. ¿Cuántos cupos de 1:1 puede sostener por mes?
-8. ¿Los $350.000 incluyen nutrición mensual o entrega única?
+| # | Pregunta | Respuesta |
+|---|---|---|
+| 1 | Precio del pack de 3 niveles | **$99.000** (era un error de cálculo) |
+| 2 | ¿La asesoría es mensual o paquete? | **Mensual.** Ticket alto porque es personalizada |
+| 3 | Cupos de asesoría 1:1 | **5** para la primera camada, para medir carga |
+| 4 | ¿Incluye llamada 1:1 de bienvenida? | **Sí**, en la Semana 0 |
+| 5 | ¿Incluye guía de nutrición? | **Sí, estándar** — no personalizada |
+| 6 | ¿Incluye corrección de técnica? | **Sí: sesión grupal de 1 h, día fijo (viernes)** |
+| 7 | ¿Incluye comunidad? | **Sí: Skool + grupo de WhatsApp** |
+| 8 | Sesiones por nivel | **12** (3 por semana × 4 semanas) |
+| 9 | Ventana de 6 meses y pausa de 30 días | **De acuerdo** |
 
-### Operativas
-9. ¿Cuántas sesiones tiene un nivel? (asumimos 12: 3 por semana × 4 semanas)
-10. ¿Está de acuerdo con la ventana de 6 meses y la pausa de 30 días?
-11. **¿Para cuándo puede tener grabado el nivel 2?** Define si se puede vender el pack de 3 desde el día uno.
+### ⏳ Todavía abierto
+
+| # | Pregunta | Por qué importa |
+|---|---|---|
+| 10 | **¿Para cuándo está grabado el nivel 2?** | Estimado: mediados de septiembre, a confirmar. El grupo fundador termina el nivel 1 a los 28 días de arrancar — ese es el deadline real, no "un mes calendario" |
+| 11 | ¿Qué contiene exactamente la guía de nutrición estándar? | Está prometida en la web; hay que poder entregarla el día 1 |
+| 12 | ¿Horario fijo de la sesión de los viernes? | Se anuncia antes de vender: es parte de lo que la persona compra |
+| 13 | ¿Dónde termina Daiana y dónde empieza María Pía en el WhatsApp de la asesoría? | Ver §8. Definirlo antes de vender el primer lugar |

@@ -34,12 +34,12 @@ export const WHAT_YOU_GET = [
     body: "Media hora conmigo antes de arrancar. Revisamos tu punto de partida, tus horarios reales y ajustamos lo que haga falta.",
   },
   {
-    title: "Corrección de técnica semanal",
-    body: "Grabás tu ejercicio, me lo mandás y te devuelvo qué corregir. Todas las semanas, durante todo el reto.",
+    title: "Corrección de técnica todos los viernes",
+    body: "Hacés tus tres sesiones, grabás lo que quieras que mire y el viernes nos juntamos una hora a corregir. Se aprende tanto de tu video como del de las demás.",
   },
   {
     title: "Guía de nutrición para semanas cortas",
-    body: "Desayunos de cinco minutos, cenas de quince y qué hacer cuando comés afuera. Sin contar calorías.",
+    body: "Desayunos de cinco minutos, cenas de quince y qué hacer cuando comés afuera. Sin contar calorías. Es la misma guía para todo el grupo, no un plan armado para tu caso.",
   },
   {
     title: "Biblioteca de ejercicios en video",
@@ -50,8 +50,8 @@ export const WHAT_YOU_GET = [
     body: "Rutinas de 10 minutos para cuando el día se rompe. Porque se va a romper, y eso no puede tirar abajo el proceso.",
   },
   {
-    title: "Comunidad privada de tu grupo",
-    body: "Arrancan todas el mismo día y van al mismo ritmo. Check-in diario y respuesta a tus dudas dos veces por semana.",
+    title: "Comunidad privada en Skool y WhatsApp",
+    body: "Arrancan todas el mismo día y van al mismo ritmo. El grupo de WhatsApp para el día a día y Skool para las rutinas, los videos y tu progreso.",
   },
   {
     title: "Seguimiento y check-in diario",
@@ -101,7 +101,7 @@ export const FAQS: FaqItem[] = [
   {
     question: "¿Es un plan personalizado para mí?",
     answer:
-      "No, y prefiero decírtelo claro. El plan de entrenamiento y nutrición es el mismo para todas las que hacen el reto. Lo que sí es tuyo es la llamada de bienvenida, la corrección de tu técnica y los ajustes que te haga durante las cuatro semanas. Si buscás un plan diseñado desde cero para tu caso, eso es otro servicio y podemos hablarlo por WhatsApp.",
+      "No, y prefiero decírtelo claro. El plan de entrenamiento y la guía de nutrición son los mismos para todas las que hacen el reto. Lo que sí es tuyo es la llamada de bienvenida y la corrección de tu técnica en la sesión de los viernes. Si buscás un plan armado desde cero para tu caso, con más días de entrenamiento, objetivos puntuales y contacto directo conmigo, eso es la asesoría 1:1: son pocos lugares y lo hablamos por WhatsApp.",
   },
   {
     question: "¿Qué pasa si una semana no puedo seguir el ritmo?",
@@ -126,6 +126,11 @@ export const FAQS: FaqItem[] = [
   {
     question: "¿Qué pasa cuando terminan los 28 días?",
     answer:
-      "El reto es el nivel 1. Cuando lo completás se desbloquea el nivel 2, que sube la exigencia y trabaja sobre lo que ya construiste, y después el nivel 3. Podés seguir nivel por nivel o parar donde quieras: no hay renovación automática ni débito de nada, cada nivel lo comprás vos cuando decidís seguir.",
+      "El reto es el nivel 1. Cuando lo completás se desbloquea el nivel 2, que sube la exigencia y trabaja sobre lo que ya construiste, y después el nivel 3. Podés seguir nivel por nivel o parar donde quieras: no hay renovación automática ni débito de nada. Si ya sabés que querés hacer el camino completo, podés llevarte los 3 niveles juntos y te sale bastante menos que comprarlos de a uno.",
+  },
+  {
+    question: "Si compro los 3 niveles, ¿tengo que hacerlos en 3 meses?",
+    answer:
+      "No. Tenés 6 meses para completarlos, el doble del tiempo que necesitás en teoría, porque la vida real tiene semanas malas. El nivel siguiente se te habilita cuando completás el 80% del anterior, o sea 10 de las 12 sesiones: no hace falta que hayas hecho todo perfecto. Y si te pasa algo que te saca de juego, me escribís y te freno el reloj 30 días, sin tener que explicarme nada.",
   },
 ];
