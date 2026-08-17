@@ -27,7 +27,7 @@ export function FinalCta() {
           className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-mp-ink px-6 py-4 font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-ink transition-all duration-200 hover:bg-mp-ink hover:text-mp-canvas active:scale-[0.98] sm:w-auto"
         >
           <WhatsappLogo weight="fill" className="h-4 w-4" aria-hidden="true" />
-          Hablar con María Pía
+          Hablar con Pía
         </a>
       </RevealOnScroll>
     </section>

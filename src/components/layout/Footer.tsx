@@ -12,9 +12,9 @@ const LEGAL_LINKS = [
 ];
 
 const SOCIALS = [
-  { url: CONTACT.instagramUrl, label: "Instagram de María Pía", Icon: InstagramLogo },
-  { url: CONTACT.tiktokUrl, label: "TikTok de María Pía", Icon: TiktokLogo },
-  { url: CONTACT.youtubeUrl, label: "YouTube de María Pía", Icon: YoutubeLogo },
+  { url: CONTACT.instagramUrl, label: "Instagram de Pía", Icon: InstagramLogo },
+  { url: CONTACT.tiktokUrl, label: "TikTok de Pía", Icon: TiktokLogo },
+  { url: CONTACT.youtubeUrl, label: "YouTube de Pía", Icon: YoutubeLogo },
 ];
 
 export function Footer() {

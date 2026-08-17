@@ -9,7 +9,7 @@ export function About() {
   return (
     <section
       id="sobre-mi"
-      aria-label="Sobre Maria Pia"
+      aria-label="Sobre Pía"
       className="section-pad border-t border-mp-line"
     >
       <div className="container-page grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
@@ -17,7 +17,7 @@ export function About() {
           <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] border border-mp-line">
             <Image
               src={ABOUT.imageUrl}
-              alt="Retrato de Maria Pia"
+              alt="Retrato de Pía"
               fill
               sizes="(min-width: 1024px) 40vw, 100vw"
               className="object-cover"

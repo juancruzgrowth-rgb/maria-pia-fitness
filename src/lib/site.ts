@@ -1,15 +1,29 @@
 import { publicEnv } from "@/lib/env";
 import { CHALLENGE, CTA_LABEL, isGroupOpen } from "@/lib/products";
 
+/**
+ * Identidad de marca. Actualizada el 2026-08-17 con el logotipo nuevo.
+ *
+ * En el trato hablamos de "Pía" a secas, no de "María Pía": es más cercano y
+ * más corto, y es como firma. "Pía Moretto" queda para la marca — la firma
+ * completa, el pie de página y los datos legales.
+ *
+ * TODO(legal): `fiscalName` tiene que ser el nombre que figura en la
+ * constancia de AFIP, no el nombre comercial. Confirmar con ella antes de
+ * publicar las páginas legales.
+ */
 export const SITE = {
-  brand: "MP — Centro de Entrenamiento Personalizado",
-  shortBrand: "MP CEP",
+  brand: "Pía Moretto",
+  shortBrand: "Pía Moretto",
+  /** Iniciales del monograma. Se usan en el logo y en el favicon. */
+  monogram: ["P", "M"],
   tagline: "Entrenamiento online para mujeres con poco tiempo.",
-  ownerName: "María Pía",
+  ownerName: "Pía",
+  fullName: "Pía Moretto",
   city: "Rosario, Santa Fe",
   country: "Argentina",
-  email: "hola@mpcep.com",
-  fiscalName: "María Pía — MP Centro de Entrenamiento Personalizado",
+  email: "hola@piamoretto.com",
+  fiscalName: "Pía Moretto",
 } as const;
 
 export const NAV_SECTIONS = [
@@ -28,7 +42,7 @@ function waLink(message: string): string {
 }
 
 /** Mensaje del botón de consulta general. */
-const ASK_MESSAGE = `Hola María Pía! Vi la web del ${CHALLENGE.name} y tengo una consulta antes de entrar.`;
+const ASK_MESSAGE = `Hola Pía! Vi la web del ${CHALLENGE.name} y tengo una consulta antes de entrar.`;
 
 /**
  * Mensaje precargado para enviar el comprobante de transferencia.
@@ -36,7 +50,7 @@ const ASK_MESSAGE = `Hola María Pía! Vi la web del ${CHALLENGE.name} y tengo u
  * no puede dar el acceso a Skool.
  */
 const RECEIPT_MESSAGE = [
-  `Hola María Pía! Quiero entrar al ${CHALLENGE.name}.`,
+  `Hola Pía! Quiero entrar al ${CHALLENGE.name}.`,
   "Ya hice la transferencia y te adjunto el comprobante.",
   "",
   "Mi nombre:",
@@ -45,13 +59,13 @@ const RECEIPT_MESSAGE = [
 ].join("\n");
 
 /** Mensaje para anotarse en la lista de espera entre grupos. */
-const WAITLIST_MESSAGE = `Hola María Pía! Quiero anotarme para el próximo grupo del ${CHALLENGE.name}.`;
+const WAITLIST_MESSAGE = `Hola Pía! Quiero anotarme para el próximo grupo del ${CHALLENGE.name}.`;
 
 /**
  * Consulta por la asesoría 1:1. No se publica precio: la conversación
  * arranca por acá. Ver ADVISORY en @/lib/products.
  */
-const ADVISORY_MESSAGE = `Hola María Pía! Me interesa la asesoría 1:1 y quiero saber cómo funciona y cuánto sale.`;
+const ADVISORY_MESSAGE = `Hola Pía! Me interesa la asesoría 1:1 y quiero saber cómo funciona y cuánto sale.`;
 
 export const CONTACT = {
   whatsappNumber: cleanedNumber,

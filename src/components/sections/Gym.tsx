@@ -8,7 +8,7 @@ export function Gym() {
   return (
     <section
       id="gimnasio"
-      aria-label="El centro de entrenamiento de María Pía"
+      aria-label="El centro de entrenamiento de Pía"
       className="section-pad border-t border-mp-line"
     >
       <div className="container-page grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
@@ -77,7 +77,7 @@ export function Gym() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={GYM_POSTER_URL}
-              alt="Interior del centro de entrenamiento de María Pía en Rosario"
+              alt="Interior del centro de entrenamiento de Pía en Rosario"
               loading="lazy"
               className="h-full w-full object-cover opacity-90"
             />

@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Inter } from "next/font/google";
+import {
+  Manrope,
+  Inter,
+  Bodoni_Moda,
+  Newsreader,
+  Montserrat,
+} from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -9,6 +15,7 @@ import { SITE } from "@/lib/site";
 import { CHALLENGE } from "@/lib/products";
 import { homeDescription, organizationJsonLd } from "@/lib/seo";
 import { publicEnv } from "@/lib/env";
+import { THEME, THEME_ID } from "@/lib/theme";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -21,6 +28,45 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+/**
+ * Sistema tipográfico de la identidad "Pía Moretto".
+ *
+ * El logotipo oficial usa Quiche (Adam Ladd) arriba y Montserrat abajo. Quiche
+ * es comercial y viene incluida en Canva, pero usarla en la web necesita una
+ * licencia de webfont aparte — así que acá se sustituye por Bodoni Moda, que
+ * comparte el alto contraste y las serifas finas del logotipo.
+ *
+ * Tres roles, no dos:
+ *   display → Bodoni Moda  · titulares. La voz del logotipo
+ *   body    → Newsreader   · texto largo. Serif de lectura, bajo contraste
+ *   ui      → Montserrat   · etiquetas, botones y navegación. Sale del logo
+ *
+ * Las dos serifas se distinguen por ROL y por contraste de trazo, que es lo que
+ * evita que una combinación serif+serif se lea como un error.
+ *
+ * `axes: ["opsz"]` no es decorativo: es lo que permite engrosar las serifas en
+ * modo oscuro, donde los trazos finos se desvanecen. Ver globals.css.
+ */
+const bodoni = Bodoni_Moda({
+  variable: "--font-bodoni",
+  subsets: ["latin"],
+  axes: ["opsz"],
+  display: "swap",
+});
+
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  axes: ["opsz"],
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -38,7 +84,7 @@ export const metadata: Metadata = {
     "entrenar 3 veces por semana",
     "reto fitness 28 días",
     "entrenamiento y nutrición online Argentina",
-    "María Pía entrenadora",
+    "Pía Moretto entrenadora",
   ],
   authors: [{ name: SITE.ownerName }],
   creator: SITE.ownerName,
@@ -64,7 +110,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F5F5F2",
+  themeColor: THEME.canvas,
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -76,7 +122,8 @@ export default function RootLayout({
   return (
     <html
       lang="es-AR"
-      className={`${manrope.variable} ${inter.variable} h-full antialiased`}
+      data-theme={THEME_ID}
+      className={`${manrope.variable} ${inter.variable} ${bodoni.variable} ${newsreader.variable} ${montserrat.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-mp-canvas text-mp-ink">
         <a

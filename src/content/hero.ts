@@ -3,7 +3,7 @@ export const HERO = {
   headlineLead: "Ocho horas de trabajo.",
   headlineAccent: "Tres días para vos.",
   description:
-    "Un reto de 28 días para mujeres que no tienen tiempo de sobra, pero sí ganas de sentirse bien. Tres sesiones por semana, en el gimnasio o en tu casa, con el seguimiento de María Pía.",
+    "Un reto de 28 días para mujeres que no tienen tiempo de sobra, pero sí ganas de sentirse bien. Tres sesiones por semana, en el gimnasio o en tu casa, con el seguimiento de Pía.",
   videoBadge: "Te explico el método completo en 10 minutos",
   videoPosterUrl: "/images/sobre-mi.png",
   videoUrl: "https://www.youtube.com/embed/ZBpxYGFmyL8",

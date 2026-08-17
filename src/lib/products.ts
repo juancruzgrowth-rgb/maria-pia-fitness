@@ -3,7 +3,7 @@
  * Nada de esto se hardcodea en componentes.
  */
 
-/** Precio de un nivel (un mes). Confirmado por María Pía el 2026-08-06. */
+/** Precio de un nivel (un mes). Confirmado por Pía el 2026-08-06. */
 const PRICE_ARS = 40000;
 
 /**
@@ -18,6 +18,49 @@ const PACK_PRICE_ARS = 99000;
 export const PACK_DISCOUNT_PCT = Math.round(
   (1 - PACK_PRICE_ARS / (PRICE_ARS * 3)) * 100,
 );
+
+/**
+ * El método. Naming aprobado el 2026-08-17 (propuesta de Daiana).
+ *
+ * Arquitectura de marca: el método está POR ENCIMA de la oferta. "Reto 28 Días"
+ * es lo que se compra; "Mi Método 4F" es el sistema, y sobrevive a que el reto
+ * cambie de formato o de duración. Ver docs/estrategia/11-metodo-4f.md.
+ *
+ * El "Mi" es la firma de Pía: funciona cuando habla ella, no en un botón
+ * de compra. Los CTA siguen hablando del reto.
+ */
+export const METHOD = {
+  name: "Mi Método 4F",
+  /**
+   * TODO(B13): la presentación de naming afirma que los 4F son "los ejes reales
+   * de cada rutina". Hasta que Pía confirme que cada rutina mapea a los
+   * cuatro pilares, el copy los presenta como los principios que guían el
+   * método — no como los bloques de cada sesión. Es una promesa verificable en
+   * la primera semana, justo mientras corre la garantía.
+   */
+  pillars: [
+    {
+      id: "fuerza",
+      name: "Fuerza",
+      body: "Levantar más de lo que levantabas hoy. Músculo, densidad ósea y un cuerpo que aguanta.",
+    },
+    {
+      id: "funcion",
+      name: "Función",
+      body: "Que el cuerpo sirva para tu vida real: cargar las bolsas, subir escaleras, agacharte sin crujir.",
+    },
+    {
+      id: "flexibilidad",
+      name: "Flexibilidad",
+      body: "Movilidad y rango de movimiento. La parte que todo el mundo saltea y después extraña.",
+    },
+    {
+      id: "foco",
+      name: "Foco",
+      body: "La cabeza. Sostener el hábito el día que el trabajo se puso en contra y no querés saber nada.",
+    },
+  ],
+} as const;
 
 export type GroupStatus = "open" | "waitlist" | "closed";
 
@@ -42,7 +85,7 @@ export const CHALLENGE: Challenge = {
   forWhom:
     "Mujeres que trabajan ocho horas o más y quieren sostener hábitos sin que les coma el día.",
   priceARS: PRICE_ARS,
-  /** Alcance confirmado punto por punto con María Pía el 2026-08-13. */
+  /** Alcance confirmado punto por punto con Pía el 2026-08-13. */
   includes: [
     "3 sesiones por semana de 50 a 60 minutos",
     "Cada rutina en dos versiones: gimnasio y casa",
@@ -61,7 +104,7 @@ export const SESSIONS_PER_LEVEL = 12;
 /**
  * Día fijo de la sesión grupal de corrección de técnica. Se hace después de
  * que todas completaron sus 3 sesiones de la semana.
- * TODO(operativa): confirmar el horario exacto con María Pía.
+ * TODO(operativa): confirmar el horario exacto con Pía.
  */
 export const TECHNIQUE_SESSION = {
   day: "viernes",
@@ -192,7 +235,7 @@ export const GUARANTEE = {
 export const TRANSFER = {
   alias: "MP.CEP.RETO",
   cbu: "0000000000000000000000",
-  holder: "María Pía",
+  holder: "Pía",
   bank: "",
   responseWindow: "menos de 2 horas",
 } as const;

@@ -85,7 +85,7 @@ export function Hero() {
                   allow="autoplay; fullscreen; picture-in-picture"
                   allowFullScreen
                   className="h-full w-full"
-                  title="María Pía explica el método del Reto 28 Días"
+                  title="Pía explica el método del Reto 28 Días"
                 />
                 <button
                   type="button"
@@ -101,11 +101,11 @@ export function Hero() {
                 type="button"
                 onClick={() => setPlaying(true)}
                 className="group relative block aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink sm:aspect-video lg:aspect-[4/5]"
-                aria-label="Reproducir el video donde María Pía explica el método"
+                aria-label="Reproducir el video donde Pía explica el método"
               >
                 <Image
                   src={HERO.videoPosterUrl}
-                  alt="María Pía, entrenadora personal y nutricionista"
+                  alt="Pía, entrenadora personal y nutricionista"
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   priority

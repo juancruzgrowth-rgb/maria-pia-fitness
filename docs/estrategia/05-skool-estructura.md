@@ -198,11 +198,18 @@ Es simple y es lo que sostiene el hábito. **El check-in público es el mecanism
 | Bloque | Cuándo | Duración |
 |---|---|---|
 | Respuesta a preguntas | Lunes 18-18:45 | 45 min |
-| Correcciones de técnica | Jueves 18-18:45 | 45 min |
 | Live semanal | Miércoles 19:00 | 40 min |
-| **Total** | | **~2 h/semana** |
+| **Sesión grupal de corrección de técnica** | **Viernes, horario a confirmar (B11)** | **60 min** |
+| **Total** | | **~2 h 25 min/semana** |
 
-Esto se comunica explícitamente en el módulo 0: *"Respondo los lunes y jueves de 18 a 19. El live es los miércoles a las 19."* La expectativa gestionada elimina la ansiedad de la alumna y el agobio de la coach.
+> **Corregido el 2026-08-17.** Este bloque decía "Correcciones de técnica, jueves 18-18:45,
+> 45 min". Eso quedó desactualizado con la decisión de la sesión 5: la corrección de técnica
+> **no es asincrónica ni individual**, es una **sesión grupal de 1 hora los viernes**, y está
+> prometida así en la web y en los Términos y Condiciones. Lo que vale es viernes.
+> El horario exacto es el bloqueante **B11** y se anuncia antes de vender, porque es parte de
+> lo que la persona compra. Ver [`10-planes-y-niveles.md`](10-planes-y-niveles.md).
+
+Esto se comunica explícitamente en el módulo 0: *"Respondo los lunes de 18 a 19. El live es los miércoles a las 19. La sesión de técnica es los viernes."* La expectativa gestionada elimina la ansiedad de la alumna y el agobio de la coach.
 
 Todo lo que caiga fuera de esos bloques y sea urgente, lo detecta la automatización A6 y lo escala.
 

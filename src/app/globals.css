@@ -14,12 +14,111 @@
 
   --font-display: var(--font-manrope);
   --font-sans: var(--font-inter);
+  /* Rol de utilidad: etiquetas, botones y navegación. En el tema MP es Manrope,
+     que es lo que el manual anterior pedía para los CTA en mayúsculas; en los
+     temas Moretto es Montserrat, que sale del propio logotipo. */
+  --font-ui: var(--font-manrope);
 
   --radius-card: 1rem;
+
+  /* Eje de tamaño óptico de las serifas. Sólo lo usan los temas Moretto. */
+  --display-opsz: 96;
+  --body-opsz: 16;
+  --body-weight: 400;
+  --body-tracking: 0;
 }
 
 :root {
   color-scheme: light;
+}
+
+/* ===========================================================================
+   TEMAS
+   ---------------------------------------------------------------------------
+   Los nombres de los tokens (--color-mp-orange) son ranuras semánticas —
+   "el acento", "el fondo" — no descripciones del color. Por eso en un tema
+   verde el token sigue llamándose "orange". Renombrarlos obligaría a tocar los
+   29 componentes sin cambiar un solo píxel.
+
+   Ver docs/estrategia/18-identidad-pia-moretto.md
+   =========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   MORETTO — claro. La identidad nueva.
+
+   Porcelana fría y no crema: el logotipo es negro puro sobre blanco, y un fondo
+   crema lo tiñe de sepia. El único color del sistema es un bordeaux profundo,
+   usado con cuentagotas. La identidad no tiene color, así que agregarle una
+   paleta la contradice.
+--------------------------------------------------------------------------- */
+[data-theme="moretto"] {
+  --color-mp-canvas: #f2f1ed;
+  --color-mp-ink: #111110;
+  /* Oscurecido desde #3A3936: los componentes usan `text-mp-carbon/70` en las
+     etiquetas de 11px, y a esa opacidad el gris original quedaba en 4,38:1,
+     por debajo del 4,5 exigido. Verificado con luminancia real, no a ojo. */
+  --color-mp-carbon: #2e2d2a;
+  --color-mp-orange: #6e1d2b;
+  --color-mp-amber: #55131f;
+  /* Bordeaux sobre porcelana: 9.9:1. Sirve para texto, no hace falta un
+     token aparte como el `ember` del tema MP. */
+  --color-mp-ember: #6e1d2b;
+  --color-mp-sky: #dcd8cf;
+  --color-mp-line: #e0ded7;
+
+  --font-display: var(--font-bodoni);
+  --font-sans: var(--font-newsreader);
+  --font-ui: var(--font-montserrat);
+
+  --radius-card: 0.125rem;
+
+  --display-opsz: 96;
+  --body-opsz: 16;
+}
+
+/* ---------------------------------------------------------------------------
+   MORETTO — oscuro.
+
+   Tres correcciones que un modo oscuro hecho invirtiendo colores no hace, y por
+   las que se nota la diferencia:
+
+   1. Ni negro puro de fondo ni blanco puro de texto. #000 sobre #FFF vibra y
+      cansa; el fondo es un negro cálido y el texto un hueso.
+   2. `--display-opsz` baja de 96 a 11. En una Didone, el tamaño óptico chico
+      engrosa las serifas y los trazos finos. Sobre fondo oscuro las hairlines
+      del tamaño óptico grande directamente se desvanecen — es el error clásico
+      de pasar una serif de alto contraste a modo oscuro.
+   3. El texto sube de peso 400 a 450 y suma tracking. El texto claro sobre
+      fondo oscuro florece ópticamente y se lee más pesado y más apretado de lo
+      que es; esto lo compensa.
+
+   El acento no puede ser el mismo bordeaux: a 9,9:1 sobre porcelana, sobre
+   negro queda en 1,3:1. Sube a un rosa antiguo de la misma familia (7,8:1).
+--------------------------------------------------------------------------- */
+[data-theme="moretto-dark"] {
+  color-scheme: dark;
+
+  --color-mp-canvas: #131311;
+  --color-mp-ink: #edeae1;
+  /* Aclarado desde #A8A49A por el mismo motivo que en el tema claro: a 70% de
+     opacidad sobre el fondo oscuro caía a 4,20:1. Ahora da 4,83:1. */
+  --color-mp-carbon: #b5b1a6;
+  --color-mp-orange: #d19aa6;
+  --color-mp-amber: #e0b3bc;
+  --color-mp-ember: #d19aa6;
+  --color-mp-sky: #2f2b2c;
+  --color-mp-line: #2c2a25;
+
+  --font-display: var(--font-bodoni);
+  --font-sans: var(--font-newsreader);
+  --font-ui: var(--font-montserrat);
+
+  --radius-card: 0.125rem;
+
+  --display-opsz: 11;
+  --body-opsz: 14;
+  --body-weight: 450;
+  --body-tracking: 0.012em;
 }
 
 html,
@@ -31,6 +130,9 @@ body {
 body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   font-feature-settings: "ss01", "cv11";
+  font-variation-settings: "opsz" var(--body-opsz);
+  font-weight: var(--body-weight);
+  letter-spacing: var(--body-tracking);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -41,6 +143,21 @@ h3,
 h4,
 .font-display {
   font-family: var(--font-display), system-ui, sans-serif;
+  font-variation-settings: "opsz" var(--display-opsz);
+}
+
+/* Rol de utilidad: lo que en el logotipo va en Montserrat, en versalitas
+   espaciadas. En este sitio TODO lo que va en mayúsculas es de ese rol
+   —etiquetas, botones, insignias, navegación— y ningún titular lo está, así
+   que la regla puede ser automática en vez de repetir una clase 27 veces.
+
+   Sólo toca la familia: el `tracking-` de cada elemento sigue mandando, porque
+   estas reglas van después de las utilidades de Tailwind y con la misma
+   especificidad se impondrían. */
+.font-ui,
+.uppercase {
+  font-family: var(--font-ui), system-ui, sans-serif;
+  font-variation-settings: normal;
 }
 
 ::selection {

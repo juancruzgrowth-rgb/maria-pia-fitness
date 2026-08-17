@@ -1,5 +1,5 @@
 export const ABOUT = {
-  heading: "Soy María Pía.",
+  heading: "Soy Pía.",
   intro:
     "Entrenadora personal y nutricionista. Hace más de ocho años acompaño a mujeres que trabajan todo el día y quieren entrenar con criterio, sin pelearse con la balanza ni con el reloj.",
   paragraphs: [
