@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* ===========================================================================
+   TEMA POR DEFECTO — "pia". Es el que se publica.
+   ---------------------------------------------------------------------------
+   Es la combinación que eligió Pía: el fondo claro y el naranja de la paleta
+   original, con el sistema tipográfico del logotipo P│M encima.
+
+   Que viva en @theme y no en un bloque [data-theme] es a propósito: sin la
+   variable de entorno, el sitio compila así. Los dos temas Moretto de más
+   abajo son sólo pieles de comparación.
+   =========================================================================== */
 @theme {
   --color-mp-canvas: #f5f5f2;
   --color-mp-ink: #050505;
@@ -12,18 +22,25 @@
   --color-mp-sky: #bfdfff;
   --color-mp-line: #eaeaea;
 
-  --font-display: var(--font-manrope);
-  --font-sans: var(--font-inter);
-  /* Rol de utilidad: etiquetas, botones y navegación. En el tema MP es Manrope,
-     que es lo que el manual anterior pedía para los CTA en mayúsculas; en los
-     temas Moretto es Montserrat, que sale del propio logotipo. */
-  --font-ui: var(--font-manrope);
+  /* Tres roles, no dos. Las dos serifas se distinguen por rol y por contraste
+     de trazo, que es lo que evita que serif+serif se lea como un error:
+       display → Bodoni Moda · titulares. La voz del logotipo
+       body    → Newsreader  · texto largo. Serif de lectura, bajo contraste
+       ui      → Montserrat  · etiquetas, botones y navegación. Sale del logo */
+  --font-display: var(--font-bodoni);
+  --font-sans: var(--font-newsreader);
+  --font-ui: var(--font-montserrat);
 
   --radius-card: 1rem;
 
-  /* Eje de tamaño óptico de las serifas. Sólo lo usan los temas Moretto. */
-  --display-opsz: 96;
-  --body-opsz: 16;
+  /* Eje de tamaño óptico. Por defecto NO se fija: `font-optical-sizing: auto`
+     deja que el navegador lo derive del tamaño real de cada texto, que es para
+     lo que existe el eje. Fijarlo a mano en 96 —el corte de display— adelgazaba
+     los trazos finos de todo lo chico hasta hacerlos desaparecer: el guion de
+     "50-60 min" se perdía entero. Sólo la piel oscura lo fija, y por un motivo
+     concreto que está explicado allá. */
+  --display-variations: normal;
+  --body-variations: normal;
   --body-weight: 400;
   --body-tracking: 0;
 }
@@ -33,18 +50,22 @@
 }
 
 /* ===========================================================================
-   TEMAS
+   PIELES DE COMPARACIÓN
    ---------------------------------------------------------------------------
+   No se publican: sirven para mirar la misma web con otra paleta antes de
+   decidir. Sólo cambian color y tamaño óptico — el copy, la estructura, los
+   botones y `products.ts` son los mismos.
+
    Los nombres de los tokens (--color-mp-orange) son ranuras semánticas —
    "el acento", "el fondo" — no descripciones del color. Por eso en un tema
-   verde el token sigue llamándose "orange". Renombrarlos obligaría a tocar los
-   29 componentes sin cambiar un solo píxel.
+   bordeaux el token sigue llamándose "orange". Renombrarlos obligaría a tocar
+   los 29 componentes sin cambiar un solo píxel.
 
    Ver docs/estrategia/18-identidad-pia-moretto.md
    =========================================================================== */
 
 /* ---------------------------------------------------------------------------
-   MORETTO — claro. La identidad nueva.
+   MORETTO — claro. Monocromo.
 
    Porcelana fría y no crema: el logotipo es negro puro sobre blanco, y un fondo
    crema lo tiñe de sepia. El único color del sistema es un bordeaux profundo,
@@ -66,14 +87,7 @@
   --color-mp-sky: #dcd8cf;
   --color-mp-line: #e0ded7;
 
-  --font-display: var(--font-bodoni);
-  --font-sans: var(--font-newsreader);
-  --font-ui: var(--font-montserrat);
-
   --radius-card: 0.125rem;
-
-  --display-opsz: 96;
-  --body-opsz: 16;
 }
 
 /* ---------------------------------------------------------------------------
@@ -84,10 +98,11 @@
 
    1. Ni negro puro de fondo ni blanco puro de texto. #000 sobre #FFF vibra y
       cansa; el fondo es un negro cálido y el texto un hueso.
-   2. `--display-opsz` baja de 96 a 11. En una Didone, el tamaño óptico chico
-      engrosa las serifas y los trazos finos. Sobre fondo oscuro las hairlines
-      del tamaño óptico grande directamente se desvanecen — es el error clásico
-      de pasar una serif de alto contraste a modo oscuro.
+   2. El tamaño óptico se fija en 11 en lugar de dejarlo automático. En una
+      Didone, el corte de texto chico engrosa las serifas y los trazos finos.
+      Sobre fondo oscuro las hairlines del corte de display se desvanecen — es
+      el error clásico de pasar una serif de alto contraste a modo oscuro.
+      Es el único lugar donde vale la pena pisar el automático.
    3. El texto sube de peso 400 a 450 y suma tracking. El texto claro sobre
       fondo oscuro florece ópticamente y se lee más pesado y más apretado de lo
       que es; esto lo compensa.
@@ -109,14 +124,10 @@
   --color-mp-sky: #2f2b2c;
   --color-mp-line: #2c2a25;
 
-  --font-display: var(--font-bodoni);
-  --font-sans: var(--font-newsreader);
-  --font-ui: var(--font-montserrat);
-
   --radius-card: 0.125rem;
 
-  --display-opsz: 11;
-  --body-opsz: 14;
+  --display-variations: "opsz" 11;
+  --body-variations: "opsz" 14;
   --body-weight: 450;
   --body-tracking: 0.012em;
 }
@@ -128,9 +139,13 @@ body {
 }
 
 body {
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  font-feature-settings: "ss01", "cv11";
-  font-variation-settings: "opsz" var(--body-opsz);
+  /* Sin `font-feature-settings`: los tags "ss01" y "cv11" que había acá eran de
+     Inter, que ya no se usa. Un tag de OpenType no significa lo mismo en todas
+     las familias, así que arrastrarlos a otra tipografía es pedir un cambio de
+     forma a ciegas. */
+  font-family: var(--font-sans), Georgia, "Times New Roman", serif;
+  font-optical-sizing: auto;
+  font-variation-settings: var(--body-variations);
   font-weight: var(--body-weight);
   letter-spacing: var(--body-tracking);
   -webkit-font-smoothing: antialiased;
@@ -142,8 +157,9 @@ h2,
 h3,
 h4,
 .font-display {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-variation-settings: "opsz" var(--display-opsz);
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-optical-sizing: auto;
+  font-variation-settings: var(--display-variations);
 }
 
 /* Rol de utilidad: lo que en el logotipo va en Montserrat, en versalitas

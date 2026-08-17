@@ -1,21 +1,27 @@
-# Branding — MP CEP
+# Branding — Pía Moretto
 
-> ## ⚠️ DESACTUALIZADO PARCIALMENTE — 2026-08-17
+> ## ⚠️ LA SECCIÓN DE TIPOGRAFÍA ESTÁ DESACTUALIZADA — 2026-08-17
 >
-> Este manual describe la marca **"MP CEP"**, que fue reemplazada por el logotipo
-> e identidad de **Pía Moretto** (monograma `P│M`, serif de alto contraste, sin
-> naranja). La identidad vigente está en
-> [`docs/estrategia/18-identidad-pia-moretto.md`](../../docs/estrategia/18-identidad-pia-moretto.md).
+> La marca pasó de "MP CEP" a **Pía Moretto** (monograma `P│M`). Se decidió
+> conservar **toda la paleta de este manual** —el blanco suave, el naranja, el
+> negro profundo— y **reemplazar sólo el par tipográfico**.
 >
-> **Qué sigue valiendo de este documento:** el tono verbal (§ Tono verbal), la lista
-> de palabras prohibidas, los motivos visuales, la cuadrícula, el espaciado, las
-> microanimaciones y toda la sección "Lo que NO hacemos" salvo las dos líneas de
-> tipografía y fondo.
+> | | Antes | Ahora |
+> |---|---|---|
+> | Titulares | Manrope | **Bodoni Moda** |
+> | Texto | Inter | **Newsreader** |
+> | Etiquetas y CTAs | Manrope | **Montserrat** |
 >
-> **Qué ya no vale:** la paleta naranja y el par Manrope + Inter, que sobreviven sólo
-> en el tema `mp`.
+> **Qué sigue valiendo:** todo lo demás. La paleta, el tono verbal, las palabras
+> prohibidas, los motivos visuales, la cuadrícula, el espaciado, las
+> microanimaciones y "Lo que NO hacemos" salvo la línea de la fuente Inter.
 >
-> Este manual se reescribe cuando Pía elija entre el tema claro y el oscuro.
+> **Qué ya no vale:** la § Tipografía de más abajo, entera.
+>
+> El detalle está en
+> [`docs/estrategia/18-identidad-pia-moretto.md`](../../docs/estrategia/18-identidad-pia-moretto.md)
+> y las reglas operativas en
+> [`rules/frontend/styles.md`](frontend/styles.md).
 
 Manual visual oficial. Cualquier desviación del color, tipografía o tono requiere aprobación explícita.
 

@@ -1,6 +1,8 @@
 # Node / Next.js
 node_modules/
 .next/
+# Builds por tema (NEXT_DIST_DIR), para comparar las pieles en paralelo
+.next-*/
 out/
 build/
 *.tsbuildinfo

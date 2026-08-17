@@ -1,29 +1,34 @@
-# Test A/B de diseño — Dos pieles, un solo sitio
+# Pieles del sitio — una publicada, dos para comparar
 
-> **Decidido y construido el 2026-08-17.**
+> **Construido el 2026-08-17. Decisión tomada el 2026-08-17.**
 > Para quién: para vos con las manos, y para que Pía entienda qué va a ver.
 
 ---
 
-## 1. Qué se hizo
+## 1. Qué se decidió
 
-El sitio puede vestirse de **tres maneras distintas** sin duplicar una sola línea de copy.
-Mismo texto, misma estructura, mismos botones, mismos precios. **Lo único que cambia es el
-color, la tipografía y el logotipo.**
+Después de mirar las tres versiones en pantalla, **la que se publica es `pia`**: el fondo
+claro y el naranja de la paleta original, con la tipografía del logotipo P│M encima. Es una
+combinación de las dos que se habían probado, no una de ellas.
 
-| | **`mp`** | **`moretto`** | **`moretto-dark`** |
+Mismo texto, misma estructura, mismos botones, mismos precios en las tres.
+
+| | **`pia`** ← se publica | `moretto` | `moretto-dark` |
 |---|---|---|---|
 | Fondo | Blanco suave `#F5F5F2` | Porcelana `#F2F1ED` | Negro cálido `#131311` |
-| Acento | Naranja `#F2A31B` | Bordeaux `#6E1D2B` | Rosa antiguo `#D19AA6` |
-| Titulares | Manrope | Bodoni Moda | Bodoni Moda, óptica 11 |
-| Texto | Inter | Newsreader | Newsreader, peso 450 |
-| Utilidad | Manrope | Montserrat | Montserrat |
-| **Qué representa** | La marca anterior | **La identidad Pía Moretto** | **La misma, de noche** |
+| Acento | **Naranja `#F2A31B`** | Bordeaux `#6E1D2B` | Rosa antiguo `#D19AA6` |
+| Titulares | Bodoni Moda | Bodoni Moda | Bodoni Moda, óptica 11 |
+| Texto | Newsreader | Newsreader | Newsreader, peso 450 |
+| Utilidad | Montserrat | Montserrat | Montserrat |
+| **Para qué** | **La web real** | Comparar sin color | Comparar de noche |
 
-> **Actualizado el 2026-08-17.** La variante "Editorial" que existía acá quedó reemplazada por
-> la identidad real de Pía Moretto. El detalle de la paleta, la tipografía y el modo oscuro
-> está en [`18-identidad-pia-moretto.md`](18-identidad-pia-moretto.md); este documento cubre
-> sólo la mecánica de servir dos pieles a la vez.
+**La tipografía ya no cambia entre pieles.** Es de la marca: sale del logotipo y se queda.
+Lo único que separa a las tres es el color. Eso hace que la comparación sea honesta —
+se mira una variable por vez.
+
+> El detalle de la paleta, de las tres familias tipográficas y del modo oscuro está en
+> [`18-identidad-pia-moretto.md`](18-identidad-pia-moretto.md). Este documento cubre sólo la
+> mecánica de servir varias pieles del mismo sitio.
 
 ---
 
@@ -32,13 +37,15 @@ color, la tipografía y el logotipo.**
 El sitio ya estaba construido con **tokens**: ningún componente dice "naranja", todos dicen
 "el color de acento". Eso hizo que el trabajo fuera de un par de horas y no de una semana.
 
-Se agregó una variable de entorno, `NEXT_PUBLIC_THEME`. Vale `mp`, `moretto` o `moretto-dark`.
+Se agregó una variable de entorno, `NEXT_PUBLIC_THEME`.
 
 ```
-NEXT_PUBLIC_THEME=mp             →  marca anterior
-NEXT_PUBLIC_THEME=moretto        →  Pía Moretto claro
-NEXT_PUBLIC_THEME=moretto-dark   →  Pía Moretto oscuro
+(vacía)                          →  pia — la que se publica
+NEXT_PUBLIC_THEME=moretto        →  comparación: monocromo claro
+NEXT_PUBLIC_THEME=moretto-dark   →  comparación: monocromo oscuro
 ```
+
+**En Vercel no hay que definir nada:** sin la variable, sale `pia`.
 
 Esa variable pinta un atributo en la página y las variables de color y tipografía se
 reemplazan solas. **Los 29 componentes no saben que existen los temas.**
@@ -54,87 +61,68 @@ anotado en el código para que nadie lo lea como un error.
 
 ## 3. Cómo lo desplegás
 
-Dos proyectos de Vercel apuntando **al mismo repositorio**, con la variable distinta:
+**El proyecto de Vercel que ya existe no necesita ningún cambio.** Sin la variable definida,
+compila `pia`, que es la elegida.
 
-| Proyecto | Variable | Dominio |
-|---|---|---|
-| `mp-cep` | `NEXT_PUBLIC_THEME=mp` | el dominio principal |
-| `mp-cep-b` | `NEXT_PUBLIC_THEME=moretto` | un subdominio, ej. `b.dominio.com` |
-
-**Ventaja de hacerlo así:** cuando cambie un precio, una fecha o un texto, se cambia una vez
-y se despliegan las dos. **Nunca pueden contradecirse.** Ése era el riesgo real de copiar el
-repositorio, y es por eso que no lo copiamos.
+Si en algún momento querés publicar una segunda piel para compararla con tráfico real, se
+crea un segundo proyecto de Vercel apuntando **al mismo repositorio** con
+`NEXT_PUBLIC_THEME=moretto` y un subdominio propio. Cuando cambie un precio, una fecha o un
+texto, se cambia una vez y se despliegan los dos: **nunca pueden contradecirse.** Ése era el
+riesgo real de copiar el repositorio, y es por eso que no lo copiamos.
 
 ### Para verlo local
 
 ```bash
-npm run dev                                   # marca anterior
-NEXT_PUBLIC_THEME=moretto npm run dev         # Pía Moretto claro
-NEXT_PUBLIC_THEME=moretto-dark npm run dev    # Pía Moretto oscuro
+npm run dev                                   # pia — la que se publica
+NEXT_PUBLIC_THEME=moretto npm run dev         # comparación: monocromo claro
+NEXT_PUBLIC_THEME=moretto-dark npm run dev    # comparación: monocromo oscuro
 ```
 
-**Verificado:** los tres temas compilan sin errores ni advertencias, con las 9 rutas
-estáticas de siempre, y los tres pasan WCAG AA en todas las combinaciones de texto.
+**Verificado:** las tres pieles compilan sin errores ni advertencias, con las 9 rutas
+estáticas de siempre, y las tres pasan WCAG AA en todas las combinaciones de texto.
 
 ---
 
-## 4. Cómo se reparte el tráfico
+## 4. Qué queda del manual de marca anterior
 
-Depende de para qué lo uses:
+El manual [`branding.md`](../../.claude/rules/branding.md) describía la marca "MP CEP".
+La piel `pia` **conserva su paleta entera** —el blanco suave, el naranja, el negro profundo—
+y **reemplaza sólo el par tipográfico**: donde decía Manrope + Inter, ahora va
+Bodoni Moda + Newsreader + Montserrat, que es lo que sale del logotipo P│M.
 
-**Si es para que Pía elija:** no repartas nada. Le mandás los dos links y decide ella.
-Es lo más rápido y no necesita ninguna infraestructura.
-
-**Si es para medir de verdad:** hace falta que la misma persona vea siempre la misma versión
-(si ve una distinta cada vez que entra, el dato no sirve) y que el reparto sea parejo. Eso se
-resuelve con un middleware que sortea una vez y guarda la elección en una cookie. **No está
-construido todavía** — son un par de horas más, y sólo tiene sentido si vas a medir en serio.
-
----
-
-## 5. ⚠️ Antes de mostrarle esto a tráfico real
-
-**Los temas Moretto se apartan del manual de marca anterior**, que pedía naranja y Manrope.
-Eso es esperable: el manual describía la marca "MP CEP", que quedó reemplazada por el
-logotipo de Pía Moretto. **Pero el manual todavía no se reescribió**, así que hasta que eso
-pase conviven dos verdades en el repositorio.
-
-Lo que los temas Moretto **no** rompen, y fue deliberado:
+Lo que no se rompió, y fue deliberado:
 - Sin sombras pesadas, sin gradientes, sin glassmorphism, sin emojis
 - Todo el contraste de texto pasa WCAG AA, verificado con luminancia real
-- El fondo claro sigue siendo claro; el oscuro es una variante, no el reemplazo
+- El fondo claro sigue siendo claro
 
-**Pía tiene que elegir entre claro y oscuro antes de que esto vea tráfico.** Ver
-[`18-identidad-pia-moretto.md`](18-identidad-pia-moretto.md) §8.
+**El manual sigue pendiente de reescribir** en su sección de tipografía. Hasta entonces, la
+verdad vigente es este documento y [`18-identidad-pia-moretto.md`](18-identidad-pia-moretto.md).
 
 ---
 
-## 6. Cuánto tiempo tomó y qué falta
+## 5. Qué falta
 
 | | Estado |
 |---|---|
-| Sistema de temas | ✅ Hecho |
-| Paleta y tipografía de los temas Moretto | ✅ Hechas y verificadas en contraste |
+| Sistema de pieles | ✅ Hecho |
+| Piel `pia` — la que se publica | ✅ Hecha y verificada en contraste |
 | Sistema de logotipos | ✅ Cuatro piezas; el color sale de los tokens |
-| Los tres compilan | ✅ Verificado |
-| Segundo proyecto en Vercel | Pendiente — 10 minutos, cuando quieras |
-| Reparto de tráfico con cookie | Pendiente — sólo si vamos a medir en serio |
+| Las tres compilan | ✅ Verificado |
+| Reescribir la tipografía en `branding.md` | Pendiente |
+| Segundo proyecto en Vercel | Sólo si algún día se compara con tráfico real |
+| Reparto de tráfico con cookie | Ídem — y ver el punto 6 antes |
 
 ---
 
-## 7. Una advertencia honesta sobre medir
+## 6. Una advertencia honesta sobre medir
 
-Para que un test A/B dé un resultado en el que se pueda confiar hacen falta **cientos de
-visitas por variante**. Con el tráfico del grupo fundador, el resultado va a ser **ruido**:
-si una variante vende 3 y la otra 2, eso no significa nada.
+Si alguna vez volvés a comparar dos pieles: para que un test A/B dé un resultado en el que se
+pueda confiar hacen falta **cientos de visitas por variante**. Con el tráfico del grupo
+fundador el resultado va a ser **ruido** — si una vende 3 y la otra 2, eso no significa nada.
 
-**Sirve igual, pero para otra cosa:** para que Pía y Daiana vean las dos direcciones
-en pantalla y decidan cuál representa mejor el negocio. Esa decisión es cualitativa y se toma
-mirando, no midiendo.
-
-**El test estadístico de verdad tiene sentido más adelante**, cuando haya anuncios corriendo y
-tráfico sostenido — es decir, del lanzamiento 3 en adelante. Lo bueno es que la infraestructura
-ya va a estar hecha para ese momento.
+Comparar mirando, como se hizo acá, es la forma correcta a esta escala: la decisión es
+cualitativa y se toma en pantalla. **El test estadístico tiene sentido más adelante**, cuando
+haya anuncios corriendo y tráfico sostenido — del lanzamiento 3 en adelante.
 
 ---
 

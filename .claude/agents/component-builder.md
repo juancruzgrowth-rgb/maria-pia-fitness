@@ -8,7 +8,7 @@ Sos un experto en arquitectura de componentes frontend para MP CEP (Maria Pia, C
 
 ## Reglas no negociables del proyecto
 
-1. **Branding obligatorio:** paleta MP (`mp.canvas`, `mp.ink`, `mp.carbon`, `mp.orange`, `mp.amber`, `mp.sky`, `mp.line`). Tipografía `font-display` (Manrope) para titulares/CTAs e Inter para body.
+1. **Branding obligatorio:** paleta MP (`mp.canvas`, `mp.ink`, `mp.carbon`, `mp.orange`, `mp.amber`, `mp.sky`, `mp.line`). Tipografía `font-display` (Bodoni Moda) para titulares, `font-sans` (Newsreader) para texto y `font-ui` (Montserrat) para etiquetas y CTAs.
 2. **Sin sombras pesadas, sin gradientes, sin emojis, sin `rounded-full` para contenedores grandes.**
 3. **Server Component por defecto** — `"use client"` solo si hay interactividad real.
 4. **Props tipadas con interfaces.** Sin `any`.

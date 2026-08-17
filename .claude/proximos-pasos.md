@@ -1,8 +1,8 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-17 (sesión 7)**
-> **Estado del proyecto:** Identidad nueva **Pía Moretto** aplicada (logotipo, tipografía, 3 temas incl. modo oscuro). Método 4F integrado. Toda la infraestructura documentada paso a paso.
+> Última actualización: **2026-08-17 (sesión 8)**
+> **Estado del proyecto:** Diseño **cerrado y verificado en mobile**: identidad Pía Moretto (logotipo `P│M` + tipografía) sobre el fondo claro y el naranja de la paleta original. Método 4F integrado. Toda la infraestructura documentada paso a paso.
 > **Semana de sprint: objetivo de tener todo listo para el 23/08. Plazo máximo comprometido: 30/08.**
 > **Para publicar faltan 3 datos: B2 (datos bancarios), B3 (WhatsApp argentino) y B5 (fechas y cupos del grupo fundador).**
 
@@ -70,7 +70,8 @@
 | **Segunda web** | **Test A/B de diseño con sistema de temas**, no un repositorio clonado ✅ |
 | **Nombre** | **"Pía", no "María Pía".** Marca: **Pía Moretto**. Logotipo `P│M` ✅ |
 | **Tipografía** | **Bodoni Moda (titulares) + Newsreader (texto) + Montserrat (utilidad)**. Quiche es comercial y no se puede usar en web sin licencia ✅ |
-| **Temas** | **3: `mp` (anterior), `moretto` (claro), `moretto-dark` (oscuro)** ✅ |
+| **Diseño publicado** | **Piel `pia`: fondo claro y naranja de la paleta original + tipografía del logotipo P│M.** Decidido mirando las tres en pantalla ✅ |
+| **Pieles** | **`pia` (la que se publica, por defecto) + `moretto` y `moretto-dark` sólo para comparar.** La tipografía ya no cambia entre pieles ✅ |
 
 ---
 
@@ -105,7 +106,7 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
 ### 🚨 Bloqueantes nuevos de la sesión 7
 
-- [ ] **B14 · ¿Claro u oscuro?** Pía tiene que elegir entre `moretto` y `moretto-dark`. Mandarle los dos links y que decida **mirando el celular**, que es por donde entra el 80% de la audiencia. Mi recomendación: claro para la web, oscuro para Skool e Instagram. Ver `18-identidad-pia-moretto.md` §8
+- [x] ~~**B14 · ¿Claro u oscuro?**~~ **RESUELTO 2026-08-17.** Claro, y con el naranja de la paleta original. La piel `pia` combina eso con la tipografía del logotipo. Las dos monocromas quedan sólo como comparación
 - [ ] **B15 · SVG oficial del logotipo.** Exportarlo desde Canva. Hoy el monograma está reconstruido con tipografía web; integrar el oficial son 10 minutos
 - [ ] **B16 · Nombre fiscal real.** `SITE.fiscalName` dice "Pía Moretto", pero las páginas legales necesitan el nombre de la constancia de AFIP
 - [ ] **B17 · Dominio.** El código ya dice `hola@piamoretto.com` y ese dominio **no existe todavía**. Registrarlo o cambiar el mail antes de publicar
@@ -152,8 +153,31 @@ Tres correcciones que un modo oscuro apurado no hace:
 ### Accesibilidad — dos fallos encontrados y corregidos
 Se verificó cada combinación de los tres temas **incluyendo las opacidades** (`text-mp-carbon/70`, `/80`), que es donde nadie mira. Aparecieron dos fallos reales en las etiquetas de 11px: **4,38:1** en el tema claro y **4,20:1** en el oscuro, los dos por debajo del 4,5 exigido. Corregidos a **4,94:1** y **4,83:1**. A ojo habrían pasado desapercibidos.
 
-### ⚠️ Lo que NO pude verificar
-**No pude ver el sitio renderizado** — no hay navegador en este entorno. Compila y el contraste da; que se vea bien es cosa de mirarlo.
+---
+
+## ✅ Hecho en la sesión 8 (2026-08-17)
+
+**Verificado:** `lint`, `typecheck` y `build` sin errores en las tres pieles. Y esta vez **verificado a ojo**: capturas reales a 390px de ancho (iPhone) y a 1280px, con Brave en modo headless.
+
+### La decisión de diseño
+Se miraron las tres versiones en pantalla y salió una cuarta, que es la que se publica: **fondo claro y naranja de la paleta original, con la tipografía y el logotipo nuevos encima**. Es la piel `pia`, y es la que compila Vercel sin configurar nada.
+
+Las dos monocromas (`moretto`, `moretto-dark`) quedan en el repositorio sólo para comparar. **La tipografía ya no cambia entre pieles** — es de la marca, no de la variante. Lo único que las separa es el color, que es lo que hace honesta la comparación.
+
+### Dos bugs reales encontrados al mirar el celular
+Ninguno de los dos se veía compilando; los dos se veían en la captura.
+
+1. **El guion de "50-60 min" era invisible.** Causa: el tamaño óptico estaba fijado a mano en 96 —el corte de display de la Bodoni— para *todo* el texto. A 20px eso adelgaza los trazos finos hasta hacerlos desaparecer. **Arreglo:** `font-optical-sizing: auto`, que es para lo que existe el eje: el navegador lo deriva del tamaño real de cada texto. La piel oscura sigue fijándolo en 11 a propósito, que es el único caso donde pisar el automático sirve.
+2. **Restos de la tipografía anterior.** El `font-feature-settings: "ss01","cv11"` del CSS era de Inter, que ya no se usa. Un tag de OpenType no significa lo mismo en dos familias distintas, así que arrastrarlo es pedir un cambio de forma a ciegas. Eliminado.
+
+### Limpieza
+Manrope e Inter ya no las usa ninguna piel: se sacaron del `layout.tsx`. Con eso vuelve la precarga de fuentes —que había que desactivar cuando convivían cinco familias— y cada página baja tres, no cinco.
+
+### Documentación puesta al día
+`branding.md` y `rules/frontend/styles.md` decían Manrope + Inter y hablaban de un `tailwind.config.ts` que no existe. Corregidos, con las dos reglas nuevas que salieron de los bugs de arriba.
+
+### ⚠️ Pendiente menor detectado
+En **desktop**, la línea "Grupo fundador · quedan N lugares" de la barra de compra cae encima de la foto del hero y queda ilegible. Es anterior a estos cambios. Se arregla poniéndole fondo o moviéndola.
 
 ---
 
@@ -390,6 +414,9 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 ---
 
 ## ✅ Historial
+
+### Sesión 8 — 2026-08-17
+Diseño elegido mirando capturas reales · piel `pia` (claro + naranja + tipografía nueva) como la que se publica · guion invisible por tamaño óptico fijado a mano, corregido · restos de Inter eliminados · docs de branding al día
 
 ### Sesión 7 — 2026-08-17
 Identidad Pía Moretto · sistema de logotipos · tipografía de 3 roles · modo oscuro con corrección de tamaño óptico · 2 fallos de contraste corregidos

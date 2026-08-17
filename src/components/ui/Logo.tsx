@@ -69,7 +69,7 @@ export function LogoWordmark({ className }: WordmarkProps) {
   return (
     <span
       className={cn(
-        "font-ui text-[0.7rem] font-medium uppercase leading-none text-mp-ink",
+        "font-ui text-[0.68rem] font-medium uppercase leading-none tracking-[0.2em] text-mp-ink",
         className,
       )}
     >
@@ -92,7 +92,9 @@ export function LogoLockup({ className, size = "lg" }: LockupProps) {
       aria-label={SITE.fullName}
     >
       <LogoMonogram size={size} />
-      <LogoWordmark className="text-[0.65rem] tracking-[0.34em]" />
+      {/* El -mr compensa el espacio que el tracking agrega después de la última
+          letra; sin eso la firma queda descentrada respecto del monograma. */}
+      <LogoWordmark className="-mr-[0.34em] text-[0.65rem] tracking-[0.34em]" />
     </span>
   );
 }

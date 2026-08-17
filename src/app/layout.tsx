@@ -1,11 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Manrope,
-  Inter,
-  Bodoni_Moda,
-  Newsreader,
-  Montserrat,
-} from "next/font/google";
+import { Bodoni_Moda, Newsreader, Montserrat } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -17,22 +11,9 @@ import { homeDescription, organizationJsonLd } from "@/lib/seo";
 import { publicEnv } from "@/lib/env";
 import { THEME, THEME_ID } from "@/lib/theme";
 
-const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
 /**
- * Sistema tipográfico de la identidad "Pía Moretto".
+ * Sistema tipográfico de la identidad "Pía Moretto". Es el mismo en las tres
+ * pieles: la tipografía es de la marca, el color es lo que está a prueba.
  *
  * El logotipo oficial usa Quiche (Adam Ladd) arriba y Montserrat abajo. Quiche
  * es comercial y viene incluida en Canva, pero usarla en la web necesita una
@@ -48,7 +29,13 @@ const inter = Inter({
  * evita que una combinación serif+serif se lea como un error.
  *
  * `axes: ["opsz"]` no es decorativo: es lo que permite engrosar las serifas en
- * modo oscuro, donde los trazos finos se desvanecen. Ver globals.css.
+ * la piel oscura, donde los trazos finos se desvanecen. Ver globals.css.
+ *
+ * Las tres se precargan porque las tres se usan en todas las páginas. Ojo si
+ * alguna vez se agrega una cuarta familia para una sola piel: `next/font`
+ * emite un `<link rel="preload">` por cada familia que se instancia en este
+ * módulo, se renderice o no, y `preload` no admite una expresión condicional
+ * — el cargador de fuentes exige valores literales.
  */
 const bodoni = Bodoni_Moda({
   variable: "--font-bodoni",
@@ -69,6 +56,8 @@ const montserrat = Montserrat({
   subsets: ["latin"],
   display: "swap",
 });
+
+const FONT_VARIABLES = `${bodoni.variable} ${newsreader.variable} ${montserrat.variable}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(publicEnv.siteUrl),
@@ -123,7 +112,7 @@ export default function RootLayout({
     <html
       lang="es-AR"
       data-theme={THEME_ID}
-      className={`${manrope.variable} ${inter.variable} ${bodoni.variable} ${newsreader.variable} ${montserrat.variable} h-full antialiased`}
+      className={`${FONT_VARIABLES} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-mp-canvas text-mp-ink">
         <a

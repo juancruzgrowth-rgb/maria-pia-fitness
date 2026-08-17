@@ -9,7 +9,7 @@ Web (landing + e-commerce). Fase 2 futura: Automatizaciones de marketing y venta
 ## Stack
 - Next.js 14+ (App Router), TypeScript strict
 - Tailwind CSS con tokens MP
-- Manrope (titulares + CTAs) + Inter (body/UI) — `next/font/google`
+- Bodoni Moda (titulares) + Newsreader (texto) + Montserrat (etiquetas/CTAs) — `next/font/google`
 - MercadoPago Checkout Pro (ARS) + Stripe Checkout (USD)
 - Brevo (newsletter, doble opt-in)
 - Google Sheets API (leads + ventas + contactos)
@@ -30,7 +30,7 @@ Web (landing + e-commerce). Fase 2 futura: Automatizaciones de marketing y venta
 - Texto / CTA primario: Negro Profundo `#050505` y Carbón `#161616`
 - Acento principal: Naranja `#F2A31B` y Ámbar Cálido `#D98A17`
 - Acento secundario: Celeste `#BFDFFF`
-- Tipografía: **Manrope** (display) + **Inter** (texto)
+- Tipografía: **Bodoni Moda** (titulares) + **Newsreader** (texto) + **Montserrat** (etiquetas y CTAs)
 - Tono: Sobrio, motivador, profesional, directo. Hablamos de vos, con empatía.
 - Motivos visuales: trazo de pulso (línea), líneas finas 1px, alto contraste, formas simples
 

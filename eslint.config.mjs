@@ -9,6 +9,9 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    // Carpetas de build por tema (NEXT_DIST_DIR), para levantar las pieles en
+    // paralelo. Ver docs/estrategia/17-test-ab-diseno.md
+    ".next-*/**",
     "out/**",
     "build/**",
     "next-env.d.ts",

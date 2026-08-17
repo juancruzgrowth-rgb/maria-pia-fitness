@@ -13,31 +13,45 @@ paths: "src/**/*.{tsx,jsx,css}"
 - **Sin `rounded-full`** en contenedores grandes (cards, secciones). Sí en avatars y dots chicos.
 - **Sin emojis.** Sustituir siempre por SVG.
 
-## Tokens (declarados en `tailwind.config.ts`)
+## Tokens (declarados en `src/app/globals.css`, bloque `@theme`)
 
-```ts
-colors: {
-  mp: {
-    canvas: "#F5F5F2",   // fondo principal
-    ink: "#050505",      // texto / CTA primario
-    carbon: "#161616",   // texto secundario
-    orange: "#F2A31B",   // acento principal
-    amber: "#D98A17",    // acento hover
-    sky: "#BFDFFF",      // acento decorativo
-    line: "#EAEAEA",     // bordes
-  },
-}
+No hay `tailwind.config.ts`: con Tailwind v4 los tokens viven en el CSS.
+
+```css
+--color-mp-canvas: #f5f5f2;   /* fondo principal */
+--color-mp-ink:    #050505;   /* texto / CTA primario */
+--color-mp-carbon: #161616;   /* texto secundario */
+--color-mp-orange: #f2a31b;   /* acento principal — NO usar en texto (1.9:1) */
+--color-mp-amber:  #d98a17;   /* acento hover */
+--color-mp-ember:  #8f5600;   /* acento para TEXTO sobre canvas (5.4:1) */
+--color-mp-sky:    #bfdfff;   /* acento decorativo */
+--color-mp-line:   #eaeaea;   /* bordes */
 ```
+
+Los nombres son **ranuras semánticas**, no descripciones del color: las pieles de
+comparación meten un bordeaux en `--color-mp-orange` a propósito. Ver `src/lib/theme.ts`.
 
 ## Tipografía
 
-- Variables de fuente cargadas en `layout.tsx` y aplicadas globalmente:
-  - `--font-manrope` → display (titulares, CTAs)
-  - `--font-inter` → texto (body, UI)
-- Clases helper: `font-display` (Manrope) y `font-sans` (Inter, default)
-- H1-H3: usar `font-display` con peso ExtraBold/Bold/Semibold
-- Body: default (Inter)
-- CTAs: `font-display font-semibold uppercase tracking-wider`
+Tres roles, dos serifas y un palo seco. Sale del logotipo P│M.
+
+| Variable | Familia | Rol |
+|---|---|---|
+| `--font-display` | Bodoni Moda | Titulares. Alto contraste, la voz del logotipo |
+| `--font-sans` | Newsreader | Texto largo. Serif de lectura, bajo contraste |
+| `--font-ui` | Montserrat | Etiquetas, botones, navegación |
+
+- Clases helper: `font-display`, `font-sans` (default) y `font-ui`
+- **Todo lo que va en `uppercase` toma Montserrat automáticamente** — hay una regla
+  global en `globals.css`. No hace falta agregar `font-ui` a mano
+- H1-H3: `font-display`
+- CTAs: `font-display font-semibold uppercase tracking-wider` (la regla de arriba
+  los pasa a Montserrat)
+- **Nunca fijar `font-variation-settings: "opsz" …` a mano.** Está en `auto`: el
+  navegador deriva el tamaño óptico del tamaño real del texto. Fijarlo adelgaza
+  los trazos finos de todo lo chico hasta hacerlos desaparecer
+- **Nunca arrastrar `font-feature-settings` de una familia a otra.** Un tag como
+  `ss01` significa cosas distintas en cada tipografía
 
 ## Layout
 
