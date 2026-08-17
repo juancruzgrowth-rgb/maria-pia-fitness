@@ -90,11 +90,21 @@ En n8n: panel izquierdo → **Credentials** → **Add credential**.
 
 ## 5. Orden de construcción — lo que hago yo
 
+> **Actualización del 2026-08-17:** A0, A3, A3-bis, A4 y A99 ya están construidos y
+> verificados. Los archivos están en [`../setup/n8n/`](../setup/n8n/) y el detalle de cada uno
+> en [`19-flujos-n8n-construidos.md`](19-flujos-n8n-construidos.md).
+>
+> **Apareció un flujo que no estaba en este plan: A0 · Router.** Meta permite una sola URL de
+> callback por aplicación, así que A3 y A3-bis **no pueden** tener cada uno su disparador de
+> WhatsApp: sólo uno de los dos recibiría los mensajes, y el otro quedaría mudo sin dar error.
+> A0 es el único que escucha a Meta y reparte hacia adentro.
+
 Van en este orden porque cada uno usa lo que armó el anterior.
 
 | # | Flujo | Qué hace | Depende de |
 |---|---|---|---|
-| **A3** | Recepción de comprobante | Acuse automático + código de 4 dígitos + fila en `ventas` + aviso a María Pía | WhatsApp, Sheets |
+| **A0** | Router de WhatsApp | La única puerta de entrada. Reparte hacia A3 o A3-bis | WhatsApp |
+| **A3** | Recepción de comprobante | Acuse automático + código de 4 dígitos + fila en `ventas` + aviso a María Pía | A0, Sheets, Drive |
 | **A3-bis** | Parser de `OK 1234` | Lee la respuesta de María Pía y confirma o rechaza la venta | A3 |
 | **A4** | Onboarding | Acceso a Skool + email + WhatsApp + asignación de grupo + reloj de garantía | A3-bis |
 | **A5** | Secuencia de Semana 0 | Los mensajes de la preparación, día por día | A4 |

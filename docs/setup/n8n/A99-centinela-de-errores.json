@@ -1,0 +1,84 @@
+{
+  "name": "A99 · Centinela de errores",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## El flujo que avisa cuando otro se rompe\n\nNo se ejecuta solo: se **asigna** como «Error Workflow» en la configuración de cada uno de los demás flujos (Settings → Error Workflow).\n\nSin esto, una automatización que falla no falla ruidosamente: falla en silencio, y la primera señal es una clienta preguntando por qué no le llegó el acceso.\n\n**Lo que nunca hacemos:** que el sistema improvise cuando el circuito de cobro se cae. Avisa a un humano y se queda quieto. Una automatización que adivina con la plata de la gente es peor que una que se detiene.",
+        "height": 360,
+        "width": 440,
+        "color": 3
+      },
+      "id": "e-nota",
+      "name": "Nota",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-680, -60]
+    },
+    {
+      "parameters": {},
+      "id": "e-trigger",
+      "name": "Cuando algo falla",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [-620, 340]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "e1", "name": "phoneNumberId", "value": "REEMPLAZAR_PHONE_NUMBER_ID", "type": "string" },
+            { "id": "e2", "name": "avisarA", "value": "REEMPLAZAR_WHATSAPP_DE_JUAN_CRUZ", "type": "string" }
+          ],
+          "includeOtherFields": true
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "e-config",
+      "name": "Configuración",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-400, 340]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Recorta el error a lo que se puede leer de un vistazo en el celular. El\n// detalle completo queda en Executions; acá va sólo lo necesario para decidir\n// si hay que correr a mirar o puede esperar a mañana.\nconst e = $input.first().json;\n\nconst flujo = e.workflow?.name ?? 'desconocido';\nconst nodo = e.execution?.lastNodeExecuted ?? 'desconocido';\nconst mensaje = String(e.execution?.error?.message ?? 'sin mensaje').slice(0, 300);\nconst url = e.execution?.url ?? '';\n\nreturn [{ json: { flujo, nodo, mensaje, url } }];"
+      },
+      "id": "e-resumir",
+      "name": "Resumir el error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-180, 340]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $('Configuración').first().json.phoneNumberId }}/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  messaging_product: 'whatsapp',\n  to: $('Configuración').first().json.avisarA,\n  type: 'template',\n  template: {\n    name: 'falla_automatizacion',\n    language: { code: 'es_AR' },\n    components: [{\n      type: 'body',\n      parameters: [\n        { type: 'text', text: $json.flujo },\n        { type: 'text', text: $json.nodo },\n        { type: 'text', text: $json.mensaje }\n      ]\n    }]\n  }\n}) }}",
+        "options": {}
+      },
+      "id": "e-avisar",
+      "name": "Avisar por WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [60, 340]
+    }
+  ],
+  "connections": {
+    "Cuando algo falla": { "main": [[{ "node": "Configuración", "type": "main", "index": 0 }]] },
+    "Configuración": { "main": [[{ "node": "Resumir el error", "type": "main", "index": 0 }]] },
+    "Resumir el error": { "main": [[{ "node": "Avisar por WhatsApp", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  },
+  "pinData": {}
+}

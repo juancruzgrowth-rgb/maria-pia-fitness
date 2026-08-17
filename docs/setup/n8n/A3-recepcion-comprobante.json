@@ -1,0 +1,436 @@
+{
+  "name": "A3 · Recepción de comprobante",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## El corazón del cobro\n\nLo llama **A0 · Router de WhatsApp**, que es el único que escucha a Meta. Este flujo no tiene disparador propio a propósito.\n\n**Máquina de estados de una venta:**\n\n```\n(no existe)  →  esperando\nesperando    →  esperando   (faltan datos)\nesperando    →  pendiente   (está completa)\npendiente    →  pendiente   (no se vuelve a avisar)\npendiente    →  confirmado | rechazado   (A3-bis)\n```\n\nEl código de 4 dígitos se asigna en el **primer contacto**, no al completarse. Esa es la clave estable con la que todo lo demás hace match, y es lo que hace que reenviar un mensaje dos veces actualice la misma fila en vez de crear una segunda.",
+        "height": 460,
+        "width": 460,
+        "color": 4
+      },
+      "id": "a3-nota",
+      "name": "Nota",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-680, -160]
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "a3-trigger",
+      "name": "Lo llama el router",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-620, 340]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cfg-1",
+              "name": "phoneNumberId",
+              "value": "REEMPLAZAR_PHONE_NUMBER_ID",
+              "type": "string"
+            },
+            {
+              "id": "cfg-2",
+              "name": "mpWhatsapp",
+              "value": "REEMPLAZAR_WHATSAPP_DE_PIA",
+              "type": "string"
+            },
+            {
+              "id": "cfg-3",
+              "name": "sheetId",
+              "value": "REEMPLAZAR_ID_DE_LA_PLANILLA",
+              "type": "string"
+            },
+            {
+              "id": "cfg-4",
+              "name": "driveFolderId",
+              "value": "REEMPLAZAR_ID_CARPETA_COMPROBANTES",
+              "type": "string"
+            },
+            {
+              "id": "cfg-5",
+              "name": "grupoActual",
+              "value": "Grupo fundador",
+              "type": "string"
+            },
+            {
+              "id": "cfg-6",
+              "name": "ventanaRespuesta",
+              "value": "menos de 2 horas",
+              "type": "string"
+            }
+          ],
+          "includeOtherFields": true
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "a3-config",
+      "name": "Configuración",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-400, 340]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/**\n * Saca nombre, email y plan del texto del mensaje.\n *\n * El mensaje precargado de la web (RECEIPT_MESSAGE en src/lib/site.ts) pide los\n * datos con etiquetas exactas. Se parsea eso primero, y si no aparece se cae a\n * una búsqueda suelta: mucha gente borra la plantilla y escribe a mano.\n */\nconst msg = $input.first().json;\nconst texto = String(msg.texto ?? '');\n\nconst etiqueta = (nombre) => {\n  const m = texto.match(new RegExp(`mi\\\\s*${nombre}\\\\s*:\\\\s*(.+)`, 'i'));\n  return m ? m[1].trim() : '';\n};\n\nconst emailSuelto = (texto.match(/[\\w.+-]+@[\\w-]+\\.[\\w.]+/) ?? [''])[0];\n\n// El nombre del perfil de WhatsApp es un buen segundo premio: no siempre es el\n// nombre real, pero sirve para que Pía sepa a quién está mirando.\nconst nombre = etiqueta('nombre') || String(msg.perfil ?? '').trim();\nconst email = (etiqueta('email') || emailSuelto).toLowerCase().trim();\n\n// El plan se normaliza a los dos ids que entiende src/lib/products.ts. Si no se\n// reconoce queda vacío y lo completa Pía: adivinar acá es adivinar con plata.\nconst planCrudo = (etiqueta('plan') || texto).toLowerCase();\nlet plan = '';\nif (/\\b3\\b|tres\\s*niveles|pack/.test(planCrudo)) plan = 'pack-3-niveles';\nelse if (/un\\s*nivel|1\\s*nivel|mensual/.test(planCrudo)) plan = 'nivel-mensual';\n\nreturn [{ json: { ...msg, nombre, email, plan } }];"
+      },
+      "id": "a3-leer-datos",
+      "name": "Leer los datos del mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-180, 340]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "ventas",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "a3-leer-ventas",
+      "name": "Leer ventas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [40, 340],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/**\n * El único nodo que piensa. Todo lo que viene después es tonto a propósito: si\n * mañana cambia una regla del cobro, se cambia acá y en ningún otro lado.\n */\nconst cfg = $('Configuración').first().json;\nconst msg = $('Leer los datos del mensaje').first().json;\n\n// `alwaysOutputData` hace que una planilla vacía devuelva un item sin columnas.\nconst filas = $input.all()\n  .map((i) => i.json)\n  .filter((f) => f && f.codigo);\n\nconst soloDigitos = (t) => String(t ?? '').replace(/\\D/g, '');\nconst TERMINALES = ['confirmado', 'rechazado', 'devuelto'];\nconst estaCerrada = (f) => TERMINALES.includes(String(f.estado ?? '').toLowerCase());\n\n// La fila viva de este teléfono: la última que todavía no se cerró. Si una\n// clienta ya compró y vuelve a escribir, empieza una venta nueva en vez de\n// pisar la anterior — que es lo que corresponde cuando compra el nivel 2.\nconst abiertas = filas.filter(\n  (f) => soloDigitos(f.whatsapp) === soloDigitos(msg.whatsapp) && !estaCerrada(f),\n);\nconst actual = abiertas[abiertas.length - 1] ?? null;\n\n/**\n * Código de 4 dígitos que no esté en uso. Se excluyen las ventas cerradas: un\n * código de hace seis meses puede reciclarse sin ambigüedad, porque A3-bis sólo\n * busca entre las pendientes.\n */\nfunction nuevoCodigo() {\n  const enUso = new Set(\n    filas.filter((f) => !estaCerrada(f)).map((f) => String(f.codigo).padStart(4, '0')),\n  );\n  for (let intento = 0; intento < 200; intento++) {\n    const c = String(Math.floor(1000 + Math.random() * 9000));\n    if (!enUso.has(c)) return c;\n  }\n  throw new Error(\n    'No se pudo generar un código libre en 200 intentos. Hay demasiadas ventas abiertas sin cerrar: revisá la planilla.',\n  );\n}\n\n// Lo nuevo pisa a lo viejo sólo si trae contenido. Un segundo mensaje sin email\n// no puede borrar el email que llegó en el primero.\nconst preferir = (nuevo, viejo) =>\n  String(nuevo ?? '').trim() || String(viejo ?? '').trim();\n\nconst fila = {\n  fecha: actual?.fecha || new Date().toISOString().slice(0, 10),\n  codigo: actual?.codigo ? String(actual.codigo).padStart(4, '0') : nuevoCodigo(),\n  nombre: preferir(msg.nombre, actual?.nombre),\n  email: preferir(msg.email, actual?.email),\n  whatsapp: soloDigitos(msg.whatsapp),\n  plan: preferir(msg.plan, actual?.plan),\n  monto: actual?.monto ?? '',\n  moneda: 'ARS',\n  metodo_pago: 'transferencia',\n  comprobante_url: actual?.comprobante_url ?? '',\n  estado: String(actual?.estado ?? 'esperando').toLowerCase(),\n  grupo: actual?.grupo || cfg.grupoActual,\n  acceso_skool: actual?.acceso_skool ?? 'no',\n  fecha_llamada: actual?.fecha_llamada ?? '',\n  garantia_vence: actual?.garantia_vence ?? '',\n  notas: actual?.notas ?? '',\n};\n\nconst traeAdjuntoNuevo = String(msg.adjuntoId ?? '') !== '';\nconst tieneComprobante = traeAdjuntoNuevo || fila.comprobante_url !== '';\n\nconst faltan = [];\nif (!fila.nombre) faltan.push('tu nombre');\nif (!fila.email) faltan.push('tu email');\nif (!tieneComprobante) faltan.push('la foto del comprobante');\n\nlet accion;\nif (fila.estado === 'pendiente') {\n  // Ya se le avisó a Pía. Cualquier mensaje nuevo se acusa, pero NO vuelve a\n  // notificar: si no, un reenvío le llena el WhatsApp de avisos repetidos.\n  accion = 'ya_avisado';\n} else if (faltan.length === 0) {\n  fila.estado = 'pendiente';\n  accion = traeAdjuntoNuevo ? 'completar_con_adjunto' : 'completar_sin_adjunto';\n} else {\n  accion = 'faltan_datos';\n}\n\n// \"tu nombre, tu email y la foto del comprobante\" — con la coma de Oxford al revés,\n// que es como se escribe en castellano.\nconst faltanTexto = faltan.length > 1\n  ? `${faltan.slice(0, -1).join(', ')} y ${faltan[faltan.length - 1]}`\n  : faltan[0] ?? '';\n\nreturn [{\n  json: { accion, faltan, faltanTexto, esNueva: actual === null, adjuntoId: msg.adjuntoId ?? '', ...fila },\n}];"
+      },
+      "id": "a3-decidir",
+      "name": "Decidir",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [260, 340]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+                "conditions": [
+                  {
+                    "id": "r1",
+                    "leftValue": "={{ $json.accion }}",
+                    "rightValue": "faltan_datos",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Faltan datos"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+                "conditions": [
+                  {
+                    "id": "r2",
+                    "leftValue": "={{ $json.accion }}",
+                    "rightValue": "completar_con_adjunto",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Completa, con comprobante nuevo"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+                "conditions": [
+                  {
+                    "id": "r3",
+                    "leftValue": "={{ $json.accion }}",
+                    "rightValue": "completar_sin_adjunto",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Completa, el comprobante ya estaba"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+                "conditions": [
+                  {
+                    "id": "r4",
+                    "leftValue": "={{ $json.accion }}",
+                    "rightValue": "ya_avisado",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Ya está en verificación"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a3-switch",
+      "name": "Qué hacer",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [500, 340]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": { "__rl": true, "value": "ventas", "mode": "name" },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": ["codigo"],
+          "value": {},
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "a3-guardar-parcial",
+      "name": "Guardar lo que hay",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [780, 60]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Configuración').first().json.phoneNumberId }}",
+        "recipientPhoneNumber": "={{ $('Decidir').first().json.whatsapp }}",
+        "textBody": "=Recibí tu mensaje. Para poder darte el acceso me falta {{ $('Decidir').first().json.faltanTexto }}.\n\n¿Me lo mandás por acá? Apenas lo tenga verifico la transferencia y te confirmo en {{ $('Configuración').first().json.ventanaRespuesta }}.",
+        "additionalFields": {}
+      },
+      "id": "a3-pedir-faltante",
+      "name": "Pedir lo que falta",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [1000, 60]
+    },
+    {
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "url": "=https://graph.facebook.com/v21.0/{{ $json.adjuntoId }}",
+        "options": {}
+      },
+      "id": "a3-media-url",
+      "name": "Pedir la URL del archivo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [780, 240]
+    },
+    {
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "id": "a3-media-descargar",
+      "name": "Descargar el comprobante",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1000, 240]
+    },
+    {
+      "parameters": {
+        "name": "=comprobante-{{ $('Decidir').first().json.codigo }}-{{ $('Decidir').first().json.nombre || 'sin-nombre' }}",
+        "driveId": { "__rl": true, "value": "My Drive", "mode": "list", "cachedResultName": "My Drive" },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.driveFolderId }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "a3-drive",
+      "name": "Guardar el comprobante en Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [1220, 240]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Le pega el link de Drive a la fila que armó \"Decidir\" y descarta los campos\n// de trabajo: a la planilla va la fila y nada más.\nconst fila = { ...$('Decidir').first().json };\nconst archivo = $input.first().json;\n\nfila.comprobante_url =\n  archivo.webViewLink ||\n  (archivo.id ? `https://drive.google.com/file/d/${archivo.id}/view` : '');\n\nfor (const campo of ['accion', 'faltan', 'faltanTexto', 'esNueva', 'adjuntoId']) {\n  delete fila[campo];\n}\n\nreturn [{ json: fila }];"
+      },
+      "id": "a3-armar-fila",
+      "name": "Armar la fila final",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, 240]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// El comprobante ya estaba guardado de un mensaje anterior. Se limpia la fila\n// igual que en la otra rama, para que las dos escriban exactamente lo mismo.\nconst fila = { ...$('Decidir').first().json };\n\nfor (const campo of ['accion', 'faltan', 'faltanTexto', 'esNueva', 'adjuntoId']) {\n  delete fila[campo];\n}\n\nreturn [{ json: fila }];"
+      },
+      "id": "a3-armar-fila-sin",
+      "name": "Armar la fila final (sin adjunto nuevo)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [780, 440]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": { "__rl": true, "value": "ventas", "mode": "name" },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": ["codigo"],
+          "value": {},
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "a3-guardar-pendiente",
+      "name": "Marcar como pendiente",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1660, 340]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Configuración').first().json.phoneNumberId }}",
+        "recipientPhoneNumber": "={{ $json.whatsapp }}",
+        "textBody": "=¡Recibí tu comprobante! Ya lo estoy verificando.\n\nEn {{ $('Configuración').first().json.ventanaRespuesta }} te mando el acceso. Si es de noche, te llega a primera hora de la mañana.\n\nTu número de referencia es {{ $json.codigo }}, por si necesitás escribirme.",
+        "additionalFields": {}
+      },
+      "id": "a3-acuse",
+      "name": "Acusar recibo a la clienta",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [1900, 240]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v21.0/{{ $('Configuración').first().json.phoneNumberId }}/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  messaging_product: 'whatsapp',\n  to: $('Configuración').first().json.mpWhatsapp,\n  type: 'template',\n  template: {\n    name: 'nuevo_comprobante',\n    language: { code: 'es_AR' },\n    components: [{\n      type: 'body',\n      parameters: [\n        { type: 'text', text: $json.nombre || 'sin nombre' },\n        { type: 'text', text: $json.email || 'sin email' },\n        { type: 'text', text: $json.plan || 'sin especificar' },\n        { type: 'text', text: $json.comprobante_url || 'sin link' },\n        { type: 'text', text: $json.codigo }\n      ]\n    }]\n  }\n}) }}",
+        "options": {}
+      },
+      "id": "a3-avisar-pia",
+      "name": "Avisarle a Pía",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1900, 440]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Configuración').first().json.phoneNumberId }}",
+        "recipientPhoneNumber": "={{ $json.whatsapp }}",
+        "textBody": "=Ya tengo todo tuyo y lo estoy verificando. Apenas confirme la transferencia te mando el acceso.\n\nTu número de referencia sigue siendo {{ $json.codigo }}.",
+        "additionalFields": {}
+      },
+      "id": "a3-ya-avisado",
+      "name": "Decir que ya está en verificación",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [780, 620]
+    }
+  ],
+  "connections": {
+    "Lo llama el router": {
+      "main": [[{ "node": "Configuración", "type": "main", "index": 0 }]]
+    },
+    "Configuración": {
+      "main": [[{ "node": "Leer los datos del mensaje", "type": "main", "index": 0 }]]
+    },
+    "Leer los datos del mensaje": {
+      "main": [[{ "node": "Leer ventas", "type": "main", "index": 0 }]]
+    },
+    "Leer ventas": {
+      "main": [[{ "node": "Decidir", "type": "main", "index": 0 }]]
+    },
+    "Decidir": {
+      "main": [[{ "node": "Qué hacer", "type": "main", "index": 0 }]]
+    },
+    "Qué hacer": {
+      "main": [
+        [{ "node": "Guardar lo que hay", "type": "main", "index": 0 }],
+        [{ "node": "Pedir la URL del archivo", "type": "main", "index": 0 }],
+        [{ "node": "Armar la fila final (sin adjunto nuevo)", "type": "main", "index": 0 }],
+        [{ "node": "Decir que ya está en verificación", "type": "main", "index": 0 }]
+      ]
+    },
+    "Guardar lo que hay": {
+      "main": [[{ "node": "Pedir lo que falta", "type": "main", "index": 0 }]]
+    },
+    "Pedir la URL del archivo": {
+      "main": [[{ "node": "Descargar el comprobante", "type": "main", "index": 0 }]]
+    },
+    "Descargar el comprobante": {
+      "main": [[{ "node": "Guardar el comprobante en Drive", "type": "main", "index": 0 }]]
+    },
+    "Guardar el comprobante en Drive": {
+      "main": [[{ "node": "Armar la fila final", "type": "main", "index": 0 }]]
+    },
+    "Armar la fila final": {
+      "main": [[{ "node": "Marcar como pendiente", "type": "main", "index": 0 }]]
+    },
+    "Armar la fila final (sin adjunto nuevo)": {
+      "main": [[{ "node": "Marcar como pendiente", "type": "main", "index": 0 }]]
+    },
+    "Marcar como pendiente": {
+      "main": [
+        [
+          { "node": "Acusar recibo a la clienta", "type": "main", "index": 0 },
+          { "node": "Avisarle a Pía", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  },
+  "pinData": {}
+}

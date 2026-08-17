@@ -1,8 +1,8 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-17 (sesión 9)**
-> **Estado del proyecto:** Diseño **cerrado y verificado en mobile**: identidad Pía Moretto (logotipo `P│M` + tipografía) sobre el fondo claro y el naranja de la paleta original. Método 4F integrado. Toda la infraestructura documentada paso a paso.
+> Última actualización: **2026-08-17 (sesión 10)**
+> **Estado del proyecto:** Diseño **cerrado y verificado en mobile**: identidad Pía Moretto (logotipo `P│M` + tipografía) sobre el fondo claro y el naranja de la paleta original. Método 4F integrado. **Los flujos de cobro y onboarding están construidos y verificados** — falta encenderlos, que depende de las cuentas.
 > **Semana de sprint: objetivo de tener todo listo para el 23/08. Plazo máximo comprometido: 30/08.**
 > **Para publicar faltan 3 datos: B2 (datos bancarios), B3 (WhatsApp argentino) y B5 (fechas y cupos del grupo fundador).**
 
@@ -32,6 +32,9 @@
 | **`docs/estrategia/16-lanzamiento-creativos-calendario.md`** | **Secuencia de lanzamiento, creativos y calendario. Para Daiana** |
 | **`docs/estrategia/17-test-ab-diseno.md`** | **Cómo se sirven varias pieles del sitio a la vez** |
 | **`docs/estrategia/18-identidad-pia-moretto.md`** | **LOGOTIPO, TIPOGRAFÍA Y LOS 3 TEMAS. La identidad vigente** |
+| **`docs/estrategia/19-flujos-n8n-construidos.md`** | **LOS 5 FLUJOS YA CONSTRUIDOS: qué hace cada uno, qué configurar, cómo probarlos** |
+| `docs/setup/n8n/*.json` | Los flujos listos para importar a n8n |
+| `docs/setup/n8n/verificar.mjs` | Test de la lógica de cobro. `node docs/setup/n8n/verificar.mjs` |
 | `docs/setup/sheets/*.csv` | Encabezados listos para importar a la planilla |
 | `docs/estrategia/MP-CEP-Plan-Lead-Magnets.xlsx` | Plan de contenido en Excel (6 hojas) |
 
@@ -207,8 +210,67 @@ Regla nueva en `rules/frontend/styles.md`: cada eje variable que se pide en `nex
 ### La lección que quedó escrita
 Los tres bugs de tipografía de este proyecto pasaron `typecheck`, `lint`, `build` y la auditoría de contraste **sin que saltara nada**. Compilar no es ver. Ahora está como regla: cualquier cambio de tipografía, de color de texto o de elemento flotante se mira en captura a 390px de ancho real antes de commitear.
 
-### Pendiente
-- [ ] **Leer el informe de PageSpeed** que pasó Juan Cruz (`https://pagespeed.web.dev/analysis/https-maria-pia-fitness-vercel-app/...`, mobile). No se pudo abrir en la sesión: la API pública de Google estaba con la cuota diaria agotada y la captura excedía el límite de tamaño. **Los 124 KB de fuentes que se ahorraron son anteriores a esa medición**, así que el informe hay que releerlo después del deploy de esta sesión
+---
+
+## ✅ Hecho en la sesión 10 (2026-08-17)
+
+**Verificado:** los 5 flujos pasan el validador de archivos y **27 casos de lógica de negocio**, con `node docs/setup/n8n/verificar.mjs`. La web no se tocó.
+
+Sesión de automatizaciones. Se construyeron los flujos que hacen la venta, listos para importar: `docs/setup/n8n/*.json`. El detalle está en **`docs/estrategia/19-flujos-n8n-construidos.md`**.
+
+### Apareció un flujo que no estaba en el plan: A0 · Router
+El plan tenía A3 y A3-bis como dos flujos independientes, cada uno con su disparador de WhatsApp. **No puede funcionar:** Meta permite **una sola URL de callback por aplicación**, así que uno de los dos habría quedado mudo — y sin dar ningún error, que es lo peor. A0 es ahora el único que escucha a Meta y reparte hacia adentro.
+
+**Regla nueva:** si algún día se agrega otro flujo que reaccione a WhatsApp, se le suma una salida al switch de A0. Nunca otro disparador de WhatsApp.
+
+### Lo que se construyó
+| Flujo | Qué hace |
+|---|---|
+| **A0** | La única puerta de entrada de WhatsApp. Reparte según quién escribió |
+| **A3** | Recibe el comprobante, arma la venta, la guarda en Drive, avisa a Pía |
+| **A3-bis** | Lee el `OK 1234` de Pía, confirma o rechaza, arranca el reloj de la garantía |
+| **A4** | Le da el acceso a la alumna: WhatsApp + Brevo + fila en `comunidad` |
+| **A99** | Avisa por WhatsApp cuando cualquier otro se rompe |
+
+### Tres decisiones de diseño que vale recordar
+1. **El código de 4 dígitos se asigna en el primer contacto**, no cuando la venta se completa. Es lo que da una clave estable desde el minuto cero, y es lo que hace que reenviar un mensaje actualice la fila que ya existe en vez de crear una segunda. Sin eso, la clienta que manda el texto y después la foto genera dos ventas.
+2. **El comprobante se sube a Drive.** Meta borra los archivos a los 30 días: un comprobante de pago que desaparece no sirve ni para discutir con una clienta ni para la contadora.
+3. **A3 no piensa en mensajes, piensa en el estado de la venta.** `esperando → pendiente → confirmado`. En la vida real la clienta manda dos o tres mensajes en cualquier orden, y a veces los reenvía.
+
+### La idempotencia quedó probada, no prometida
+`verificar.mjs` corre la lógica sin n8n, sin credenciales y sin internet: extrae los dos nodos que piensan y los ejecuta contra casos armados a mano. Los que importan de verdad:
+- Un segundo `OK 1234` **no** genera un segundo acceso ni un segundo mail
+- Un mensaje vacío **no** borra el email que llegó en el anterior
+- Una venta devuelta **no** se reabre con un `OK`
+- El generador no repite un código en uso en 300 intentos seguidos
+
+### Dos trampas encontradas y documentadas
+- **Google Drive no funciona con la cuenta de servicio.** Una service account no tiene cuota de almacenamiento propia: la subida del comprobante devuelve `Service Accounts do not have storage quota` y la venta se corta ahí. Drive va con OAuth2. Sheets sí funciona con la cuenta de servicio, porque no crea archivos. **Son dos credenciales de Google distintas y las dos hacen falta.**
+- **WhatsApp sólo deja mandar mensajes libres dentro de las 24 h** desde el último mensaje de esa persona. Responderle a una clienta siempre entra en la ventana; **avisarle a Pía no**. Por eso los avisos al equipo van con plantilla aprobada por Meta y los mensajes a las clientas no.
+
+### Lo urgente que sale de acá
+**Crear las 2 plantillas de mensaje en Meta es lo primero**, porque Meta las revisa y puede tardar un día. Los textos exactos están en el doc 19 §7.
+
+---
+
+## 📊 Rendimiento — el informe de PageSpeed, leído
+
+Juan Cruz pasó las capturas del informe mobile. Lo que dicen, y qué hacer con eso.
+
+**Las fuentes no eran el problema.** En el informe **no aparece ninguna auditoría de fuentes**: están precargadas y con `display: swap`, así que no bloquean el renderizado. Los 124 KB que se ahorraron en la sesión 9 son ancho de banda real —y en un 4G argentino se notan— pero no van a mover mucho la puntuación.
+
+**Accionable, por orden:**
+
+1. **JavaScript antiguo — 14 KiB.** El más claro. Se están mandando polyfills de `Array.at`, `Array.flat`, `Object.fromEntries`, `Object.hasOwn` y `String.trimStart` a todo el mundo. Todos existen en cualquier navegador desde 2021. Next los incluye porque **no hay `browserslist` en `package.json`** (verificado). Declarar uno moderno: 14 KiB menos, cero riesgo con una audiencia de móviles argentinos
+2. **CSS que bloquea el renderizado — 450 ms estimados.** 9,6 KiB de Tailwind en un viaje aparte antes de dibujar nada. Next 16 puede incrustarlo en el HTML (`experimental.inlineCss`). Verificar que la opción esté estable en 16.2.4 antes de darlo por hecho
+3. **La animación no compuesta.** Es el halo del CTA (`mp-cta-ring` en `globals.css`): anima `box-shadow`, que obliga a repintar en cada cuadro. Se reescribe con `opacity` sobre un pseudo-elemento. Cosmético
+4. **Los 79 KiB de "JavaScript sin usar" — no perseguir.** Son React y el runtime de Next. Lighthouse los marca en toda aplicación Next del planeta. 134 KiB totales de JS es magro para lo que hace este sitio
+
+**Aparte:** hay **seis dependencias instaladas que no se importan en ningún lado** — `framer-motion`, `embla-carousel-autoplay`, `react-calendly`, `zustand`, `react-hook-form` y `@hookform/resolvers`. No pesan en el navegador, pero engordan la instalación. Y `framer-motion` está en `optimizePackageImports` del `next.config.ts` optimizando algo que no existe.
+
+- [ ] Aplicar 1 y 2 (quince minutos entre las dos)
+- [ ] Sacar las 6 dependencias sin usar
+- [ ] Volver a medir después del deploy de la sesión 9, que es posterior al informe
 
 ---
 
@@ -354,12 +416,14 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 
 **Tuyo (Juan Cruz), con las manos, en este orden:**
 - [ ] **Meta Business + app + número de prueba + tu español verificado** → `12-whatsapp-cloud-api.md` §5. Es lo primero porque el trámite de verificación del negocio tarda días
+- [ ] **Las 2 plantillas de mensaje en Meta** (`nuevo_comprobante`, `falla_automatizacion`) → textos exactos en `19-flujos-n8n-construidos.md` §7. **Meta las revisa y puede tardar un día: mandalas apenas tengas la app**
 - [ ] **Planilla de Google + service account** → `13-base-de-datos-sheet.md` §4
+- [ ] **Carpeta de Drive para los comprobantes + credencial OAuth2 de Google** (la cuenta de servicio no sirve para Drive — ver doc 19 §7)
 - [ ] **n8n Cloud + invitarme como Admin** → `14-n8n-infraestructura.md` §3
 - [ ] **Cuenta de Skool + esqueleto + video de 8 min** → `15-skool-arranque.md` §5 y §6
 - [ ] **Conseguir de Pía:** B2, B5, B10, B11, B12, B13 y el chip de la línea nueva
 
-**Mío:** los 10 flujos de n8n, cargar los datos en el código, ManyChat, el segundo proyecto en Vercel.
+**Mío:** ~~los flujos de cobro y onboarding~~ **hechos (sesión 10)** · falta A5, A25, A26 (bloqueados por B5), A1, A6, A23, A24 · cargar los datos en el código · ManyChat · el segundo proyecto en Vercel.
 
 **De Daiana:** ejecutar `16-lanzamiento-creativos-calendario.md`.
 
@@ -372,18 +436,31 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 - [ ] Cargar env vars en Vercel (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_INSTAGRAM_URL`)
 - [ ] Smoke test en celular real: barra flotante, copiar alias, abrir WhatsApp con el mensaje precargado
 
-### 2. Automatizaciones n8n — orden de construcción
-- [ ] Instalar n8n + crear el Sheet con 4 pestañas (`leads`, `ventas`, `contenido`, `comunidad`)
-- [ ] **A1** · Captura de lead desde Instagram
-- [ ] **A3** · Recepción de comprobante + acuse automático + ID de 4 dígitos
-- [ ] **A3-bis** · Parser de `OK 1234` / `NO 1234` (idempotente: dos "OK" no pueden generar dos altas)
-- [ ] **A4** · Onboarding: Skool + email + WhatsApp + grupo + reloj de garantía
-- [ ] **A5** · Secuencia de 48 h (ahora es de Semana 0, no del reto)
-- [ ] **A6** · Detección de abandono — diario los primeros 10 días, cuenta desde el día 1 del reto
+### 2. Automatizaciones n8n
+
+**Construidos y verificados (sesión 10).** Los archivos están en `docs/setup/n8n/`. Detalle completo en `docs/estrategia/19-flujos-n8n-construidos.md`.
+
+- [x] ~~**A0** · Router de WhatsApp~~ — la única puerta de entrada. **Flujo nuevo que no estaba en el plan:** Meta permite una sola URL de callback por app
+- [x] ~~**A3** · Recepción de comprobante~~ — acuse automático, código de 4 dígitos, comprobante a Drive, aviso a Pía
+- [x] ~~**A3-bis** · Parser de `OK 1234` / `NO 1234`~~ — idempotente, verificado con tests
+- [x] ~~**A4** · Onboarding~~ — Skool + Brevo + WhatsApp + fila en `comunidad` + reloj de garantía
+- [x] ~~**A99** · Centinela de errores~~
+
+**Para encenderlos hacen falta las cuentas.** En orden de urgencia:
+- [ ] **Crear las 2 plantillas de mensaje en Meta** (`nuevo_comprobante`, `falla_automatizacion`). **Lo primero: Meta las revisa y puede tardar un día.** Los textos están en el doc 19 §7
+- [ ] Importar los 5 archivos en n8n, en el orden A4 → A3-bis → A3 → A0 → A99
+- [ ] Cargar las credenciales. **Ojo: Drive va con OAuth2, no con la cuenta de servicio** — una service account no tiene cuota de almacenamiento y la subida del comprobante falla
+- [ ] Completar el nodo `Configuración` de cada flujo (la tabla está en el doc 19 §7)
+- [ ] Correr la prueba de 6 pasos contra el número prestado de Meta (doc 19 §8)
+
+**Lo que falta construir:**
+- [ ] **A5** · Secuencia de Semana 0 — *bloqueado por B5: sin fechas no hay contra qué contar días*
+- [ ] **A25** · Aviso 48 h antes del día 1 — *bloqueado por B5*
+- [ ] **A26** · Arranque del día 1 — *bloqueado por B5*
+- [ ] **A1** · Captura de lead desde Instagram — *necesita ManyChat*
+- [ ] **A6** · Detección de abandono — diario los primeros 10 días, cuenta desde el día 1 del reto. *Necesita la comunidad en Skool*
 - [ ] **A23** · Circuito de devolución
-- [ ] **A24** · Lista de espera entre grupos
-- [ ] **A25** · Aviso 48 h antes del día 1
-- [ ] **A26** · Al día 1: activar módulo 2 y arrancar el check-in del grupo
+- [ ] **A24** · Lista de espera entre grupos — *necesita A1*
 
 ### 3. Producto (Pía)
 - [ ] Skool: estructura completa en `05-skool-estructura.md` §3
@@ -414,7 +491,7 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 
 **Interruptor de grupo:** `GROUP.status = "waitlist"` en `products.ts` convierte todos los CTAs del sitio en lista de espera y cambia `/comprar` por el mensaje de inscripción cerrada. Dos ediciones cada 14 días: una para cerrar, otra para abrir.
 
-**Dependencias sin usar** (no molestan, no van al bundle, pero se pueden limpiar): `framer-motion`, `zustand`, `embla-carousel-autoplay`, `react-hook-form`, `@hookform/resolvers`, `mercadopago`, `stripe`, `googleapis`.
+**Dependencias sin usar** — verificado contando imports en `src/` el 2026-08-17. Cero imports: `framer-motion`, `zustand`, `embla-carousel-autoplay`, `react-calendly`, `react-hook-form`, `@hookform/resolvers`. No van al bundle, pero engordan la instalación y `framer-motion` figura en `optimizePackageImports` optimizando algo que no existe. **`mercadopago`, `stripe` y `googleapis` SÍ se importan** (3, 3 y 1 vez) desde las libs desactivadas de abajo — sacarlas rompe el typecheck.
 
 **Libs sin usar** que quedaron a propósito por si vuelve la pasarela: `src/lib/brevo.ts`, `sheets.ts`, `mercadopago.ts`, `stripe.ts`. Hoy esas integraciones las va a manejar n8n.
 
@@ -445,6 +522,12 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 ---
 
 ## ✅ Historial
+
+### Sesión 10 — 2026-08-17
+Flujos de cobro y onboarding construidos (A0, A3, A3-bis, A4, A99) · A0 · Router aparece porque Meta permite un solo webhook por app · idempotencia probada con 27 casos en `verificar.mjs` · comprobantes a Drive porque Meta los borra a los 30 días · dos trampas documentadas (Drive necesita OAuth2, WhatsApp necesita plantillas fuera de las 24 h) · informe de PageSpeed leído
+
+### Sesión 9 — 2026-08-17
+Fraunces en vez de Bodoni (la Didone se desarmaba en cifras chicas: "40.000" parecía "10.000") · la escasez se movió adentro de la barra de compra · fuentes precargadas −44% (281→157 KB) · regla nueva: compilar no es ver
 
 ### Sesión 8 — 2026-08-17
 Diseño elegido mirando capturas reales · piel `pia` (claro + naranja + tipografía nueva) como la que se publica · guion invisible por tamaño óptico fijado a mano, corregido · restos de Inter eliminados · docs de branding al día

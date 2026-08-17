@@ -1,0 +1,254 @@
+{
+  "name": "A4 · Onboarding post-pago",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Las primeras 48 horas deciden la retención\n\nLo llama **A3-bis** cuando Pía confirma. Desde que escribe `OK` hasta que la clienta tiene todo: menos de 30 segundos.\n\n**Dos cosas que este flujo NO hace, y por qué:**\n\n**No crea el acceso a Skool.** Skool no tiene API. Se manda el link de invitación y la clienta hace un clic. La columna `acceso_skool` dice «invitada», no «adentro» — la diferencia importa, porque quien no acepta en 48 h necesita que le vuelvan a escribir.\n\n**No la agrega al grupo de WhatsApp.** La Cloud API de Meta no administra grupos. Se manda el link de invitación del grupo.\n\nLas dos son limitaciones de las herramientas, no atajos.",
+        "height": 420,
+        "width": 460,
+        "color": 4
+      },
+      "id": "d-nota",
+      "name": "Nota",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-680, -140]
+    },
+    {
+      "parameters": { "inputSource": "passthrough" },
+      "id": "d-trigger",
+      "name": "Lo llama A3-bis",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-620, 340]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "d1", "name": "phoneNumberId", "value": "REEMPLAZAR_PHONE_NUMBER_ID", "type": "string" },
+            { "id": "d2", "name": "sheetId", "value": "REEMPLAZAR_ID_DE_LA_PLANILLA", "type": "string" },
+            { "id": "d3", "name": "skoolInviteUrl", "value": "REEMPLAZAR_LINK_DE_INVITACION_DE_SKOOL", "type": "string" },
+            { "id": "d4", "name": "grupoWhatsappUrl", "value": "REEMPLAZAR_LINK_DEL_GRUPO_DE_WHATSAPP", "type": "string" },
+            { "id": "d5", "name": "calendlyUrl", "value": "REEMPLAZAR_LINK_DE_CALENDLY", "type": "string" },
+            { "id": "d6", "name": "brevoListaAlumnas", "value": 0, "type": "number" },
+            { "id": "d7", "name": "remitenteEmail", "value": "hola@piamoretto.com", "type": "string" },
+            { "id": "d8", "name": "remitenteNombre", "value": "Pía Moretto", "type": "string" }
+          ],
+          "includeOtherFields": true
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "d-config",
+      "name": "Configuración",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-400, 340]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose", "version": 2 },
+          "conditions": [
+            {
+              "id": "d-idem",
+              "leftValue": "={{ String($json.acceso_skool || 'no').toLowerCase() }}",
+              "rightValue": "no",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "id": "d-email",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "d-guarda",
+      "name": "¿Hace falta hacerlo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-180, 340]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/**\n * Arma los textos del onboarding en un solo lugar.\n *\n * Están acá y no dentro de cada nodo por una razón práctica: el día que Pía\n * quiera cambiar una frase, no tiene que abrir cuatro nodos distintos ni\n * entender de expresiones. Se edita este nodo y listo.\n */\nconst cfg = $('Configuración').first().json;\nconst v = $input.first().json;\n\nconst nombreCorto = String(v.nombre ?? '').trim().split(/\\s+/)[0] || '';\nconst saludo = nombreCorto ? `Hola ${nombreCorto}` : 'Hola';\n\nconst whatsapp = [\n  `${saludo}, ¡estás adentro!`,\n  '',\n  'Tres cosas para hacer hoy, en este orden:',\n  '',\n  `1. Entrá a la comunidad: ${cfg.skoolInviteUrl}`,\n  `2. Sumate al grupo de tu camada: ${cfg.grupoWhatsappUrl}`,\n  `3. Agendá tu llamada de bienvenida: ${cfg.calendlyUrl}`,\n  '',\n  'Con eso ya arrancás la Semana 0. Cualquier cosa me escribís por acá.',\n].join('\\n');\n\nconst html = `\n<p>${saludo},</p>\n<p>Ya está confirmada tu entrada al Reto 28 Días. Tu grupo es <strong>${v.grupo ?? ''}</strong>.</p>\n<p><strong>Qué hacer hoy, en este orden:</strong></p>\n<ol>\n  <li><a href=\"${cfg.skoolInviteUrl}\">Entrá a la comunidad</a> y presentate en el feed.</li>\n  <li><a href=\"${cfg.grupoWhatsappUrl}\">Sumate al grupo de WhatsApp</a> de tu camada.</li>\n  <li><a href=\"${cfg.calendlyUrl}\">Agendá tu llamada de bienvenida</a>. Son 20 minutos y es donde armamos tu semana.</li>\n</ol>\n<p>Con eso arrancás la Semana 0: la preparación. Todavía no entrenás — medimos, ordenamos la semana y dejamos todo listo para el día 1.</p>\n<p>Tenés hasta el <strong>${v.garantia_vence ?? ''}</strong> para pedir la devolución del 100% si ves que no es para vos. Sin explicaciones.</p>\n<p>Nos vemos adentro.<br>Pía</p>\n`.trim();\n\nreturn [{\n  json: {\n    ...v,\n    nombreCorto,\n    mensajeWhatsapp: whatsapp,\n    asuntoEmail: 'Estás adentro del Reto 28 Días',\n    cuerpoEmail: html,\n  },\n}];"
+      },
+      "id": "d-textos",
+      "name": "Armar los mensajes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [80, 240]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Configuración').first().json.phoneNumberId }}",
+        "recipientPhoneNumber": "={{ $json.whatsapp }}",
+        "textBody": "={{ $json.mensajeWhatsapp }}",
+        "additionalFields": {}
+      },
+      "id": "d-wa",
+      "name": "Darle la bienvenida por WhatsApp",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [340, 100]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/contacts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  email: $json.email,\n  attributes: {\n    NOMBRE: $json.nombre || '',\n    WHATSAPP: $json.whatsapp || '',\n    GRUPO: $json.grupo || '',\n    PLAN: $json.plan || '',\n    CODIGO: $json.codigo || ''\n  },\n  listIds: [$('Configuración').first().json.brevoListaAlumnas],\n  updateEnabled: true\n}) }}",
+        "options": {}
+      },
+      "id": "d-brevo-contacto",
+      "name": "Pasarla a la lista de alumnas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [340, 260]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/smtp/email",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  sender: {\n    email: $('Configuración').first().json.remitenteEmail,\n    name: $('Configuración').first().json.remitenteNombre\n  },\n  to: [{ email: $('Armar los mensajes').first().json.email, name: $('Armar los mensajes').first().json.nombre || '' }],\n  subject: $('Armar los mensajes').first().json.asuntoEmail,\n  htmlContent: $('Armar los mensajes').first().json.cuerpoEmail\n}) }}",
+        "options": {}
+      },
+      "id": "d-brevo-email",
+      "name": "Mandar el email de bienvenida",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [560, 260]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// La fila de `comunidad` arranca en cero. Es el tablero de la métrica principal\n// del negocio —la tasa de finalización— y A6 la recalcula todos los días.\nconst v = $('Armar los mensajes').first().json;\n\nreturn [{\n  json: {\n    alumna: v.nombre ?? '',\n    whatsapp: v.whatsapp ?? '',\n    grupo: v.grupo ?? '',\n    dia_actual: 0,\n    ultimo_checkin: '',\n    rutinas_completadas: 0,\n    estado_riesgo: 'ok',\n  },\n}];"
+      },
+      "id": "d-fila-comunidad",
+      "name": "Armar la fila de comunidad",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [780, 260]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": { "__rl": true, "value": "comunidad", "mode": "name" },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": ["whatsapp"],
+          "value": {},
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "d-comunidad",
+      "name": "Sumarla al tablero de comunidad",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1000, 260]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Se marca «invitada» y no «sí»: el acceso lo completa ella cuando acepta la\n// invitación de Skool. A5 vuelve a escribirle a las 48 h si sigue en este estado.\nconst v = $('Armar los mensajes').first().json;\n\nreturn [{\n  json: {\n    codigo: v.codigo,\n    acceso_skool: 'invitada',\n  },\n}];"
+      },
+      "id": "d-marcar",
+      "name": "Armar la marca de acceso",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1220, 260]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": { "__rl": true, "value": "ventas", "mode": "name" },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": ["codigo"],
+          "value": {},
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "d-guardar-acceso",
+      "name": "Marcar el acceso en ventas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1440, 260]
+    },
+    {
+      "parameters": {},
+      "id": "d-nada",
+      "name": "Ya estaba hecho",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [80, 500]
+    }
+  ],
+  "connections": {
+    "Lo llama A3-bis": { "main": [[{ "node": "Configuración", "type": "main", "index": 0 }]] },
+    "Configuración": { "main": [[{ "node": "¿Hace falta hacerlo?", "type": "main", "index": 0 }]] },
+    "¿Hace falta hacerlo?": {
+      "main": [
+        [{ "node": "Armar los mensajes", "type": "main", "index": 0 }],
+        [{ "node": "Ya estaba hecho", "type": "main", "index": 0 }]
+      ]
+    },
+    "Armar los mensajes": {
+      "main": [
+        [
+          { "node": "Darle la bienvenida por WhatsApp", "type": "main", "index": 0 },
+          { "node": "Pasarla a la lista de alumnas", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Pasarla a la lista de alumnas": {
+      "main": [[{ "node": "Mandar el email de bienvenida", "type": "main", "index": 0 }]]
+    },
+    "Mandar el email de bienvenida": {
+      "main": [[{ "node": "Armar la fila de comunidad", "type": "main", "index": 0 }]]
+    },
+    "Armar la fila de comunidad": {
+      "main": [[{ "node": "Sumarla al tablero de comunidad", "type": "main", "index": 0 }]]
+    },
+    "Sumarla al tablero de comunidad": {
+      "main": [[{ "node": "Armar la marca de acceso", "type": "main", "index": 0 }]]
+    },
+    "Armar la marca de acceso": {
+      "main": [[{ "node": "Marcar el acceso en ventas", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  },
+  "pinData": {}
+}

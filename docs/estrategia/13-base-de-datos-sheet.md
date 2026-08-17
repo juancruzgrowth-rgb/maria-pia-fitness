@@ -76,9 +76,9 @@ lista de cada grupo.
 | `moneda` | `ARS` | n8n |
 | `metodo_pago` | `transferencia` | n8n |
 | `comprobante_url` | Link a la imagen que mandó | n8n |
-| `estado` | `pendiente` · `confirmado` · `rechazado` · `devuelto` | n8n |
+| `estado` | `esperando` · `pendiente` · `confirmado` · `rechazado` · `devuelto` | n8n |
 | `grupo` | En qué grupo entró | n8n |
-| `acceso_skool` | `sí` / `no` — si ya se le creó el acceso | n8n |
+| `acceso_skool` | `no` · `invitada` · `sí` | n8n |
 | `fecha_llamada` | Su llamada 1:1 de la Semana 0 | n8n |
 | `garantia_vence` | Fecha límite para pedir devolución. **Se calcula sola** | n8n |
 | `notas` | | **manual** |
@@ -87,6 +87,19 @@ lista de cada grupo.
 > dígitos es lo que hace posible el `OK 1234`, y sin una columna con la fecha exacta en que
 > vence la garantía, nadie puede responder "¿está en plazo?" sin sacar la cuenta a mano.
 > Las dos son consecuencia de decisiones que se tomaron después de escribir el plan.
+
+> **Dos estados que se agregaron al construir los flujos (2026-08-17):**
+>
+> **`esperando`** en `estado`. Una venta empieza a existir con el primer mensaje, no con el
+> comprobante: la clienta manda su nombre y su email en un mensaje y la foto en otro, y a veces
+> al revés. `esperando` es esa venta a medio armar. Recién pasa a `pendiente` cuando está
+> completa, que es cuando tiene sentido molestar a Pía.
+>
+> **`invitada`** en `acceso_skool`. Skool no tiene API: se manda la invitación y la clienta hace
+> un clic. `invitada` y `sí` son estados distintos, y la diferencia es accionable — quien sigue
+> en `invitada` a las 48 horas necesita que le vuelvan a escribir.
+>
+> Ver [`19-flujos-n8n-construidos.md`](19-flujos-n8n-construidos.md).
 
 ---
 

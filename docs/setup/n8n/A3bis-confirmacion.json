@@ -1,0 +1,301 @@
+{
+  "name": "A3-bis · Confirmación (OK / NO)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Lo que convierte una transferencia en una alumna\n\nPía mira el home banking y responde **`OK 1234`** o **`NO 1234`** por WhatsApp. Este flujo lo lee y actúa.\n\n**La regla que no se rompe: idempotencia.** Si Pía manda `OK 1234` dos veces porque no vio que ya había andado, la segunda vez **no** genera un segundo acceso ni un segundo mail. La comprobación es la primera cosa que hace \"Buscar la venta\": si el estado ya no es `pendiente`, no toca nada y se lo dice.\n\nMandar el comando de vuelta también es la forma de **auditar**: cada ejecución queda en Executions con el código, el estado anterior y el nuevo.",
+        "height": 400,
+        "width": 440,
+        "color": 4
+      },
+      "id": "b-nota",
+      "name": "Nota",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-680, -120]
+    },
+    {
+      "parameters": { "inputSource": "passthrough" },
+      "id": "b-trigger",
+      "name": "Lo llama el router",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-620, 340]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "c1", "name": "phoneNumberId", "value": "REEMPLAZAR_PHONE_NUMBER_ID", "type": "string" },
+            { "id": "c2", "name": "mpWhatsapp", "value": "REEMPLAZAR_WHATSAPP_DE_PIA", "type": "string" },
+            { "id": "c3", "name": "sheetId", "value": "REEMPLAZAR_ID_DE_LA_PLANILLA", "type": "string" },
+            { "id": "c4", "name": "precioNivel", "value": 40000, "type": "number" },
+            { "id": "c5", "name": "precioPack", "value": 99000, "type": "number" },
+            { "id": "c6", "name": "garantiaDias", "value": 10, "type": "number" }
+          ],
+          "includeOtherFields": true
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "b-config",
+      "name": "Configuración",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-400, 340]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": { "__rl": true, "value": "ventas", "mode": "name" },
+        "options": {}
+      },
+      "id": "b-leer",
+      "name": "Leer ventas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [-180, 340],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/**\n * Busca la venta por código y decide qué corresponde. Igual que en A3, este es\n * el único nodo que piensa.\n *\n * Los cuatro desenlaces posibles, y por qué existe cada uno:\n *\n *   no_existe     · Pía se equivocó de número, o el comprobante nunca llegó.\n *                   Se le dice, y no se escribe nada.\n *   ya_procesado  · Mandó el comando dos veces. LA GUARDA IMPORTANTE: sin esto,\n *                   la clienta recibiría dos accesos y dos mails de bienvenida.\n *   confirmar     · Estado a `confirmado`, arranca el reloj de la garantía y se\n *                   dispara el onboarding (A4).\n *   rechazar      · Estado a `rechazado` y se le escribe a la clienta pidiendo\n *                   que aclare. Nunca se la deja sin respuesta.\n */\n// El nodo Configuración deja pasar los campos que mandó el router (viene con\n// \"Include Other Input Fields\" activado), así que acá conviven las constantes\n// del negocio y el comando que escribió Pía.\nconst cfg = $('Configuración').first().json;\n\nconst codigo = String(cfg.comandoCodigo ?? '').padStart(4, '0');\nconst verbo = String(cfg.comandoVerbo ?? '').toUpperCase();\n\nconst filas = $input.all()\n  .map((i) => i.json)\n  .filter((f) => f && f.codigo);\n\nconst fila = filas.find((f) => String(f.codigo).padStart(4, '0') === codigo) ?? null;\n\nif (!fila) {\n  return [{ json: { accion: 'no_existe', codigo, verbo } }];\n}\n\nconst estado = String(fila.estado ?? '').toLowerCase();\nif (estado !== 'pendiente') {\n  return [{ json: { accion: 'ya_procesado', codigo, verbo, estadoActual: estado, nombre: fila.nombre } }];\n}\n\n// El monto se deriva del plan, no se le pide a nadie que lo escriba: el precio\n// vive en src/lib/products.ts y acá sólo se refleja. Si el plan quedó vacío,\n// queda vacío el monto también — es preferible un hueco visible a un número\n// inventado en la fila de una venta.\nconst montos = {\n  'nivel-mensual': cfg.precioNivel,\n  'pack-3-niveles': cfg.precioPack,\n};\n\n// La garantía corre desde el ACCESO, no desde la transferencia (art. 34 de la\n// Ley 24.240). El acceso es ahora, así que el reloj arranca ahora.\nconst vence = new Date();\nvence.setDate(vence.getDate() + Number(cfg.garantiaDias));\n\nconst actualizada = {\n  ...fila,\n  codigo,\n  estado: verbo === 'OK' ? 'confirmado' : 'rechazado',\n  monto: verbo === 'OK' ? (montos[fila.plan] ?? fila.monto ?? '') : (fila.monto ?? ''),\n  garantia_vence: verbo === 'OK' ? vence.toISOString().slice(0, 10) : '',\n};\n\n// row_number lo agrega el nodo de Google Sheets al leer; si se lo mandamos de\n// vuelta en la escritura, aparece como una columna nueva en la planilla.\ndelete actualizada.row_number;\n\nreturn [{\n  json: {\n    accion: verbo === 'OK' ? 'confirmar' : 'rechazar',\n    codigo,\n    verbo,\n    fila: actualizada,\n  },\n}];"
+      },
+      "id": "b-buscar",
+      "name": "Buscar la venta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [40, 340]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+                "conditions": [
+                  { "id": "s1", "leftValue": "={{ $json.accion }}", "rightValue": "confirmar", "operator": { "type": "string", "operation": "equals" } }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Confirmar"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+                "conditions": [
+                  { "id": "s2", "leftValue": "={{ $json.accion }}", "rightValue": "rechazar", "operator": { "type": "string", "operation": "equals" } }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Rechazar"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+                "conditions": [
+                  { "id": "s3", "leftValue": "={{ $json.accion }}", "rightValue": "ya_procesado", "operator": { "type": "string", "operation": "equals" } }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Ya estaba procesado"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+                "conditions": [
+                  { "id": "s4", "leftValue": "={{ $json.accion }}", "rightValue": "no_existe", "operator": { "type": "string", "operation": "equals" } }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "No existe ese código"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b-switch",
+      "name": "Qué corresponde",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [280, 340]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Desempaqueta la fila para que el nodo de Sheets la mapee sola.\nreturn [{ json: $input.first().json.fila }];"
+      },
+      "id": "b-desempaquetar-ok",
+      "name": "Desempaquetar la fila",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [540, 80]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": { "__rl": true, "value": "ventas", "mode": "name" },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": ["codigo"],
+          "value": {},
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "b-guardar-ok",
+      "name": "Marcar como confirmada",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [760, 80]
+    },
+    {
+      "parameters": {
+        "workflowId": { "__rl": true, "value": "REEMPLAZAR_ID_DE_A4", "mode": "id" },
+        "workflowInputs": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": { "waitForSubWorkflow": false }
+      },
+      "id": "b-a4",
+      "name": "A4 · Onboarding",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [980, 80]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Configuración').first().json.phoneNumberId }}",
+        "recipientPhoneNumber": "={{ $('Configuración').first().json.mpWhatsapp }}",
+        "textBody": "=Listo. {{ $('Desempaquetar la fila').first().json.nombre }} ({{ $('Desempaquetar la fila').first().json.codigo }}) quedó confirmada y ya recibió el acceso.\n\nGrupo: {{ $('Desempaquetar la fila').first().json.grupo }}\nPlan: {{ $('Desempaquetar la fila').first().json.plan }}\nGarantía hasta el {{ $('Desempaquetar la fila').first().json.garantia_vence }}",
+        "additionalFields": {}
+      },
+      "id": "b-avisar-ok",
+      "name": "Confirmarle a Pía",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [1200, 80]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{ json: $input.first().json.fila }];"
+      },
+      "id": "b-desempaquetar-no",
+      "name": "Desempaquetar la fila (rechazo)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [540, 300]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": { "__rl": true, "value": "ventas", "mode": "name" },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": ["codigo"],
+          "value": {},
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "b-guardar-no",
+      "name": "Marcar como rechazada",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Configuración').first().json.phoneNumberId }}",
+        "recipientPhoneNumber": "={{ $json.whatsapp }}",
+        "textBody": "=Hola{{ $json.nombre ? ' ' + $json.nombre : '' }}. Estuve mirando y no me figura la transferencia todavía.\n\nPuede ser que el banco la esté demorando, o que haya quedado algún dato distinto. ¿Me pasás una captura donde se vea la fecha y el importe? Lo reviso enseguida y te confirmo.\n\nTu número de referencia es {{ $json.codigo }}.",
+        "additionalFields": {}
+      },
+      "id": "b-avisar-clienta",
+      "name": "Escribirle a la clienta",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [980, 300]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Configuración').first().json.phoneNumberId }}",
+        "recipientPhoneNumber": "={{ $('Configuración').first().json.mpWhatsapp }}",
+        "textBody": "=Ese código ({{ $json.codigo }}) ya estaba en «{{ $json.estadoActual }}», así que no toqué nada.\n\nSi era otra venta, fijate el código en la planilla y mandámelo de nuevo.",
+        "additionalFields": {}
+      },
+      "id": "b-ya-procesado",
+      "name": "Avisar que ya estaba procesado",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [540, 520]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "={{ $('Configuración').first().json.phoneNumberId }}",
+        "recipientPhoneNumber": "={{ $('Configuración').first().json.mpWhatsapp }}",
+        "textBody": "=No encuentro ninguna venta con el código {{ $json.codigo }}.\n\nRevisá el número en el aviso que te llegó, o buscalo en la pestaña «ventas» de la planilla.",
+        "additionalFields": {}
+      },
+      "id": "b-no-existe",
+      "name": "Avisar que no existe",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [540, 700]
+    }
+  ],
+  "connections": {
+    "Lo llama el router": { "main": [[{ "node": "Configuración", "type": "main", "index": 0 }]] },
+    "Configuración": { "main": [[{ "node": "Leer ventas", "type": "main", "index": 0 }]] },
+    "Leer ventas": { "main": [[{ "node": "Buscar la venta", "type": "main", "index": 0 }]] },
+    "Buscar la venta": { "main": [[{ "node": "Qué corresponde", "type": "main", "index": 0 }]] },
+    "Qué corresponde": {
+      "main": [
+        [{ "node": "Desempaquetar la fila", "type": "main", "index": 0 }],
+        [{ "node": "Desempaquetar la fila (rechazo)", "type": "main", "index": 0 }],
+        [{ "node": "Avisar que ya estaba procesado", "type": "main", "index": 0 }],
+        [{ "node": "Avisar que no existe", "type": "main", "index": 0 }]
+      ]
+    },
+    "Desempaquetar la fila": { "main": [[{ "node": "Marcar como confirmada", "type": "main", "index": 0 }]] },
+    "Marcar como confirmada": { "main": [[{ "node": "A4 · Onboarding", "type": "main", "index": 0 }]] },
+    "A4 · Onboarding": { "main": [[{ "node": "Confirmarle a Pía", "type": "main", "index": 0 }]] },
+    "Desempaquetar la fila (rechazo)": { "main": [[{ "node": "Marcar como rechazada", "type": "main", "index": 0 }]] },
+    "Marcar como rechazada": { "main": [[{ "node": "Escribirle a la clienta", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  },
+  "pinData": {}
+}

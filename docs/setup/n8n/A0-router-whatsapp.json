@@ -1,0 +1,194 @@
+{
+  "name": "A0 · Router de WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Este flujo es la única puerta de entrada de WhatsApp\n\nMeta permite **una sola URL de callback por app**. Por eso el disparador de WhatsApp vive acá y en ningún otro lado: A3 y A3-bis se llaman desde este flujo, no escuchan a Meta por su cuenta.\n\nSi algún día se agrega otro flujo que reaccione a WhatsApp, se le suma una salida a este switch. **Nunca se le pone otro disparador de WhatsApp.**",
+        "height": 320,
+        "width": 420,
+        "color": 4
+      },
+      "id": "a0-nota",
+      "name": "Nota",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-780, -80]
+    },
+    {
+      "parameters": {
+        "updates": ["messages"]
+      },
+      "id": "a0-trigger",
+      "name": "WhatsApp entrante",
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [-620, 300],
+      "webhookId": "a0f1c0de-0000-4000-8000-000000000000"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cfg-2",
+              "name": "mpWhatsapp",
+              "value": "REEMPLAZAR_WHATSAPP_DE_PIA",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a0-config",
+      "name": "Configuración",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-400, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/**\n * Aplana el payload de Meta a una forma estable. Todo lo que viene después —en\n * este flujo y en los que llama— consume ESTA forma y no la de Meta, así que si\n * Meta cambia el formato del webhook se toca un solo archivo.\n *\n * Meta manda el mensaje anidado dentro de `messages[0]`, pero según la versión\n * del trigger a veces ya viene desanidado. Se contemplan las dos formas: es más\n * barato que descubrirlo en producción un domingo.\n */\nconst cfg = $('Configuración').first().json;\nconst raw = $input.first().json;\n\nconst mensaje = raw.messages?.[0] ?? raw.message ?? raw;\nconst contacto = raw.contacts?.[0] ?? {};\n\nconst soloDigitos = (t) => String(t ?? '').replace(/\\D/g, '');\n\nconst telefono = soloDigitos(mensaje.from ?? contacto.wa_id);\nconst tipo = mensaje.type ?? 'desconocido';\n\n// El texto puede venir como mensaje suelto o como epígrafe de una imagen.\nconst texto = (\n  mensaje.text?.body ??\n  mensaje.image?.caption ??\n  mensaje.document?.caption ??\n  ''\n).trim();\n\n// Sólo la imagen y el PDF cuentan como comprobante. Un audio o una ubicación no.\nconst adjunto =\n  tipo === 'image' ? mensaje.image :\n  tipo === 'document' ? mensaje.document :\n  null;\n\nconst esDePia = telefono === soloDigitos(cfg.mpWhatsapp);\n\n// El comando de confirmación. Se aceptan \"OK 1234\", \"ok1234\" y \"OK  1234\":\n// Pía lo va a escribir con el pulgar, parada en cualquier lado.\nconst comando = texto.match(/^(ok|no)\\s*(\\d{4})$/i);\n\nreturn [{\n  json: {\n    whatsapp: telefono,\n    esDePia,\n    tipo,\n    texto,\n    perfil: contacto.profile?.name ?? '',\n    adjuntoId: adjunto?.id ?? '',\n    adjuntoMime: adjunto?.mime_type ?? '',\n    mensajeId: mensaje.id ?? '',\n    recibidoEn: new Date().toISOString(),\n    esComando: esDePia && comando !== null,\n    comandoVerbo: comando ? comando[1].toUpperCase() : '',\n    comandoCodigo: comando ? comando[2] : '',\n  },\n}];"
+      },
+      "id": "a0-normalizar",
+      "name": "Normalizar entrada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-180, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "r-comando",
+                    "leftValue": "={{ $json.esComando }}",
+                    "rightValue": true,
+                    "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Pía confirma o rechaza"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "r-clienta",
+                    "leftValue": "={{ !$json.esDePia && ($json.adjuntoId !== '' || $json.texto !== '') }}",
+                    "rightValue": true,
+                    "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Mensaje de una clienta"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Ignorar"
+        }
+      },
+      "id": "a0-switch",
+      "name": "A quién le toca",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [80, 300]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "REEMPLAZAR_ID_DE_A3BIS",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": { "waitForSubWorkflow": false }
+      },
+      "id": "a0-a3bis",
+      "name": "A3-bis · Confirmación",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [360, 180]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "REEMPLAZAR_ID_DE_A3",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": { "waitForSubWorkflow": false }
+      },
+      "id": "a0-a3",
+      "name": "A3 · Recepción de comprobante",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [360, 340]
+    },
+    {
+      "parameters": {},
+      "id": "a0-nada",
+      "name": "No hacer nada",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [360, 500]
+    }
+  ],
+  "connections": {
+    "WhatsApp entrante": {
+      "main": [[{ "node": "Configuración", "type": "main", "index": 0 }]]
+    },
+    "Configuración": {
+      "main": [[{ "node": "Normalizar entrada", "type": "main", "index": 0 }]]
+    },
+    "Normalizar entrada": {
+      "main": [[{ "node": "A quién le toca", "type": "main", "index": 0 }]]
+    },
+    "A quién le toca": {
+      "main": [
+        [{ "node": "A3-bis · Confirmación", "type": "main", "index": 0 }],
+        [{ "node": "A3 · Recepción de comprobante", "type": "main", "index": 0 }],
+        [{ "node": "No hacer nada", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  },
+  "pinData": {}
+}
