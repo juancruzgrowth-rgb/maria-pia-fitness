@@ -37,7 +37,7 @@ Tres roles, dos serifas y un palo seco. Sale del logotipo P│M.
 
 | Variable | Familia | Rol |
 |---|---|---|
-| `--font-display` | Bodoni Moda | Titulares. Alto contraste, la voz del logotipo |
+| `--font-display` | Fraunces | Titulares y cifras. Serif suave, la voz del logotipo |
 | `--font-sans` | Newsreader | Texto largo. Serif de lectura, bajo contraste |
 | `--font-ui` | Montserrat | Etiquetas, botones, navegación |
 
@@ -52,6 +52,21 @@ Tres roles, dos serifas y un palo seco. Sale del logotipo P│M.
   los trazos finos de todo lo chico hasta hacerlos desaparecer
 - **Nunca arrastrar `font-feature-settings` de una familia a otra.** Un tag como
   `ss01` significa cosas distintas en cada tipografía
+- **No pedir un eje variable en `next/font` sin justificarlo.** Cada eje engorda
+  el `.woff2` que baja toda visitante. Pedir `SOFT`/`WONK` de Fraunces para
+  escribir el valor que ya traen por defecto costaba 52 KB; el `opsz` de
+  Newsreader, que a un solo tamaño de cuerpo no llega a trabajar, otros 72 KB
+- **Ninguna serif de alto contraste (Didone) para texto chico.** Una Bodoni o una
+  Playfair se desarman abajo de ~24px: el "4" se lee "1" y el guion desaparece.
+  Es lo que pasó con los precios y con los marcadores del método 4F
+
+## Verificación visual
+
+Compilar no es ver. Los tres bugs de tipografía de este proyecto —el guion
+invisible, el "40.000" que parecía "10.000" y la línea de escasez ilegible sobre
+la foto— pasaron `typecheck`, `lint`, `build` y la auditoría de contraste sin que
+saltara nada. **Cualquier cambio de tipografía, color de texto o elemento
+flotante se mira en captura a 390px de ancho real antes de commitear.**
 
 ## Layout
 

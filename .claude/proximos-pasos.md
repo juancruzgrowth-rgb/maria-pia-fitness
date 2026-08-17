@@ -1,7 +1,7 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-17 (sesión 8)**
+> Última actualización: **2026-08-17 (sesión 9)**
 > **Estado del proyecto:** Diseño **cerrado y verificado en mobile**: identidad Pía Moretto (logotipo `P│M` + tipografía) sobre el fondo claro y el naranja de la paleta original. Método 4F integrado. Toda la infraestructura documentada paso a paso.
 > **Semana de sprint: objetivo de tener todo listo para el 23/08. Plazo máximo comprometido: 30/08.**
 > **Para publicar faltan 3 datos: B2 (datos bancarios), B3 (WhatsApp argentino) y B5 (fechas y cupos del grupo fundador).**
@@ -69,7 +69,7 @@
 | **Publicidad paga en el lanzamiento 1** | **No. 100% orgánico.** Sin testimonios no hay con qué anunciar, y son 15 lugares ✅ |
 | **Segunda web** | **Test A/B de diseño con sistema de temas**, no un repositorio clonado ✅ |
 | **Nombre** | **"Pía", no "María Pía".** Marca: **Pía Moretto**. Logotipo `P│M` ✅ |
-| **Tipografía** | **Bodoni Moda (titulares) + Newsreader (texto) + Montserrat (utilidad)**. Quiche es comercial y no se puede usar en web sin licencia ✅ |
+| **Tipografía** | **Fraunces (titulares) + Newsreader (texto) + Montserrat (utilidad)**. Quiche es comercial y no se puede usar en web sin licencia. Bodoni Moda se probó y se descartó: ilegible en cifras y texto chico ✅ |
 | **Diseño publicado** | **Piel `pia`: fondo claro y naranja de la paleta original + tipografía del logotipo P│M.** Decidido mirando las tres en pantalla ✅ |
 | **Pieles** | **`pia` (la que se publica, por defecto) + `moretto` y `moretto-dark` sólo para comparar.** La tipografía ya no cambia entre pieles ✅ |
 
@@ -110,7 +110,7 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 - [ ] **B15 · SVG oficial del logotipo.** Exportarlo desde Canva. Hoy el monograma está reconstruido con tipografía web; integrar el oficial son 10 minutos
 - [ ] **B16 · Nombre fiscal real.** `SITE.fiscalName` dice "Pía Moretto", pero las páginas legales necesitan el nombre de la constancia de AFIP
 - [ ] **B17 · Dominio.** El código ya dice `hola@piamoretto.com` y ese dominio **no existe todavía**. Registrarlo o cambiar el mail antes de publicar
-- [ ] **B18 · ¿Se licencia Quiche para la web?** Hoy se usa Bodoni Moda como sustituta. Las piezas de Canva seguirían con Quiche. Decisión de marca, no urgente
+- [ ] **B18 · ¿Se licencia Quiche para la web?** Hoy se usa Fraunces como sustituta. Las piezas de Canva seguirían con Quiche. Decisión de marca, no urgente
 
 ### Pendientes de contenido (no bloquean el deploy, sí la venta)
 - [ ] Grabar los 40-50 videos de ejercicios (2 medias jornadas)
@@ -138,17 +138,16 @@ Renombrado en los 29 lugares del código: copy, mensajes precargados de WhatsApp
 Cuatro piezas reutilizables en `Logo.tsx`: monograma, firma, lockup vertical y versión horizontal enlazada. **Reconstruido con tipografía en lugar de incrustar una imagen**, para que herede el color del tema, sea nítido a cualquier tamaño y sea texto real para lectores de pantalla y para Google. La barra del `P│M` es un elemento de 1px, no el carácter `|`.
 
 ### Tipografía: tres roles
-**Quiche no se puede usar en la web.** Es comercial (Adam Ladd, vía Adobe Fonts/MyFonts) y la licencia de Canva cubre lo que diseñás dentro de Canva, no publicarla como webfont. Se sustituye por **Bodoni Moda**.
+**Quiche no se puede usar en la web.** Es comercial (Adam Ladd, vía Adobe Fonts/MyFonts) y la licencia de Canva cubre lo que diseñás dentro de Canva, no publicarla como webfont. Se sustituye por **Fraunces** *(en la sesión 8 se había elegido Bodoni Moda; ver sesión 9 abajo para por qué se cambió)*.
 
-El sustituto más parecido era Playfair Display (~85%), pero es **la serif por defecto de todo sitio hecho con IA** y se reconoce de lejos. Bodoni Moda además tiene eje de tamaño óptico, que es lo que hace posible el modo oscuro.
+El sustituto más parecido era Playfair Display (~85%), pero es **la serif por defecto de todo sitio hecho con IA** y se reconoce de lejos.
 
-Sistema: **Bodoni Moda** (titulares) + **Newsreader** (texto) + **Montserrat** (utilidad, sale del propio logotipo). Dos serifas que se distinguen por rol y contraste de trazo — que es lo que evita que serif+serif se lea como un error de carga.
+Sistema: **Fraunces** (titulares) + **Newsreader** (texto) + **Montserrat** (utilidad, sale del propio logotipo). Dos serifas que se distinguen por rol y contraste de trazo — que es lo que evita que serif+serif se lea como un error de carga.
 
 ### Modo oscuro pensado, no invertido
 Tres correcciones que un modo oscuro apurado no hace:
 1. Ni `#000` de fondo ni `#FFF` de texto — vibra, cansa y produce halo en OLED
-2. **Las hairlines de la Bodoni se engrosan bajando el tamaño óptico de 96 a 11.** Sobre fondo oscuro los trazos finos de una serif de alto contraste directamente se desvanecen: es el error clásico. Se corrige con una línea de CSS, no agrandando el texto
-3. El cuerpo sube de peso 400 a 450 y suma tracking, porque el texto claro sobre oscuro florece ópticamente
+2. El cuerpo sube de peso 400 a 450 y suma tracking, porque el texto claro sobre oscuro florece ópticamente
 
 ### Accesibilidad — dos fallos encontrados y corregidos
 Se verificó cada combinación de los tres temas **incluyendo las opacidades** (`text-mp-carbon/70`, `/80`), que es donde nadie mira. Aparecieron dos fallos reales en las etiquetas de 11px: **4,38:1** en el tema claro y **4,20:1** en el oscuro, los dos por debajo del 4,5 exigido. Corregidos a **4,94:1** y **4,83:1**. A ojo habrían pasado desapercibidos.
@@ -177,7 +176,39 @@ Manrope e Inter ya no las usa ninguna piel: se sacaron del `layout.tsx`. Con eso
 `branding.md` y `rules/frontend/styles.md` decían Manrope + Inter y hablaban de un `tailwind.config.ts` que no existe. Corregidos, con las dos reglas nuevas que salieron de los bugs de arriba.
 
 ### ⚠️ Pendiente menor detectado
-En **desktop**, la línea "Grupo fundador · quedan N lugares" de la barra de compra cae encima de la foto del hero y queda ilegible. Es anterior a estos cambios. Se arregla poniéndole fondo o moviéndola.
+En **desktop**, la línea "Grupo fundador · quedan N lugares" de la barra de compra cae encima de la foto del hero y queda ilegible. Es anterior a estos cambios. Se arregla poniéndole fondo o moviéndola. → **Resuelto en la sesión 9.**
+
+---
+
+## ✅ Hecho en la sesión 9 (2026-08-17)
+
+**Verificado:** `lint`, `typecheck` y `build` limpios en las tres pieles, más capturas a 390px y a 1280px de cada cambio.
+
+### La Bodoni se cambió por Fraunces
+Pía la vio en la web publicada y marcó lo mismo desde dos lados: **"40.000" parecía "10.000"**, el **4** de "Mi Método 4F" parecía un **1**, y las **F** de Fuerza / Función / Flexibilidad / Foco perdían el brazo.
+
+No era un bug de configuración: es lo que hace una Didone. Bodoni tiene los trazos finos casi sin espesor — se ve preciosa a 56px y **se desarma abajo de ~24px**, que es donde vive la mitad del texto de esta web y, peor, donde vive el precio. Arreglarlo dentro de la Bodoni no se podía; había que cambiar de familia.
+
+**Fraunces** conserva lo que a Pía le gustaba —minimalista, limpia, editorial— con contraste moderado, así que aguanta los 16px del precio. Y de paso **se parece más a Quiche que la Bodoni**: Quiche no es una Didone, es una serif suave de serifas flaradas, que es exactamente el gesto de Fraunces. Newsreader y Montserrat no se tocan.
+
+### La barra de compra: la escasez se movió adentro
+La línea "quedan N lugares" estaba **debajo** de la barra, sin fondo propio, así que flotaba sobre lo que hubiera detrás: sobre la foto del hero desaparecía, sobre una sección clara reaparecía. Se movió **adentro del botón**, sobre el fondo tinta, donde siempre se lee. Se acortó a "Quedan N lugares" para que entre en un renglón en mobile.
+
+Lo que ocupaba ese lugar —"sin renovación automática"— no se pierde: ya estaba en la sección de qué incluye y en el FAQ, que es donde alguien lo busca.
+
+### Rendimiento: las fuentes precargadas bajaron 44%
+De **281 KB a 157 KB** en cada primera visita, sin cambiar un píxel. Dos hallazgos, los dos verificados comparando capturas antes y después:
+
+1. **Los ejes `SOFT` y `WONK` de Fraunces no hacían falta** — sus valores por defecto ya eran los que queríamos. Pedirlos sólo para escribir el valor que ya tenían costaba **52 KB**
+2. **Newsreader no necesita el eje `opsz`** — el texto de lectura vive a un solo tamaño, así que el eje no llegaba a trabajar. Otros **72 KB**
+
+Regla nueva en `rules/frontend/styles.md`: cada eje variable que se pide en `next/font` hay que poder justificarlo, porque lo paga toda visitante.
+
+### La lección que quedó escrita
+Los tres bugs de tipografía de este proyecto pasaron `typecheck`, `lint`, `build` y la auditoría de contraste **sin que saltara nada**. Compilar no es ver. Ahora está como regla: cualquier cambio de tipografía, de color de texto o de elemento flotante se mira en captura a 390px de ancho real antes de commitear.
+
+### Pendiente
+- [ ] **Leer el informe de PageSpeed** que pasó Juan Cruz (`https://pagespeed.web.dev/analysis/https-maria-pia-fitness-vercel-app/...`, mobile). No se pudo abrir en la sesión: la API pública de Google estaba con la cuota diaria agotada y la captura excedía el límite de tamaño. **Los 124 KB de fuentes que se ahorraron son anteriores a esa medición**, así que el informe hay que releerlo después del deploy de esta sesión
 
 ---
 

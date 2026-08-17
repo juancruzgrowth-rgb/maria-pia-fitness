@@ -65,15 +65,24 @@ por Adobe Fonts y MyFonts, y viene incluida en Canva — pero la licencia de Can
 diseñás *dentro* de Canva, no publicarla como webfont en un sitio. Para eso hace falta una
 licencia de webfont aparte.
 
-**Mientras tanto se sustituye por Bodoni Moda**, que comparte el alto contraste y las serifas
-finas del logotipo y es libre. El sustituto libre más parecido a Quiche es en realidad Playfair
-Display (~85% de similitud), pero **Playfair es la serif por defecto de todo sitio hecho con
-IA** y se reconoce a un kilómetro. Bodoni Moda es igual de defendible, menos gastada, y —lo
-importante— **tiene eje de tamaño óptico**, que es lo que hace posible el modo oscuro. Ver §5.
+**Mientras tanto se sustituye por Fraunces**, que es libre.
+
+Primero se probó **Bodoni Moda** y se descartó después de mirarla en pantalla. Una Didone
+tiene los trazos finos casi sin espesor: se ve preciosa a 56px y se desarma abajo de ~24px,
+que es donde vive la mitad del texto de esta web. El "4" perdía la diagonal y se leía como
+"1", la "F" del método 4F perdía el brazo, y **"40.000" parecía "10.000"** — en el precio,
+que es el peor lugar posible para una ambigüedad.
+
+Fraunces resuelve eso y además **se parece más a Quiche**, que no es una Didone sino una
+serif suave de serifas flaradas. Fraunces trae ese mismo gesto con contraste moderado: aguanta
+los 16px del precio sin perder el aire editorial. También descarta el atajo obvio —Playfair
+Display, ~85% de similitud con Quiche— porque **Playfair es la serif por defecto de todo sitio
+hecho con IA** y se reconoce a un kilómetro, y porque sus hairlines tienen exactamente el
+mismo problema que las de la Bodoni.
 
 | Rol | Tipografía | Para qué |
 |---|---|---|
-| **Display** | Bodoni Moda | Titulares. Es la voz del logotipo |
+| **Display** | Fraunces | Titulares y cifras. Es la voz del logotipo |
 | **Cuerpo** | Newsreader | Texto largo. Serif de lectura, contraste bajo |
 | **Utilidad** | Montserrat | Etiquetas, botones, navegación. Sale del propio logo |
 
@@ -148,29 +157,14 @@ poco más — y por eso, cuando aparece, se ve.
 
 ## 5. El modo oscuro no es invertir los colores
 
-Es la parte donde se nota si alguien lo pensó. Tres cosas que un modo oscuro hecho a las
+Es la parte donde se nota si alguien lo pensó. Dos cosas que un modo oscuro hecho a las
 apuradas no hace:
 
 **1 · Ni negro puro ni blanco puro.** `#000` con `#FFF` encima vibra, cansa la vista y en
 pantallas OLED produce halo alrededor de las letras. El fondo es un negro cálido y el texto
 un hueso.
 
-**2 · Las serifas finas se engrosan.** Ésta es la importante. Una tipografía de alto contraste
-como Bodoni tiene trazos finísimos, y **sobre fondo oscuro esos trazos desaparecen**. Es el
-error clásico de pasar una serif elegante a modo oscuro: en claro se ve refinada, en oscuro se
-ve rota.
-
-La solución no es agrandar el texto. Bodoni Moda tiene un **eje de tamaño óptico**: los
-diseñadores de la tipografía dibujaron versiones distintas para tamaños distintos, y las de
-tamaño chico tienen los trazos finos más gruesos a propósito, porque a cuerpo pequeño la
-tinta se pierde. Nosotros usamos ese eje para otra cosa: **en claro pedimos tamaño óptico 96
-—hairlines finas, igual que el logotipo— y en oscuro bajamos a 11, que engrosa las hairlines
-sin cambiar el tamaño de la letra.**
-
-Es una sola línea de CSS y es la diferencia entre un modo oscuro que se ve caro y uno que se
-ve descuidado.
-
-**3 · El texto sube de peso y se separa.** El texto claro sobre fondo oscuro florece
+**2 · El texto sube de peso y se separa.** El texto claro sobre fondo oscuro florece
 ópticamente: se ve más pesado y más apretado de lo que es. El cuerpo pasa de peso 400 a 450 y
 suma un poco de tracking para compensar.
 
@@ -200,29 +194,29 @@ pasan WCAG AA en todas las combinaciones de texto.**
 
 - **El SVG oficial del logotipo.** Exportalo desde Canva y lo integro.
 - **La licencia de Quiche**, si se decide usar la tipografía real en la web. Hasta entonces,
-  Bodoni Moda. *(Que las piezas de Canva usen Quiche y la web use Bodoni no es un problema
+  Fraunces. *(Que las piezas de Canva usen Quiche y la web use Fraunces no es un problema
   grave: son medios distintos y nadie las compara lado a lado. Pero conviene decidirlo.)*
 - **Favicon y la imagen que se ve al compartir el link** (Open Graph). Se pueden generar desde
   el monograma; media hora.
 - **El dominio.** El código ya dice `hola@piamoretto.com`, que **todavía no existe**. Hay que
   registrarlo o cambiar el mail.
-- **Revisión de las fotos.** El stock actual de Pexels se eligió para una marca naranja. Sobre
-  porcelana y bordeaux va a pedir otra cosa: más desaturado, más contraste.
-- **Mirarlo con los ojos.** Yo verifiqué que compila y que el contraste da. **No pude ver el
-  sitio renderizado**, así que la última palabra sobre si se ve bien es tuya y de Pía.
+- **Revisión de las fotos.** El stock actual de Pexels es provisorio hasta que lleguen las
+  fotos reales de Pía.
 
 ---
 
-## 8. Lo que hay que decidir
+## 8. Lo que ya se decidió
 
-**Pía tiene que elegir entre `moretto` y `moretto-dark`.** Mandale los dos links y que decida
-mirando el celular, no la computadora: el 80% de su audiencia entra desde el teléfono.
-
-Mi opinión, para que la tengas: **el claro para la web y el oscuro para el producto**. La web
-tiene que ser fácil de leer a las once de la noche por alguien que la abre por primera vez, y
-un fondo claro se lee mejor a la primera. El oscuro tiene más carácter y funcionaría muy bien
-adentro de Skool y en las piezas de Instagram, donde la persona ya está adentro y la
+**Se publica la piel clara con el naranja de siempre y la tipografía nueva encima.** Es una
+combinación de las dos que se habían probado, no una de ellas: fondo `#F5F5F2`, acento
+`#F2A31B`, y el sistema Fraunces + Newsreader + Montserrat que sale del logotipo P│M. El
+oscuro queda disponible para las piezas de Instagram y para adentro de Skool, donde la
 intimidad juega a favor.
+
+**Se revisó renderizado, no sólo compilado.** Se capturó el sitio a 390px de ancho real y a
+1280px. Eso encontró tres cosas que ninguna verificación de contraste hubiera encontrado: el
+guion invisible de "50-60 min", el "40.000" que se leía "10.000", y la línea de escasez de la
+barra de compra flotando ilegible sobre la foto del hero. Las tres están corregidas.
 
 ---
 

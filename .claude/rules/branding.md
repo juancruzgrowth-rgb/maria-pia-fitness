@@ -8,7 +8,7 @@
 >
 > | | Antes | Ahora |
 > |---|---|---|
-> | Titulares | Manrope | **Bodoni Moda** |
+> | Titulares | Manrope | **Fraunces** |
 > | Texto | Inter | **Newsreader** |
 > | Etiquetas y CTAs | Manrope | **Montserrat** |
 >

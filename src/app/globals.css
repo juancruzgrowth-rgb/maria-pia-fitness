@@ -24,23 +24,26 @@
 
   /* Tres roles, no dos. Las dos serifas se distinguen por rol y por contraste
      de trazo, que es lo que evita que serif+serif se lea como un error:
-       display → Bodoni Moda · titulares. La voz del logotipo
+       display → Fraunces    · titulares y cifras. La voz del logotipo
        body    → Newsreader  · texto largo. Serif de lectura, bajo contraste
        ui      → Montserrat  · etiquetas, botones y navegación. Sale del logo */
-  --font-display: var(--font-bodoni);
+  --font-display: var(--font-fraunces);
   --font-sans: var(--font-newsreader);
   --font-ui: var(--font-montserrat);
 
   --radius-card: 1rem;
 
-  /* Eje de tamaño óptico. Por defecto NO se fija: `font-optical-sizing: auto`
-     deja que el navegador lo derive del tamaño real de cada texto, que es para
-     lo que existe el eje. Fijarlo a mano en 96 —el corte de display— adelgazaba
-     los trazos finos de todo lo chico hasta hacerlos desaparecer: el guion de
-     "50-60 min" se perdía entero. Sólo la piel oscura lo fija, y por un motivo
-     concreto que está explicado allá. */
-  --display-variations: normal;
-  --body-variations: normal;
+  /* Ninguna variación se fija a mano. Fraunces trae el eje de tamaño óptico y
+     `font-optical-sizing: auto` deja que el navegador lo derive del tamaño real
+     de cada texto, que es para lo que existe el eje: engrosa los trazos de un
+     precio de 16px sin tocar un titular de 56px. Fijarlo a un valor único es
+     justamente lo que hacía desaparecer los trazos finos de todo lo chico.
+
+     Los ejes SOFT y WONK de Fraunces no se piden: sus valores por defecto ya
+     son 0 —serifa definida, sin variantes caligráficas— y pedirlos sólo para
+     escribir el valor que ya tienen costaba 52 KB de fuente en cada visita.
+     Por eso no hay ninguna variable de `font-variation-settings` acá: no queda
+     un solo eje que valga la pena fijar a mano. */
   --body-weight: 400;
   --body-tracking: 0;
 }
@@ -98,12 +101,7 @@
 
    1. Ni negro puro de fondo ni blanco puro de texto. #000 sobre #FFF vibra y
       cansa; el fondo es un negro cálido y el texto un hueso.
-   2. El tamaño óptico se fija en 11 en lugar de dejarlo automático. En una
-      Didone, el corte de texto chico engrosa las serifas y los trazos finos.
-      Sobre fondo oscuro las hairlines del corte de display se desvanecen — es
-      el error clásico de pasar una serif de alto contraste a modo oscuro.
-      Es el único lugar donde vale la pena pisar el automático.
-   3. El texto sube de peso 400 a 450 y suma tracking. El texto claro sobre
+   2. El texto sube de peso 400 a 450 y suma tracking. El texto claro sobre
       fondo oscuro florece ópticamente y se lee más pesado y más apretado de lo
       que es; esto lo compensa.
 
@@ -126,8 +124,6 @@
 
   --radius-card: 0.125rem;
 
-  --display-variations: "opsz" 11;
-  --body-variations: "opsz" 14;
   --body-weight: 450;
   --body-tracking: 0.012em;
 }
@@ -145,7 +141,6 @@ body {
      forma a ciegas. */
   font-family: var(--font-sans), Georgia, "Times New Roman", serif;
   font-optical-sizing: auto;
-  font-variation-settings: var(--body-variations);
   font-weight: var(--body-weight);
   letter-spacing: var(--body-tracking);
   -webkit-font-smoothing: antialiased;
@@ -159,7 +154,6 @@ h4,
 .font-display {
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
   font-optical-sizing: auto;
-  font-variation-settings: var(--display-variations);
 }
 
 /* Rol de utilidad: lo que en el logotipo va en Montserrat, en versalitas
@@ -173,7 +167,6 @@ h4,
 .font-ui,
 .uppercase {
   font-family: var(--font-ui), system-ui, sans-serif;
-  font-variation-settings: normal;
 }
 
 ::selection {

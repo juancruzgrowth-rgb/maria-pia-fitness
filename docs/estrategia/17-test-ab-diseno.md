@@ -17,7 +17,7 @@ Mismo texto, misma estructura, mismos botones, mismos precios en las tres.
 |---|---|---|---|
 | Fondo | Blanco suave `#F5F5F2` | Porcelana `#F2F1ED` | Negro cálido `#131311` |
 | Acento | **Naranja `#F2A31B`** | Bordeaux `#6E1D2B` | Rosa antiguo `#D19AA6` |
-| Titulares | Bodoni Moda | Bodoni Moda | Bodoni Moda, óptica 11 |
+| Titulares | Fraunces | Fraunces | Fraunces |
 | Texto | Newsreader | Newsreader | Newsreader, peso 450 |
 | Utilidad | Montserrat | Montserrat | Montserrat |
 | **Para qué** | **La web real** | Comparar sin color | Comparar de noche |
@@ -88,7 +88,7 @@ estáticas de siempre, y las tres pasan WCAG AA en todas las combinaciones de te
 El manual [`branding.md`](../../.claude/rules/branding.md) describía la marca "MP CEP".
 La piel `pia` **conserva su paleta entera** —el blanco suave, el naranja, el negro profundo—
 y **reemplaza sólo el par tipográfico**: donde decía Manrope + Inter, ahora va
-Bodoni Moda + Newsreader + Montserrat, que es lo que sale del logotipo P│M.
+Fraunces + Newsreader + Montserrat, que es lo que sale del logotipo P│M.
 
 Lo que no se rompió, y fue deliberado:
 - Sin sombras pesadas, sin gradientes, sin glassmorphism, sin emojis

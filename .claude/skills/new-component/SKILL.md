@@ -10,7 +10,7 @@ Crear un nuevo componente llamado: $ARGUMENTS
    - UI atómica → `src/components/ui/`
    - Sección de página → `src/components/sections/`
    - Layout → `src/components/layout/`
-3. Crear el archivo del componente respetando la paleta MP (`mp.canvas`, `mp.ink`, `mp.orange`, etc.) y la tipografía (Bodoni Moda titulares + Newsreader texto + Montserrat etiquetas).
+3. Crear el archivo del componente respetando la paleta MP (`mp.canvas`, `mp.ink`, `mp.orange`, etc.) y la tipografía (Fraunces titulares + Newsreader texto + Montserrat etiquetas).
 4. Tipos en interfaces propias, sin `any`.
 5. Server Component salvo que necesite interactividad real.
 6. Informar la ruta del archivo creado y cómo importarlo.

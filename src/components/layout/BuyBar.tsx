@@ -20,10 +20,17 @@ export function BuyBar() {
             ? `Desde ${formatARS(CHALLENGE.priceARS)}`
             : "Lista de espera"}
         </span>
-        <span className="text-[11px] font-medium text-mp-canvas/70">
-          {isGroupOpen
-            ? `${CHALLENGE.name} · sin renovación automática`
-            : "Te aviso cuando abra"}
+        {/* La escasez va ACÁ dentro y no debajo de la barra: afuera flota sobre
+            lo que haya detrás —la foto del hero, una sección oscura— y se vuelve
+            ilegible en la mitad del scroll. Sobre el fondo tinta siempre se lee.
+            "Sin renovación automática" no se pierde: está en la sección de qué
+            incluye y en el FAQ, que es donde alguien la busca. */}
+        <span className="text-[11px] font-medium text-mp-canvas/75">
+          {!isGroupOpen
+            ? "Te aviso cuando abra"
+            : GROUP.spotsLeft > 0
+              ? `Quedan ${GROUP.spotsLeft} lugares`
+              : CHALLENGE.name}
         </span>
       </span>
 
@@ -57,12 +64,6 @@ export function BuyBar() {
             <Link href={PRIMARY_CTA.href} className={className}>
               {content}
             </Link>
-          )}
-
-          {isGroupOpen && GROUP.spotsLeft > 0 && (
-            <p className="mt-1.5 text-center text-[11px] text-mp-carbon/70 lg:text-right">
-              {GROUP.label} · quedan {GROUP.spotsLeft} lugares
-            </p>
           )}
         </div>
       </div>

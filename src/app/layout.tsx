@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Newsreader, Montserrat } from "next/font/google";
+import { Fraunces, Newsreader, Montserrat } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -17,19 +17,40 @@ import { THEME, THEME_ID } from "@/lib/theme";
  *
  * El logotipo oficial usa Quiche (Adam Ladd) arriba y Montserrat abajo. Quiche
  * es comercial y viene incluida en Canva, pero usarla en la web necesita una
- * licencia de webfont aparte — así que acá se sustituye por Bodoni Moda, que
- * comparte el alto contraste y las serifas finas del logotipo.
+ * licencia de webfont aparte, así que hay que sustituirla.
+ *
+ * Se probó Bodoni Moda y se descartó. Una Didone tiene los trazos finos casi sin
+ * espesor: se ve preciosa a 56px y se desarma abajo de ~24px, que es donde vive
+ * la mitad del texto de esta web. El "4" perdía la diagonal y se leía como "1",
+ * la "F" perdía el brazo y "40.000" parecía "10.000" — en el precio, que es el
+ * peor lugar posible para una ambigüedad.
+ *
+ * Fraunces es la sustituta correcta y de paso se parece más a Quiche: Quiche es
+ * una serif suave de serifas flaradas, no una Didone. Fraunces trae ese mismo
+ * gesto con contraste moderado, así que aguanta los 16px del precio sin perder
+ * el aire editorial.
  *
  * Tres roles, no dos:
- *   display → Bodoni Moda  · titulares. La voz del logotipo
- *   body    → Newsreader   · texto largo. Serif de lectura, bajo contraste
- *   ui      → Montserrat   · etiquetas, botones y navegación. Sale del logo
+ *   display → Fraunces    · titulares y cifras. La voz del logotipo
+ *   body    → Newsreader  · texto largo. Serif de lectura, bajo contraste
+ *   ui      → Montserrat  · etiquetas, botones y navegación. Sale del logo
  *
  * Las dos serifas se distinguen por ROL y por contraste de trazo, que es lo que
  * evita que una combinación serif+serif se lea como un error.
  *
- * `axes: ["opsz"]` no es decorativo: es lo que permite engrosar las serifas en
- * la piel oscura, donde los trazos finos se desvanecen. Ver globals.css.
+ * Se pide UN solo eje y sólo en la display: `opsz`, que es el que engrosa los
+ * trazos de un precio de 16px sin tocar un titular de 56px — exactamente el
+ * problema que se está arreglando. Cada eje extra engorda el archivo, así que
+ * hay que poder justificar cada uno:
+ *
+ *   · Fraunces `SOFT` y `WONK` no se piden. Sus valores por defecto ya son los
+ *     que queremos (0 y 0), y pedirlos para escribir el valor que ya tienen
+ *     costaba 52 KB. Verificado comparando capturas: render idéntico.
+ *   · Newsreader no lleva `opsz`. El texto de lectura vive a un solo tamaño,
+ *     así que el eje no llegaba a trabajar. Son otros 72 KB, y también se
+ *     verificó que el render no cambia.
+ *
+ * Entre las dos cosas, las fuentes precargadas pasan de 281 KB a 157 KB.
  *
  * Las tres se precargan porque las tres se usan en todas las páginas. Ojo si
  * alguna vez se agrega una cuarta familia para una sola piel: `next/font`
@@ -37,8 +58,8 @@ import { THEME, THEME_ID } from "@/lib/theme";
  * módulo, se renderice o no, y `preload` no admite una expresión condicional
  * — el cargador de fuentes exige valores literales.
  */
-const bodoni = Bodoni_Moda({
-  variable: "--font-bodoni",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
   axes: ["opsz"],
   display: "swap",
@@ -47,7 +68,6 @@ const bodoni = Bodoni_Moda({
 const newsreader = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
-  axes: ["opsz"],
   display: "swap",
 });
 
@@ -57,7 +77,7 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-const FONT_VARIABLES = `${bodoni.variable} ${newsreader.variable} ${montserrat.variable}`;
+const FONT_VARIABLES = `${fraunces.variable} ${newsreader.variable} ${montserrat.variable}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(publicEnv.siteUrl),
