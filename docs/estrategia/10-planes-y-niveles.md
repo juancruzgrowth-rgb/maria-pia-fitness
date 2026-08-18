@@ -1,7 +1,10 @@
 # Planes, Niveles y Reglas de Desbloqueo
 
 > Basado en el mensaje de María Pía del 2026-08-06.
-> **Actualizado el 2026-08-13: los 2 bloqueantes que tenía este documento están resueltos.**
+> **Actualizado el 2026-08-18: precios nuevos y sin llamadas.** La estructura de niveles
+> y las reglas de desbloqueo siguen valiendo tal cual. Lo que cambió son los precios, el
+> alcance de cada nivel y la renovación mensual — ver
+> [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
 
 ---
 
@@ -9,9 +12,14 @@
 
 | Producto | Precio | Qué incluye | En la web |
 |---|---|---|---|
-| **Un nivel** (4 semanas) | **$40.000** | 3 sesiones semanales de 50-60 min · gimnasio o casa · llamada 1:1 de bienvenida · corrección de técnica semanal · guía de nutrición estándar · Skool + WhatsApp | ✅ Precio visible |
-| **Los 3 niveles** | **$99.000** | Los 3 niveles, desbloqueados a medida que se completan · 6 meses de ventana | ✅ Precio visible |
+| **Un nivel** (28 días) | **$55.000/mes** | 3 sesiones semanales de 50-60 min · gimnasio o casa · videos explicativos · corrección de técnica por Skool · guía de nutrición estándar · Skool + WhatsApp | ✅ Precio visible |
+| **Los 3 niveles** | **$130.000** | Los 3 niveles, desbloqueados a medida que se completan · 6 meses de ventana · sin renovar | ✅ Precio visible |
 | **Asesoría 1:1** | **$280.000/mes** | Plan personalizado · más días · WhatsApp ilimitado · llamada a los 20 días | ❌ **Sin precio público** |
+
+> El pack sale 21% menos que comprar los tres niveles sueltos ($165.000). El descuento
+> se calcula en `PACK_DISCOUNT_PCT`, no se escribe a mano: si alguien sube el precio del
+> pack por encima de tres niveles, el número deja de ser un descuento y el sitio lo
+> muestra igual. Es la trampa del art. 8 de la Ley 24.240 en la que ya casi caemos una vez.
 | **Asesoría 1:1 + nutrición** | **$350.000/mes** | Lo anterior + plan nutricional personalizado | ❌ **Sin precio público** |
 
 ---

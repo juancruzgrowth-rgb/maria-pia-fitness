@@ -6,6 +6,25 @@
 >
 > Última actualización: 6 de agosto de 2026
 
+> ## ⚠️ TRES CAPÍTULOS DE ESTE MANUAL YA NO VALEN — 18 de agosto de 2026
+>
+> El producto cambió de forma. Lo que sigue escrito acá está bien contado pero
+> describe una versión anterior. Lo que cambió:
+>
+> | Capítulo | Qué pasó |
+> |---|---|
+> | **8 · La garantía de 10 días** | Ya no se ofrece como argumento de venta. El derecho legal de arrepentirse sigue existiendo y está en los Términos y Condiciones, pero no se promociona |
+> | **9 · Los grupos** | **No hay más grupos.** Cada persona empieza el día que compra |
+> | **La Semana 0** (cap. 6 y 7) | Dejó de existir. Existía para llenar la espera entre el pago y el inicio del grupo, y ya no hay espera |
+>
+> También cambiaron los precios: **$55.000 por nivel** (antes $40.000) y
+> **$130.000 los 3 niveles** (antes $99.000). Y se cayeron la llamada 1:1 de
+> bienvenida y la sesión grupal de los viernes: el reto pasa a ser 100% grabado,
+> con las consultas y la corrección de técnica por Skool y WhatsApp.
+>
+> El porqué de cada decisión está en
+> [`estrategia/20-reto-siempre-abierto.md`](estrategia/20-reto-siempre-abierto.md).
+
 ---
 
 ## Índice

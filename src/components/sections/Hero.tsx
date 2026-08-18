@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Play, X, WhatsappLogo } from "@phosphor-icons/react";
 import { HERO } from "@/content/hero";
 import { CONTACT } from "@/lib/site";
-import { GROUP, isGroupOpen } from "@/lib/products";
+import { ENROLLMENT_OPEN, FOUNDING } from "@/lib/products";
 
 export function Hero() {
   const [playing, setPlaying] = useState(false);
@@ -32,23 +32,18 @@ export function Hero() {
               {HERO.description}
             </p>
 
-            {isGroupOpen && (
+            {ENROLLMENT_OPEN && FOUNDING.active && (
               <div className="flex flex-col gap-1.5 rounded-md border border-mp-line p-4">
                 <span className="inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-[0.14em] text-mp-ember">
-                  {GROUP.isFounding && (
-                    <span
-                      aria-hidden="true"
-                      className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
-                    />
-                  )}
-                  {GROUP.label}
+                  <span
+                    aria-hidden="true"
+                    className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
+                  />
+                  {FOUNDING.label}
                 </span>
                 <p className="text-sm leading-relaxed text-mp-carbon">
-                  Arranca el {GROUP.startsAt}. Inscripción abierta hasta el{" "}
-                  {GROUP.closesAt}.
-                  {GROUP.isFounding
-                    ? " Es el primer grupo: cupo reducido y acompañamiento más cercano."
-                    : ""}
+                  Empezás el día que entrás, no cuando arranque un grupo. El
+                  precio de lanzamiento vale hasta el {FOUNDING.endsAt}.
                 </p>
               </div>
             )}

@@ -30,7 +30,7 @@ export default function PoliticaPrivacidadPage() {
         </p>
         <p>
           <strong>Datos de salud y actividad física:</strong> si durante la
-          llamada de bienvenida o el desarrollo del programa nos compartís
+          comunidad, por WhatsApp o durante el desarrollo del programa nos compartís
           información sobre lesiones, condiciones médicas, embarazo o medicación,
           esos datos reciben el tratamiento reforzado que la Ley 25.326 asigna a
           los datos sensibles. Sólo los usamos para adaptar tu entrenamiento, no
@@ -51,8 +51,9 @@ export default function PoliticaPrivacidadPage() {
       <LegalSection heading="3. Con qué finalidad los usamos">
         <p>
           Para gestionar tu inscripción y darte acceso al programa; para
-          coordinar la llamada de bienvenida y el seguimiento; para responder tus
-          consultas; para enviarte comunicaciones relacionadas con el programa
+          hacer el seguimiento de tu avance; para responder tus consultas y
+          corregir la técnica de los videos que nos envíes; para avisarte
+          cuando se acerca el vencimiento de tu acceso; para enviarte comunicaciones relacionadas con el programa
           que contrataste; para cumplir obligaciones legales, contables e
           impositivas; y, sólo si prestaste consentimiento expreso, para
           enviarte contenidos o novedades comerciales.

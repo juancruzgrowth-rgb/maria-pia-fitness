@@ -1,10 +1,9 @@
 import { FAQS } from "@/content/offer";
 import {
   CHALLENGE,
-  GROUP,
-  GUARANTEE,
+  ENROLLMENT_OPEN,
+  FOUNDING,
   formatARS,
-  isGroupOpen,
 } from "@/lib/products";
 import { publicEnv } from "@/lib/env";
 import { SITE, CONTACT } from "@/lib/site";
@@ -46,9 +45,12 @@ export function challengeJsonLd() {
       "@type": "Offer",
       price: CHALLENGE.priceARS,
       priceCurrency: "ARS",
-      availability: isGroupOpen
+      availability: ENROLLMENT_OPEN
         ? "https://schema.org/InStock"
         : "https://schema.org/PreOrder",
+      /* El precio fundador vence: declararlo acá evita que Google siga
+         mostrando $55.000 en los resultados después de que suba. */
+      priceValidUntil: FOUNDING.active ? FOUNDING.endsAtISO : undefined,
       url: `${BASE_URL}/comprar`,
       seller: { "@type": "Person", name: SITE.ownerName },
     },
@@ -67,10 +69,10 @@ export function faqJsonLd() {
   };
 }
 
-/** Descripción usada en metadatos. Refleja el estado real del grupo. */
+/** Descripción usada en metadatos. Refleja el estado real de la inscripción. */
 export function homeDescription(): string {
   const price = formatARS(CHALLENGE.priceARS);
-  return isGroupOpen
-    ? `Reto de 28 días online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, en gimnasio o en casa, con el seguimiento de Pía. ${GROUP.label}: arranca el ${GROUP.startsAt}. ${price}, con ${GUARANTEE.days} días de garantía.`
-    : `Reto de 28 días online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, en gimnasio o en casa, con el seguimiento de Pía. Inscripción cerrada — anotate para el próximo grupo.`;
+  return ENROLLMENT_OPEN
+    ? `Reto de 28 días online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, en gimnasio o en casa, con el seguimiento de Pía. Empezás el día que entrás. ${price} hasta el ${FOUNDING.endsAt}.`
+    : `Reto de 28 días online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, en gimnasio o en casa, con el seguimiento de Pía. Inscripción cerrada por ahora — anotate y te aviso.`;
 }

@@ -123,7 +123,7 @@ también: lo va a escribir con el pulgar, parada en cualquier lado.
 
 | Desenlace | Cuándo | Qué hace |
 |---|---|---|
-| **Confirmar** | La venta está `pendiente` y escribió `OK` | Estado a `confirmado`, calcula el monto desde el plan, arranca el reloj de la garantía y llama a A4 |
+| **Confirmar** | La venta está `pendiente` y escribió `OK` | Estado a `confirmado`, calcula el monto desde el plan, fija hasta cuándo tiene acceso y llama a A4 |
 | **Rechazar** | Escribió `NO` | Estado a `rechazado` y **le escribe a la clienta pidiendo que aclare**. Nunca se la deja sin respuesta |
 | **Ya procesado** | El código ya no está `pendiente` | No toca nada y se lo dice |
 | **No existe** | Se equivocó de número | No toca nada y se lo dice |
@@ -146,11 +146,13 @@ en el nodo de configuración y reflejan
 Si el plan quedó vacío porque la clienta no lo escribió, **el monto queda vacío también**. Un
 hueco visible en la fila de una venta es mejor que un número inventado.
 
-### La garantía corre desde el acceso
+### El acceso arranca en este momento
 
-No desde la transferencia. Es lo que dice el art. 34 de la Ley 24.240 y es lo que promete la
-web. El acceso es en este mismo momento, así que `garantia_vence` se calcula acá: hoy + 10
-días. Sin esa columna nadie puede responder "¿está en plazo?" sin sacar la cuenta a mano.
+No hay fecha de inicio de grupo que esperar, así que el reloj empieza cuando Pía confirma.
+`acceso_vence` sale de ahí: **28 días** para un nivel, **6 meses** para el pack de 3.
+
+Esa columna es la que va a consumir A27 para mandar los recordatorios de renovación. Si
+queda vacía, nadie avisa nada y la clienta se va sin que nos enteremos.
 
 ---
 
@@ -160,7 +162,7 @@ Desde que Pía escribe `OK` hasta que la clienta tiene todo: **menos de 30 segun
 
 1. WhatsApp con las tres cosas para hacer hoy, numeradas
 2. Alta o actualización del contacto en Brevo, en la lista de alumnas
-3. Email de bienvenida con los mismos tres links y la fecha exacta de la garantía
+3. Email de bienvenida con los mismos links y la fecha exacta en que se le vence el acceso
 4. Fila nueva en la pestaña `comunidad`, en cero
 5. `acceso_skool` pasa a `invitada` en la pestaña `ventas`
 
@@ -235,12 +237,11 @@ se puede probar cada flujo por separado sin tocar los demás.
 | `mpWhatsapp` | El celular personal de Pía, con código de país | A0, A3, A3-bis |
 | `sheetId` | La URL de la planilla, entre `/d/` y `/edit` | A3, A3-bis, A4 |
 | `driveFolderId` | La URL de la carpeta de comprobantes | A3 |
-| `grupoActual` | Hoy: `Grupo fundador` | A3 |
-| `precioNivel` / `precioPack` | `40000` / `99000` | A3-bis |
-| `garantiaDias` | `10` | A3-bis |
+| `precioNivel` / `precioPack` | `55000` / `130000` | A3-bis |
+| `accesoDias` | `28` — cuánto dura un nivel | A3-bis |
+| `ventanaPackMeses` | `6` — cuánto dura el pack de 3 | A3-bis |
 | `skoolInviteUrl` | Skool → Invite | A4 |
-| `grupoWhatsappUrl` | El link de invitación del grupo | A4 |
-| `calendlyUrl` | Calendly | A4 |
+| `grupoWhatsappUrl` | El link de invitación del grupo de WhatsApp | A4 |
 | `brevoListaAlumnas` | El ID numérico de la lista en Brevo | A4 |
 | `avisarA` | El WhatsApp de Juan Cruz | A99 |
 
@@ -306,7 +307,7 @@ No necesita n8n, ni credenciales, ni internet. Hace dos cosas:
    —`Decidir` de A3 y `Buscar la venta` de A3-bis— se extraen del JSON y se ejecutan con los
    ayudantes de n8n reemplazados por datos de prueba.
 
-Hoy pasa **27 casos de lógica**, más la validación de los cinco archivos. Entre ellos los que
+Hoy pasa **29 casos de lógica**, más la validación de los cinco archivos. Entre ellos los que
 importan de verdad: que un segundo `OK` no genere un
 segundo acceso, que un mensaje vacío no borre el email que llegó en el anterior, que una venta
 devuelta no se reabra, y que el generador de códigos no repita uno en uso en 300 intentos
@@ -335,16 +336,20 @@ vigilar.
 
 | Flujo | Qué hace | Depende de |
 |---|---|---|
-| **A5** | Secuencia de la Semana 0, día por día | Que estén los mensajes escritos |
-| **A25** | Aviso 48 h antes del día 1 | B5 (fechas del grupo) |
-| **A26** | Arranque del día 1 | A5 |
+| **A27** | Renovación mensual: avisa el 25 y el 28, corta el 31 | Nada. Se puede construir ya |
 | **A6** | Detección de abandono | Que exista la comunidad en Skool |
-| **A23** | Circuito de devolución | — |
+| **A2** | CRM de leads y clientas | Nada. Se puede construir ya |
+| **A28** | Triage de WhatsApp entrante | A0 |
 | **A1** | Captura de lead desde Instagram | ManyChat |
-| **A24** | Lista de espera entre grupos | A1 |
+| **A23** | Circuito de devolución del art. 34 | — |
+| **A29** | Captura de testimonios y upsell | Que haya clientas en el día 28 |
 
-**A5, A25 y A26 son los siguientes**, y los tres necesitan lo mismo: las fechas reales del grupo
-fundador (B5). Sin eso no hay contra qué contar los días.
+**A27 es el siguiente.** Sin él, cobrar $55.000 por mes es cobrar $55.000 una vez: nadie
+avisa que se vence, nadie cobra de nuevo y nadie corta el acceso. Y no depende de ningún
+bloqueante — la fecha contra la que cuenta ya la escribe A3-bis en `acceso_vence`.
+
+**A5, A25, A26 y A24 se cancelaron** el 2026-08-18: los cuatro dependían de las cohortes y
+de la Semana 0. Ver [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
 
 ---
 

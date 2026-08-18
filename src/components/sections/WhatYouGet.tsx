@@ -1,13 +1,7 @@
-import { ShieldCheck, Users } from "@phosphor-icons/react/dist/ssr";
+import { ArrowsClockwise, Lightning } from "@phosphor-icons/react/dist/ssr";
 import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
 import { WHAT_YOU_GET } from "@/content/offer";
-import {
-  CHALLENGE,
-  GROUP,
-  GUARANTEE,
-  formatARS,
-  isGroupOpen,
-} from "@/lib/products";
+import { CHALLENGE, FOUNDING, formatARS } from "@/lib/products";
 
 export function WhatYouGet() {
   return (
@@ -29,8 +23,8 @@ export function WhatYouGet() {
             Todo lo que entra en los 28 días.
           </h2>
           <p className="text-base leading-relaxed text-mp-carbon/80">
-            Sin letra chica ni módulos que se desbloquean después. Esto es lo que
-            hay, desde el primer día.
+            Todo el material está grabado y te lo doy completo el día que
+            entrás. No hay nada que esperar.
           </p>
         </RevealOnScroll>
 
@@ -60,45 +54,45 @@ export function WhatYouGet() {
         >
           <div className="flex flex-col gap-2">
             <span className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-mp-carbon/70">
-              {CHALLENGE.name} · pago único
+              {CHALLENGE.name} · 28 días
             </span>
             <p className="font-display text-4xl font-extrabold leading-none tracking-tight text-mp-ink md:text-5xl">
               {formatARS(CHALLENGE.priceARS)}
             </p>
             <p className="text-sm text-mp-carbon/80">
-              Sin suscripción ni renovación automática. Pagás una vez y son
-              tuyos los 28 días completos.
+              Sin débito automático. Cuando terminan los 28 días decidís si
+              seguís con el nivel siguiente o lo dejás acá.
             </p>
           </div>
 
           <ul className="flex shrink-0 flex-col gap-3 border-t border-mp-line pt-5 md:border-l md:border-t-0 md:pl-10 md:pt-0">
             <li className="flex items-start gap-2.5 text-sm text-mp-carbon">
-              <ShieldCheck
+              <Lightning
                 weight="duotone"
                 className="mt-0.5 h-5 w-5 shrink-0 text-mp-orange"
                 aria-hidden="true"
               />
               <span>
                 <span className="font-display font-semibold text-mp-ink">
-                  {GUARANTEE.headline}
+                  Empezás hoy
                 </span>
                 <br />
-                Si no es para vos, te devuelvo todo.
+                No esperás a que arranque ningún grupo.
               </span>
             </li>
-            {isGroupOpen && (
+            {FOUNDING.active && (
               <li className="flex items-start gap-2.5 text-sm text-mp-carbon">
-                <Users
+                <ArrowsClockwise
                   weight="duotone"
                   className="mt-0.5 h-5 w-5 shrink-0 text-mp-orange"
                   aria-hidden="true"
                 />
                 <span>
                   <span className="font-display font-semibold text-mp-ink">
-                    {GROUP.spotsTotal} lugares
+                    {FOUNDING.label}
                   </span>
                   <br />
-                  Arranca el {GROUP.startsAt}.
+                  Hasta el {FOUNDING.endsAt}. Después sube.
                 </span>
               </li>
             )}

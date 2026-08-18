@@ -1,5 +1,15 @@
 # La Semana 0 — Diseño completo
 
+> ## ⚠️ DOCUMENTO SUPERADO — 2026-08-18
+>
+> **La Semana 0 ya no existe.** Existía para llenar los hasta 13 días de espera
+> entre el pago y el inicio del grupo. Sin grupos no hay espera, y sin llamada de
+> bienvenida se queda además sin su pieza central.
+>
+> Lo que sigue se conserva como registro de por qué se decidió lo que se decidió
+> en su momento. **No construir nada a partir de este documento.**
+> Ver [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
+
 > Qué hace, qué recibe y qué se le mide a la persona entre que paga y arranca el día 1.
 > Decidido el 2026-08-06.
 

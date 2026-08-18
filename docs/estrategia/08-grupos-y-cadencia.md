@@ -1,5 +1,14 @@
 # Grupos y Cadencia de Lanzamientos
 
+> ## ⚠️ DOCUMENTO SUPERADO — 2026-08-18
+>
+> **Ya no hay grupos.** Cada clienta arranca el día que compra. Toda la cadencia
+> de 14 días que diseña este documento dejó de existir.
+>
+> Lo que sigue se conserva como registro de por qué se decidió lo que se decidió
+> en su momento. **No construir nada a partir de este documento.**
+> Ver [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
+
 > Decidido el 2026-08-04. Responde a: ¿cada cuánto abrimos un grupo nuevo para no hacer esperar a quien quiere comprar?
 
 ---

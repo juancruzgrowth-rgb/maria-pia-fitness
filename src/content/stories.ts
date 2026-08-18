@@ -90,6 +90,6 @@ export const STORIES: SuccessStory[] = [
     caseSummary:
       "Doble turno y correcciones a la noche. Encontró su ventana a las 6 de la mañana y sostuvo las cuatro semanas completas.",
     testimonial:
-      "Arrancar todas juntas el mismo día fue clave. Ver en el grupo que las demás también estaban en el día 12 me hizo no faltar.",
+      "Poder preguntar en el grupo a la hora que fuera me salvó. Subí un video de sentadilla a las once de la noche y al otro día tenía la corrección.",
   },
 ];

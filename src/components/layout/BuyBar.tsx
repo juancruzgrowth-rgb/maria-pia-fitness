@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react";
-import { CHALLENGE, GROUP, formatARS, isGroupOpen } from "@/lib/products";
+import {
+  CHALLENGE,
+  ENROLLMENT_OPEN,
+  FOUNDING,
+  formatARS,
+} from "@/lib/products";
 import { PRIMARY_CTA } from "@/lib/site";
 
 /**
@@ -16,20 +21,18 @@ export function BuyBar() {
     <>
       <span className="flex flex-col text-left leading-tight">
         <span className="font-display font-extrabold text-base sm:text-lg">
-          {isGroupOpen
+          {ENROLLMENT_OPEN
             ? `Desde ${formatARS(CHALLENGE.priceARS)}`
             : "Lista de espera"}
         </span>
-        {/* La escasez va ACÁ dentro y no debajo de la barra: afuera flota sobre
+        {/* La urgencia va ACÁ dentro y no debajo de la barra: afuera flota sobre
             lo que haya detrás —la foto del hero, una sección oscura— y se vuelve
-            ilegible en la mitad del scroll. Sobre el fondo tinta siempre se lee.
-            "Sin renovación automática" no se pierde: está en la sección de qué
-            incluye y en el FAQ, que es donde alguien la busca. */}
+            ilegible en la mitad del scroll. Sobre el fondo tinta siempre se lee. */}
         <span className="text-[11px] font-medium text-mp-canvas/75">
-          {!isGroupOpen
+          {!ENROLLMENT_OPEN
             ? "Te aviso cuando abra"
-            : GROUP.spotsLeft > 0
-              ? `Quedan ${GROUP.spotsLeft} lugares`
+            : FOUNDING.active
+              ? `Precio fundador hasta el ${FOUNDING.endsAt}`
               : CHALLENGE.name}
         </span>
       </span>

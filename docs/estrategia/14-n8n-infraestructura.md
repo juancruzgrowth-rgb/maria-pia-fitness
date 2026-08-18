@@ -90,6 +90,11 @@ En n8n: panel izquierdo → **Credentials** → **Add credential**.
 
 ## 5. Orden de construcción — lo que hago yo
 
+> **Actualización del 2026-08-18:** se cayeron A5, A25, A26 y A24 — dependían de las
+> cohortes y de la Semana 0, que dejaron de existir. Entraron **A27** (renovación
+> mensual) y **A28** (triage de WhatsApp). Ver
+> [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
+>
 > **Actualización del 2026-08-17:** A0, A3, A3-bis, A4 y A99 ya están construidos y
 > verificados. Los archivos están en [`../setup/n8n/`](../setup/n8n/) y el detalle de cada uno
 > en [`19-flujos-n8n-construidos.md`](19-flujos-n8n-construidos.md).
@@ -107,13 +112,12 @@ Van en este orden porque cada uno usa lo que armó el anterior.
 | **A3** | Recepción de comprobante | Acuse automático + código de 4 dígitos + fila en `ventas` + aviso a María Pía | A0, Sheets, Drive |
 | **A3-bis** | Parser de `OK 1234` | Lee la respuesta de María Pía y confirma o rechaza la venta | A3 |
 | **A4** | Onboarding | Acceso a Skool + email + WhatsApp + asignación de grupo + reloj de garantía | A3-bis |
-| **A5** | Secuencia de Semana 0 | Los mensajes de la preparación, día por día | A4 |
-| **A25** | Aviso 48 h antes | Recordatorio de que arranca el reto | A4 |
-| **A26** | Arranque del día 1 | Activa el módulo y empieza el check-in del grupo | A4 |
-| **A6** | Detección de abandono | Recalcula `estado_riesgo` todos los días y avisa a María Pía | A26 |
-| **A23** | Circuito de devolución | Registra el pedido, corta accesos, avisa | A4 |
+| **A27** | Renovación mensual | Avisa el día 25 y el 28, y corta el acceso el 31 si no pagó | A4 |
+| **A6** | Detección de abandono | Recalcula `estado_riesgo` todos los días y avisa a María Pía | A4 |
+| **A28** | Triage de WhatsApp | Clasifica lo que entra antes de que llegue al teléfono de Pía | A0 |
+| **A23** | Circuito de devolución | Registra el pedido del art. 34, corta accesos, avisa | A4 |
 | **A1** | Captura de lead desde Instagram | ManyChat → fila en `leads` → secuencia | ManyChat |
-| **A24** | Lista de espera | Junta a quien llega con el grupo cerrado | A1 |
+
 
 **A3 y A3-bis son el corazón.** Si sólo llegáramos a construir esos dos antes del
 lanzamiento, el negocio funcionaría. Los demás ahorran trabajo; esos dos hacen la venta.
@@ -144,8 +148,8 @@ Las opciones son:
    herramienta, otro costo y otro lugar donde mirar cuando falla. Sólo si la 1 no alcanza.
 
 **Vamos con la 1.** Consecuencia práctica: en la pestaña `ventas`, la columna `acceso_skool`
-va a decir "invitación enviada", no "adentro". Si alguien no acepta la invitación en 48 horas,
-el flujo A5 le vuelve a escribir.
+va a decir `invitada`, no `sí`. Si alguien no acepta la invitación en 48 horas, hay que
+volver a escribirle — eso lo hace A6, que es el flujo que vigila a quien no aparece.
 
 ---
 
@@ -176,7 +180,7 @@ gente es peor que una que se detiene.
 | Vercel (la web) | Gratis en el plan hobby |
 | **Total** | **~USD 140-160/mes** |
 
-Con el reto a $40.000, el punto de equilibrio del stack está en **7-8 ventas al mes**.
+Con el reto a $55.000, el punto de equilibrio del stack está en **5-6 ventas al mes**.
 
 ---
 

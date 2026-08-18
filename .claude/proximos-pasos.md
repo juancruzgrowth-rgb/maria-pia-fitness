@@ -1,10 +1,10 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-17 (sesión 10)**
-> **Estado del proyecto:** Diseño **cerrado y verificado en mobile**: identidad Pía Moretto (logotipo `P│M` + tipografía) sobre el fondo claro y el naranja de la paleta original. Método 4F integrado. **Los flujos de cobro y onboarding están construidos y verificados** — falta encenderlos, que depende de las cuentas.
-> **Semana de sprint: objetivo de tener todo listo para el 23/08. Plazo máximo comprometido: 30/08.**
-> **Para publicar faltan 3 datos: B2 (datos bancarios), B3 (WhatsApp argentino) y B5 (fechas y cupos del grupo fundador).**
+> Última actualización: **2026-08-18 (sesión 11)**
+> **Estado del proyecto:** El producto cambió de forma el 2026-08-18: **precios nuevos, sin garantía en el marketing, sin cohortes y sin llamadas**. La web, los flujos de n8n y la documentación ya están alineados. Ver [`docs/estrategia/20-reto-siempre-abierto.md`](../docs/estrategia/20-reto-siempre-abierto.md).
+> **🚀 FECHA DE LANZAMIENTO: 31 de agosto de 2026.**
+> **Para publicar faltan 2 datos: B2 (datos bancarios) y B3 (WhatsApp argentino).** Los dos los pasa Juan Cruz.
 
 ---
 
@@ -17,12 +17,12 @@
 | `docs/estrategia/01-web-arquitectura.md` | Auditoría de la home (⚠️ el quiz quedó descartado) |
 | `docs/estrategia/02-investigacion-mercado.md` | Qué convierte en coaching fitness online |
 | `docs/estrategia/03-lead-magnets-calendario.md` | Lead magnets + calendario |
-| `docs/estrategia/04-automatizaciones-n8n.md` | 22 automatizaciones (A1-A22) |
+| `docs/estrategia/04-automatizaciones-n8n.md` | Catálogo original de automatizaciones (⚠️ desactualizado — ver doc 20 §8) |
 | `docs/estrategia/05-skool-estructura.md` | Classroom + guion de grabación |
 | `docs/estrategia/06-comunidad-respuestas.md` | IG + WhatsApp automatizados |
-| `docs/estrategia/07-circuito-compra-y-garantia.md` | Cobro, garantía, devoluciones |
-| `docs/estrategia/08-grupos-y-cadencia.md` | Cadencia de 14 días |
-| `docs/estrategia/09-semana-cero.md` | Qué hace la persona entre que paga y arranca |
+| `docs/estrategia/07-circuito-compra-y-garantia.md` | Cobro (vigente) + garantía y grupos (⚠️ superados) |
+| ~~`docs/estrategia/08-grupos-y-cadencia.md`~~ | ⚠️ **SUPERADO.** Ya no hay grupos |
+| ~~`docs/estrategia/09-semana-cero.md`~~ | ⚠️ **SUPERADO.** La Semana 0 no existe |
 | `docs/estrategia/10-planes-y-niveles.md` | Precios, niveles, desbloqueo y qué pasa si tarda de más |
 | **`docs/estrategia/11-metodo-4f.md`** | **Mi Método 4F — naming, pilares y dónde aparece cada nombre** |
 | **`docs/estrategia/12-whatsapp-cloud-api.md`** | **Paso a paso de Meta. LO PRIMERO A EJECUTAR** |
@@ -33,6 +33,7 @@
 | **`docs/estrategia/17-test-ab-diseno.md`** | **Cómo se sirven varias pieles del sitio a la vez** |
 | **`docs/estrategia/18-identidad-pia-moretto.md`** | **LOGOTIPO, TIPOGRAFÍA Y LOS 3 TEMAS. La identidad vigente** |
 | **`docs/estrategia/19-flujos-n8n-construidos.md`** | **LOS 5 FLUJOS YA CONSTRUIDOS: qué hace cada uno, qué configurar, cómo probarlos** |
+| **`docs/estrategia/20-reto-siempre-abierto.md`** | **⭐ MANDA SOBRE TODO LO DEMÁS. Precios, fin de las cohortes, garantía, renovación y qué automatizaciones faltan** |
 | `docs/setup/n8n/*.json` | Los flujos listos para importar a n8n |
 | `docs/setup/n8n/verificar.mjs` | Test de la lógica de cobro. `node docs/setup/n8n/verificar.mjs` |
 | `docs/setup/sheets/*.csv` | Encabezados listos para importar a la planilla |
@@ -50,21 +51,28 @@
 | Métrica principal | **Tasa de finalización** |
 | Cobro | Transferencia + comprobante por WhatsApp |
 | **Activación del onboarding** | **Opción 1: MP responde `OK 1234` por WhatsApp** ✅ |
-| **Garantía** | **10 días** (alineada con art. 34 Ley 24.240) ✅ |
-| **Grupos** | **Cada 14 días** + Semana 0. Lanzamiento 1 = grupo fundador ✅ |
+| **Garantía** | ~~10 días como argumento de venta~~ → **fuera del marketing (2026-08-18).** El derecho del art. 34 sigue vigente y vive en los T&C ✅ |
+| **Grupos** | ~~Cada 14 días + Semana 0~~ → **SIN COHORTES (2026-08-18).** Cada clienta arranca el día que compra ✅ |
+| **Urgencia** | **Precio fundador con fecha: $55.000 hasta el 30/09**, después sube. Reemplaza a los cupos ✅ |
+| **Renovación** | **Mensual. Aviso el día 25 y el 28, corte de acceso el 31** si no pagó ✅ |
+| **Modalidad** | **100% grabado y asincrónico.** Sin llamada de bienvenida, sin sesión grupal ✅ |
+| **Correcciones** | **En Skool, no en el grupo de WhatsApp.** Un lote por semana en día fijo. En WhatsApp se hunden en el scroll y exponen más, y las que no se animan no mandan nada ✅ |
+| **Segmentación de grupos** | **Por nivel (1/2/3), no por plan.** Separar trimestrales crea dos castas; separar por nivel es útil de verdad. Dividir recién a las 40-50 ✅ |
+| **Triage de canales** | **Skool = clientas (técnicas + administrativas) · WhatsApp = todavía no compraron (ventas + comprobantes).** Para escribir por Skool hay que ser miembro ✅ |
+| **Fecha de lanzamiento** | **31 de agosto de 2026** ✅ |
 | Quiz / newsletter / formularios | **Ninguno en la web.** Cero formularios ✅ |
 | CTAs | Uno flotante (comprar) + uno de WhatsApp |
 | VSL | 10 minutos |
 | Prioridad | Mobile primero |
 | Rosario | Sólo como prueba de autoridad |
 | **Palabra "cohorte"** | **Reemplazada por "grupo"** en web, código y docs ✅ |
-| **Semana 0** | **Prepara y mide, no entrena.** Diseño completo en doc 09 ✅ |
+| ~~**Semana 0**~~ | ~~Prepara y mide, no entrena~~ → **ELIMINADA (2026-08-18).** Existía para llenar la espera entre el pago y el inicio del grupo. Sin grupos no hay espera ✅ |
 | **Prueba social** | **Repartida:** franja bajo el video + carrusel después del precio ✅ |
 | **Accesibilidad** | **Token `mp-ember` para texto.** El naranja de marca no pasa contraste ✅ |
-| **Precios** | **$40.000 un nivel · $99.000 los 3 niveles** (–17,5% real) ✅ |
-| **Corrección de técnica** | **Sesión grupal de 1 h, día fijo (viernes)** — no envíos individuales ✅ |
+| **Precios** | **$55.000 un nivel/mes · $130.000 los 3 niveles** (–21% real). Actualizado 2026-08-18 ✅ |
+| **Corrección de técnica** | **Asincrónica: la clienta sube el video a Skool y responde Pía.** Ya no hay sesión grupal ✅ |
 | **Guía de nutrición** | **Estándar, no personalizada.** Explicitado en FAQ y Términos ✅ |
-| **Asesoría 1:1** | **$280.000/mes · $350.000 con nutrición · 5 cupos · sin precio público** ✅ |
+| **Asesoría 1:1** | **$280.000/mes · $350.000 con nutrición · 5 cupos · sin precio público.** Es el único producto con WhatsApp directo y llamadas — esa es la línea que la separa del reto ✅ |
 | **Acceso a los niveles** | **Ventana de 6 meses · desbloqueo al 80% · una pausa de 30 días** ✅ |
 | **Nombre del método** | **"Mi Método 4F" (Fuerza, Función, Flexibilidad, Foco).** Convive con "Reto 28 Días": el método es el sistema, el reto es la oferta ✅ |
 | **Proveedor de WhatsApp** | **Meta Cloud API (oficial).** Evolution descartado por riesgo de baneo ✅ |
@@ -78,17 +86,17 @@
 
 ---
 
-## 🚧 BLOQUEANTES — 3 datos y publicamos
+## 🚧 BLOQUEANTES — 2 datos y publicamos
 
 Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
-- [x] ~~**B1 · Precio.**~~ **RESUELTO:** $40.000 por nivel (mes). Ya cargado en `PRICE_ARS`
-- [ ] **B2 · Datos bancarios.** `TRANSFER`: alias, CBU, titular
-- [ ] **B3 · WhatsApp AR.** Hoy hay un +34 español en `NEXT_PUBLIC_WHATSAPP_NUMBER`
+- [x] ~~**B1 · Precio.**~~ **RESUELTO y actualizado el 2026-08-18:** $55.000 por nivel. Ya cargado en `PRICE_ARS`
+- [ ] **B2 · Datos bancarios.** `TRANSFER`: alias, CBU, titular. *Juan Cruz los pasa cuando pueda*
+- [ ] **B3 · WhatsApp AR.** Hoy hay un +34 español en `NEXT_PUBLIC_WHATSAPP_NUMBER`. *Juan Cruz lo confirma cuando pueda*
 - [x] ~~**B4 · Nombre del producto.**~~ **RESUELTO 2026-08-17.** "Reto 28 Días" se queda como nombre de la oferta. Se suma **"Mi Método 4F"** como nombre del método, por encima. Ver `11-metodo-4f.md`
-- [ ] **B5 · Fechas del grupo fundador.** `GROUP`: `startsAt`, `closesAt`, `startsAtISO`, cupos
+- [x] ~~**B5 · Fechas del grupo fundador.**~~ **YA NO APLICA (2026-08-18).** Se eliminaron las cohortes: cada clienta arranca el día que compra. Esto desbloqueó de un saque A5, A25 y A26 — que en realidad se cancelaron, porque existían para sostener los grupos
 
-> **Recomendación sobre B5:** cupo de la fundadora en **12-15**, no 25. El primer grupo es donde se rompen cosas, y de ahí salen los testimonios que venden los seis grupos siguientes.
+- [ ] **B19 · ¿A cuánto sube el precio el 1 de octubre?** **Propuesto: $69.000 el nivel y $165.000 el pack** — +25% sobre el fundador, debajo de la barrera de los $70.000, y mantiene el descuento del pack en 20% exacto, así que el copy no cambia. **Falta que Pía lo apruebe.** No hace falta publicarlo, pero la suba tiene que ocurrir: una promo que no vence nunca es publicidad engañosa (art. 8, Ley 24.240) y quema la próxima fecha que anunciemos
 
 ### Bloqueantes de la sesión 4 — resueltos en la sesión 5
 
@@ -100,12 +108,12 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 ### 🚨 Bloqueantes nuevos de la sesión 5
 
 - [ ] **B10 · Contenido de la guía de nutrición estándar.** Está prometida en la web y en los Términos. Hay que poder entregarla el día 1
-- [ ] **B11 · Horario fijo de la sesión de los viernes.** Se anuncia antes de vender: es parte de lo que la persona compra. Cargar en `TECHNIQUE_SESSION`
+- [x] ~~**B11 · Horario fijo de la sesión de los viernes.**~~ **YA NO APLICA (2026-08-18).** No hay sesión grupal
 - [ ] **B12 · Dónde termina Daiana y dónde empieza Pía en el WhatsApp de la asesoría.** Se vende como contacto directo con ella; hay que definir la línea antes de vender el primer lugar, no después. Ver `10-planes-y-niveles.md` §8
 
 ### 🚨 Bloqueante nuevo de la sesión 6
 
-- [ ] **B13 · ¿Los 4F están de verdad en las rutinas?** La presentación de naming afirma que Fuerza, Función, Flexibilidad y Foco "son los ejes reales de cada rutina". **Es una promesa verificable en la primera semana, justo mientras corre la garantía de 10 días.** Pregunta única para Pía: *"¿Podés mostrarme, en la rutina de una semana cualquiera, dónde está cada uno de los cuatro pilares?"* Hasta que responda, el copy los presenta como **principios que guían el método**, no como bloques de cada sesión. Ver `11-metodo-4f.md` §3
+- [ ] **B13 · ¿Los 4F están de verdad en las rutinas?** La presentación de naming afirma que Fuerza, Función, Flexibilidad y Foco "son los ejes reales de cada rutina". **Es una promesa verificable en la primera semana.** Pregunta única para Pía: *"¿Podés mostrarme, en la rutina de una semana cualquiera, dónde está cada uno de los cuatro pilares?"* Hasta que responda, el copy los presenta como **principios que guían el método**, no como bloques de cada sesión. Ver `11-metodo-4f.md` §3
 
 ### 🚨 Bloqueantes nuevos de la sesión 7
 
@@ -116,6 +124,7 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 - [ ] **B18 · ¿Se licencia Quiche para la web?** Hoy se usa Fraunces como sustituta. Las piezas de Canva seguirían con Quiche. Decisión de marca, no urgente
 
 ### Pendientes de contenido (no bloquean el deploy, sí la venta)
+- [ ] **Grabar los videos explicativos del método y de cómo usar todo.** Nuevo el 2026-08-18: reemplazan a la llamada 1:1 de bienvenida y son lo primero que ve la clienta al entrar. Sin esto el onboarding queda mudo
 - [ ] Grabar los 40-50 videos de ejercicios (2 medias jornadas)
 - [ ] Grabar módulos 0 y 1 (1 media jornada)
 - [ ] Grabar el VSL de 10 min → hoy apunta a un YouTube placeholder en `src/content/hero.ts`
@@ -228,7 +237,7 @@ El plan tenía A3 y A3-bis como dos flujos independientes, cada uno con su dispa
 |---|---|
 | **A0** | La única puerta de entrada de WhatsApp. Reparte según quién escribió |
 | **A3** | Recibe el comprobante, arma la venta, la guarda en Drive, avisa a Pía |
-| **A3-bis** | Lee el `OK 1234` de Pía, confirma o rechaza, arranca el reloj de la garantía |
+| **A3-bis** | Lee el `OK 1234` de Pía, confirma o rechaza, fija hasta cuándo tiene acceso |
 | **A4** | Le da el acceso a la alumna: WhatsApp + Brevo + fila en `comunidad` |
 | **A99** | Avisa por WhatsApp cuando cualquier otro se rompe |
 
@@ -250,6 +259,66 @@ El plan tenía A3 y A3-bis como dos flujos independientes, cada uno con su dispa
 
 ### Lo urgente que sale de acá
 **Crear las 2 plantillas de mensaje en Meta es lo primero**, porque Meta las revisa y puede tardar un día. Los textos exactos están en el doc 19 §7.
+
+---
+
+## ✅ Hecho en la sesión 11 (2026-08-18) — el producto cambió de forma
+
+Pía cambió cuatro cosas del producto y **eso movió la web entera, los flujos y seis documentos**. Todo el porqué está en **[`docs/estrategia/20-reto-siempre-abierto.md`](../docs/estrategia/20-reto-siempre-abierto.md), que manda sobre cualquier documento anterior.**
+
+**Verificado:** `npm run build` limpio, `npm run lint` limpio, y `node docs/setup/n8n/verificar.mjs` pasa **29 casos de lógica** (dos nuevos: la ventana de 6 meses del pack y el contador de renovaciones).
+
+### Las cuatro decisiones
+
+| | Antes | Ahora |
+|---|---|---|
+| Un nivel | $40.000 | **$55.000/mes** |
+| Los 3 niveles | $99.000 | **$130.000** (–21% real) |
+| Garantía | En la portada | **Fuera del marketing** |
+| Inicio | Por grupos, cada 14 días | **El día que compra** |
+
+Y con las cohortes se cayeron la llamada 1:1 de bienvenida, la sesión grupal de los viernes y la Semana 0. El reto pasa a ser **100% grabado**.
+
+### Tres cosas que se le marcaron a Juan Cruz antes de tocar nada
+
+1. **La garantía no se puede quitar del todo: es ley.** El art. 34 de la Ley 24.240 da 10 días de revocación en toda compra a distancia y **es irrenunciable**, no importa el ticket. Lo que se quitó es la garantía como *argumento de venta* — badge, sección, página `/garantia`. El derecho quedó escrito en los T&C, sección 5. Si una clienta la pide en plazo, se le devuelve igual.
+2. **Sin cohortes se cae el motor de urgencia de toda la web.** "25 lugares" y "cierra el viernes" estaban en el hero, la barra de compra, el CTA final y los datos estructurados. Borrarlos sin reemplazo deja la oferta sin ninguna razón para comprar hoy. Se reemplazó por el **precio fundador con fecha**.
+3. **Se estaba borrando la línea entre el Reto y la Asesoría 1:1.** Si en el reto de $55.000 hay corrección por WhatsApp directo con Pía, la asesoría de $280.000 se queda sin nada que la justifique — y 40 clientas mandando videos al teléfono personal es exactamente el trabajo que se estaba tratando de eliminar. **En el reto la consulta va a Skool.** Es la regla operativa que sostiene los dos productos.
+
+### Lo que reemplazó a la escasez: precio fundador
+$55.000 rige **hasta el 30 de septiembre** y después sube. Es verdadero y verificable, a diferencia de un cupo inventado. **Condición no negociable: el 1 de octubre tiene que subir de verdad** (B19).
+
+### Renovación mensual — lo que faltaba en el plan
+El plan de un nivel da 28 días. No hay débito automático, así que la sostiene una automatización nueva: aviso el día 25, aviso el 28, baja de Skool y del grupo el 31. Está en los T&C sección 3 y en `RENEWAL`.
+
+### Cambió el esquema de la planilla
+| Pestaña | Qué pasó |
+|---|---|
+| `ventas` | Se fueron `grupo`, `fecha_llamada` y `garantia_vence`. Entraron **`acceso_vence`** y **`renovaciones`** |
+| `comunidad` | `grupo` → **`fecha_inicio`** |
+
+`fecha_inicio` no es cosmético: sin cohortes ya no hay una fecha de arranque compartida, así que **el día del reto en que va cada alumna sólo se puede calcular contra el día en que entró ella**. Sin esa columna, A6 no puede detectar abandono.
+
+> ⚠️ **Si la planilla ya se creó, hay que rehacer los encabezados** de `ventas` y `comunidad` desde `docs/setup/sheets/*.csv`.
+
+### Tres automatizaciones que faltaban en la lista
+**A27 · Renovación.** Sin esto, cobrar $55.000 por mes es cobrar $55.000 una vez. **Es el siguiente flujo a construir** y no depende de ningún bloqueante: la fecha contra la que cuenta ya la escribe A3-bis. Circuito confirmado por Juan Cruz: **aviso el día 25, aviso el día 28, corte de acceso el día 30.**
+**A6 · Retención.** Producto grabado, sin llamadas: si una clienta desaparece el día 9 nadie se entera. Y sin finalización no hay renovación, ni testimonio, ni upsell.
+**A28 · Triage de WhatsApp.** Sin llamadas, todo desemboca en el teléfono de Pía.
+
+**Testimonios y upsell van después del lanzamiento** — no por prioridad, sino porque no hay clientas todavía. El primer testimonio existe el día 28 de la primera compra, a fines de septiembre.
+
+### Se cancelaron cuatro flujos
+A5 (Semana 0), A25 (aviso 48 h), A26 (día 1) y A24 (lista de espera). Los cuatro existían para sostener las cohortes. **Efecto colateral bueno:** B5 —las fechas del grupo fundador— dejó de ser bloqueante.
+
+### Documentos que quedaron obsoletos
+`08-grupos-y-cadencia.md` y `09-semana-cero.md` llevan aviso de **SUPERADO**. `07` lleva aviso parcial (el circuito de cobro sigue valiendo, la garantía y los grupos no). `04` y `MANUAL-DEL-PROYECTO.md` llevan aviso de desactualizado con el detalle de qué capítulos ya no valen.
+
+### Lo que hay que hacer ya
+1. **Las 2 plantillas de Meta** — sigue siendo lo primero, Meta tarda hasta un día en revisarlas
+2. **Rehacer los encabezados de la planilla** si ya se creó
+3. **Construir A27** — es lo único que separa un negocio mensual de una venta única
+4. Decidir **B19**: a cuánto sube el precio el 1 de octubre
 
 ---
 
@@ -421,18 +490,19 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 - [ ] **Carpeta de Drive para los comprobantes + credencial OAuth2 de Google** (la cuenta de servicio no sirve para Drive — ver doc 19 §7)
 - [ ] **n8n Cloud + invitarme como Admin** → `14-n8n-infraestructura.md` §3
 - [ ] **Cuenta de Skool + esqueleto + video de 8 min** → `15-skool-arranque.md` §5 y §6
-- [ ] **Conseguir de Pía:** B2, B5, B10, B11, B12, B13 y el chip de la línea nueva
+- [ ] **Conseguir de Pía:** B10, B12, B13, B19 y el chip de la línea nueva
+- [ ] **Pasar B2 (datos bancarios) y B3 (WhatsApp AR)** — quedaron a cargo de Juan Cruz
 
-**Mío:** ~~los flujos de cobro y onboarding~~ **hechos (sesión 10)** · falta A5, A25, A26 (bloqueados por B5), A1, A6, A23, A24 · cargar los datos en el código · ManyChat · el segundo proyecto en Vercel.
+**Mío:** ~~los flujos de cobro y onboarding~~ **hechos (sesión 10)** · ~~A5, A25, A26, A24~~ **cancelados (sesión 11)** · falta **A27 (renovación — el siguiente)**, A2 (CRM), A6, A28, A1, A23 · cargar los datos en el código · ManyChat · el segundo proyecto en Vercel.
 
 **De Daiana:** ejecutar `16-lanzamiento-creativos-calendario.md`.
 
-**De Pía, urgente:** los **4 reels del método** (uno por pilar). Van antes que los 40-50 videos de ejercicios — son los que traen gente al grupo fundador.
+**De Pía, urgente:** los **videos explicativos del método y de cómo funciona todo** — reemplazan a la llamada de bienvenida y son lo primero que ve una clienta al entrar, así que sin ellos el onboarding queda mudo. Después, los **4 reels del método** (uno por pilar), que son los que traen gente.
 
-> ⚠️ **La prueba gratis de Skool vence a los 14 días de crearla.** Si la creás hoy, vence el 31/08 — antes del lanzamiento. Anotá la fecha.
+> ⚠️ **La prueba gratis de Skool vence a los 14 días.** El lanzamiento es el **31/08**: si la creás hoy (18/08) vence el 1/09, justo después. Está justo, pero da. Anotá la fecha.
 
-### 1. Desplegar (bloqueado por B2, B3, B5)
-- [ ] Cargar los 5 datos en `products.ts` y `.env`
+### 1. Desplegar (bloqueado por B2 y B3) — objetivo 31/08
+- [ ] Cargar los datos bancarios en `products.ts` y el WhatsApp en `.env`
 - [ ] Cargar env vars en Vercel (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_INSTAGRAM_URL`)
 - [ ] Smoke test en celular real: barra flotante, copiar alias, abrir WhatsApp con el mensaje precargado
 
@@ -443,7 +513,7 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 - [x] ~~**A0** · Router de WhatsApp~~ — la única puerta de entrada. **Flujo nuevo que no estaba en el plan:** Meta permite una sola URL de callback por app
 - [x] ~~**A3** · Recepción de comprobante~~ — acuse automático, código de 4 dígitos, comprobante a Drive, aviso a Pía
 - [x] ~~**A3-bis** · Parser de `OK 1234` / `NO 1234`~~ — idempotente, verificado con tests
-- [x] ~~**A4** · Onboarding~~ — Skool + Brevo + WhatsApp + fila en `comunidad` + reloj de garantía
+- [x] ~~**A4** · Onboarding~~ — Skool + Brevo + WhatsApp + fila en `comunidad` + fecha de vencimiento del acceso
 - [x] ~~**A99** · Centinela de errores~~
 
 **Para encenderlos hacen falta las cuentas.** En orden de urgencia:
@@ -452,15 +522,18 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 - [ ] Cargar las credenciales. **Ojo: Drive va con OAuth2, no con la cuenta de servicio** — una service account no tiene cuota de almacenamiento y la subida del comprobante falla
 - [ ] Completar el nodo `Configuración` de cada flujo (la tabla está en el doc 19 §7)
 - [ ] Correr la prueba de 6 pasos contra el número prestado de Meta (doc 19 §8)
+- [ ] **Rehacer los encabezados de `ventas` y `comunidad`** si la planilla ya se creó — el esquema cambió en la sesión 11
 
-**Lo que falta construir:**
-- [ ] **A5** · Secuencia de Semana 0 — *bloqueado por B5: sin fechas no hay contra qué contar días*
-- [ ] **A25** · Aviso 48 h antes del día 1 — *bloqueado por B5*
-- [ ] **A26** · Arranque del día 1 — *bloqueado por B5*
+**Lo que falta construir, por orden:**
+- [ ] **A27** · Renovación mensual — avisa el día 25 y el 28, corta el acceso el 31. **El siguiente, y no depende de nada:** la fecha contra la que cuenta ya la escribe A3-bis en `acceso_vence`. Sin esto, $55.000/mes es $55.000 una vez
+- [ ] **A2** · CRM de leads y clientas: seguimientos, recordatorios, consultas, encuestas. *Sin bloqueantes*
+- [ ] **A6** · Detección de abandono — cuenta desde `comunidad.fecha_inicio`. *Necesita la comunidad en Skool*
+- [ ] **A28** · Triage de WhatsApp entrante. **Alcance reducido:** como para escribir por Skool hay que ser miembro, WhatsApp queda como canal de venta y Skool como el de post-venta. A28 sólo tiene que distinguir *comprobante de pago* de *todo lo demás*. *Se le suma una salida al switch de A0*
 - [ ] **A1** · Captura de lead desde Instagram — *necesita ManyChat*
-- [ ] **A6** · Detección de abandono — diario los primeros 10 días, cuenta desde el día 1 del reto. *Necesita la comunidad en Skool*
-- [ ] **A23** · Circuito de devolución
-- [ ] **A24** · Lista de espera entre grupos — *necesita A1*
+- [ ] **A23** · Circuito de devolución del art. 34
+- [ ] **A29** · Captura de testimonios y upsell — *después del lanzamiento: el primer testimonio existe a fines de septiembre*
+
+**Cancelados en la sesión 11:** A5 (Semana 0), A25, A26 y A24. Dependían de las cohortes.
 
 ### 3. Producto (Pía)
 - [ ] Skool: estructura completa en `05-skool-estructura.md` §3
@@ -477,13 +550,15 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 
 1. **Nada de formularios en la web.** La captura va en Instagram vía ManyChat.
 2. **Vender "reto", no "curso".**
-3. **La Semana 0 es lo que hace tolerable la espera entre grupos.** Sin eso, 13 días de espera cuestan devoluciones.
-4. **La espera nunca debe superar el plazo de la garantía.** Con 14 días de cadencia y 10 de garantía estamos justos: vigilar.
-5. **El acuse de recibo del comprobante es automático aunque la verificación sea manual.**
-6. **Una sola conversación por pedido de devolución.** Si insiste, se devuelve.
-7. **El grupo 1 no es para facturar, es para generar testimonios.**
-8. **Automatizar la velocidad, no la relación.**
-9. **Graba cada ejercicio una sola vez** — programación y biblioteca van separadas.
+3. **Nadie espera para empezar.** Se compra y se entrena el mismo día. Si alguna vez vuelve a aparecer una espera entre el pago y el día 1, vuelve con ella el problema que la Semana 0 trataba de tapar.
+4. **El derecho de revocación de 10 días existe aunque no lo promocionemos.** No es una política nuestra: es el art. 34 de la Ley 24.240 y es irrenunciable. Si una clienta lo pide en plazo, se devuelve, sin discutir.
+5. **En el reto, la consulta va a Skool.** Si empiezan a llegar al WhatsApp personal de Pía, la asesoría de $280.000 deja de justificarse y el producto "fácil de operar" le come el día igual.
+6. **El precio fundador tiene que subir el 1 de octubre.** Una promoción que no vence nunca es publicidad engañosa y quema la próxima fecha que anunciemos.
+7. **El acuse de recibo del comprobante es automático aunque la verificación sea manual.**
+8. **Una sola conversación por pedido de devolución.** Si insiste, se devuelve.
+9. **Las primeras clientas no son para facturar, son para generar testimonios.**
+10. **Automatizar la velocidad, no la relación.**
+11. **Graba cada ejercicio una sola vez** — programación y biblioteca van separadas.
 
 ---
 
@@ -522,6 +597,9 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 ---
 
 ## ✅ Historial
+
+### Sesión 11 — 2026-08-18
+El producto cambió de forma: precios a $55.000 / $130.000 · garantía fuera del marketing (el derecho del art. 34 queda en los T&C) · **sin cohortes**, cada clienta arranca el día que compra · sin llamada 1:1 ni sesión grupal · precio fundador hasta el 30/09 como reemplazo de la escasez · renovación mensual con corte de acceso · esquema de la planilla actualizado · A5/A24/A25/A26 cancelados, A27/A28/A29 agregados · doc 20 como fuente de verdad · **lanzamiento fijado para el 31/08**
 
 ### Sesión 10 — 2026-08-17
 Flujos de cobro y onboarding construidos (A0, A3, A3-bis, A4, A99) · A0 · Router aparece porque Meta permite un solo webhook por app · idempotencia probada con 27 casos en `verificar.mjs` · comprobantes a Drive porque Meta los borra a los 30 días · dos trampas documentadas (Drive necesita OAuth2, WhatsApp necesita plantillas fuera de las 24 h) · informe de PageSpeed leído

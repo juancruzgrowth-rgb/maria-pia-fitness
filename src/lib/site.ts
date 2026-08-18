@@ -1,5 +1,5 @@
 import { publicEnv } from "@/lib/env";
-import { CHALLENGE, CTA_LABEL, isGroupOpen } from "@/lib/products";
+import { CHALLENGE, CTA_LABEL, ENROLLMENT_OPEN } from "@/lib/products";
 
 /**
  * Identidad de marca. Actualizada el 2026-08-17 con el logotipo nuevo.
@@ -58,8 +58,11 @@ const RECEIPT_MESSAGE = [
   "Plan (un nivel / los 3 niveles):",
 ].join("\n");
 
-/** Mensaje para anotarse en la lista de espera entre grupos. */
-const WAITLIST_MESSAGE = `Hola Pía! Quiero anotarme para el próximo grupo del ${CHALLENGE.name}.`;
+/**
+ * Mensaje para la lista de espera. Con la inscripción siempre abierta esto
+ * sólo se usa si ENROLLMENT_OPEN pasa a false porque Pía no da abasto.
+ */
+const WAITLIST_MESSAGE = `Hola Pía! Quiero anotarme para cuando vuelvan a abrir el ${CHALLENGE.name}.`;
 
 /**
  * Consulta por la asesoría 1:1. No se publica precio: la conversación
@@ -82,10 +85,10 @@ export const CONTACT = {
 } as const;
 
 /**
- * Único CTA de compra del sitio. Si el grupo está cerrado apunta a la
+ * Único CTA de compra del sitio. Si la inscripción está cerrada apunta a la
  * lista de espera en lugar de a la página de compra.
  */
 export const PRIMARY_CTA = {
   label: CTA_LABEL,
-  href: isGroupOpen ? "/comprar" : CONTACT.waitlistUrl,
+  href: ENROLLMENT_OPEN ? "/comprar" : CONTACT.waitlistUrl,
 } as const;

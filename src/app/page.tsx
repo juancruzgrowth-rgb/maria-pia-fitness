@@ -7,7 +7,6 @@ import { Stories } from "@/components/sections/Stories";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { About } from "@/components/sections/About";
 import { Gym } from "@/components/sections/Gym";
-import { Guarantee } from "@/components/sections/Guarantee";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { PulseDivider } from "@/components/ui/PulseDivider";
@@ -27,7 +26,6 @@ export default function Home() {
       <HowItWorks />
       <About />
       <Gym />
-      <Guarantee />
       <FAQ />
       <FinalCta />
       <JsonLd data={challengeJsonLd()} />

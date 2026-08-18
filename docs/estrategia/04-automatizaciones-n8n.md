@@ -3,6 +3,20 @@
 > Frente F4. Dueño: Juan Cruz.
 > Motor: **n8n**. Las construimos juntos, una por una, en el orden de esta lista.
 
+> ## ⚠️ CATÁLOGO DESACTUALIZADO — 2026-08-18
+>
+> Este documento es el catálogo original de los 26 flujos, de cuando el reto se vendía
+> por cohortes y con Semana 0. **Se cancelaron A5, A24, A25 y A26** y entraron **A27**
+> (renovación mensual), **A28** (triage de WhatsApp) y **A29** (testimonios y upsell).
+> El esquema de la planilla que aparece más abajo también cambió.
+>
+> **Para saber qué está construido y cómo se pone a andar:**
+> [`19-flujos-n8n-construidos.md`](19-flujos-n8n-construidos.md).
+> **Para saber qué falta y en qué orden:**
+> [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md) §8.
+> **Para el esquema real de la planilla:**
+> [`13-base-de-datos-sheet.md`](13-base-de-datos-sheet.md).
+
 ---
 
 ## Arquitectura general

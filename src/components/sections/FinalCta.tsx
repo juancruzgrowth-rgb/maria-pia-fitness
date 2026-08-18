@@ -1,7 +1,6 @@
 import { WhatsappLogo } from "@phosphor-icons/react/dist/ssr";
 import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
 import { CONTACT } from "@/lib/site";
-import { GROUP, isGroupOpen } from "@/lib/products";
 
 export function FinalCta() {
   return (
@@ -16,9 +15,6 @@ export function FinalCta() {
         <p className="text-base leading-relaxed text-mp-carbon/80 md:text-lg">
           Escribime por WhatsApp y te respondo yo. Sin formularios, sin
           llamadas de venta y sin que te insista después.
-          {isGroupOpen
-            ? ` La inscripción del ${GROUP.label.toLowerCase()} cierra el ${GROUP.closesAt}.`
-            : ""}
         </p>
         <a
           href={CONTACT.askUrl}

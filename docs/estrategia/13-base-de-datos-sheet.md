@@ -61,8 +61,8 @@ pisan. La excepción son las columnas marcadas como *manual* más abajo.
 
 ### `ventas` — quien pagó
 
-Es la pestaña más importante. De acá salen la facturación, el control de la garantía y la
-lista de cada grupo.
+Es la pestaña más importante. De acá salen la facturación, quién tiene el acceso activo y a
+quién hay que avisarle que se le vence.
 
 | Columna | Qué guarda | Quién la escribe |
 |---|---|---|
@@ -77,16 +77,20 @@ lista de cada grupo.
 | `metodo_pago` | `transferencia` | n8n |
 | `comprobante_url` | Link a la imagen que mandó | n8n |
 | `estado` | `esperando` · `pendiente` · `confirmado` · `rechazado` · `devuelto` | n8n |
-| `grupo` | En qué grupo entró | n8n |
 | `acceso_skool` | `no` · `invitada` · `sí` | n8n |
-| `fecha_llamada` | Su llamada 1:1 de la Semana 0 | n8n |
-| `garantia_vence` | Fecha límite para pedir devolución. **Se calcula sola** | n8n |
+| `acceso_vence` | Hasta cuándo tiene acceso pagado. **Se calcula sola** | n8n |
+| `renovaciones` | Cuántas veces renovó. Arranca en 0 | n8n |
 | `notas` | | **manual** |
 
-> **Por qué `codigo` y `garantia_vence` no estaban en el plan original:** el código de 4
-> dígitos es lo que hace posible el `OK 1234`, y sin una columna con la fecha exacta en que
-> vence la garantía, nadie puede responder "¿está en plazo?" sin sacar la cuenta a mano.
-> Las dos son consecuencia de decisiones que se tomaron después de escribir el plan.
+> **Por qué `codigo` no estaba en el plan original:** los 4 dígitos son lo que hace posible
+> el `OK 1234`. Es consecuencia de una decisión que se tomó después de escribir el plan.
+
+> **Tres columnas que se fueron el 2026-08-18:** `grupo`, `fecha_llamada` y
+> `garantia_vence`. Ya no hay grupos, no hay llamada de bienvenida y la garantía dejó de
+> ser una promesa comercial con fecha que haya que vigilar. En su lugar entraron
+> **`acceso_vence`** —hasta cuándo pagó, que es lo que dispara el recordatorio de
+> renovación— y **`renovaciones`**, el contador que dice si una clienta sigue.
+> Ver [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
 
 > **Dos estados que se agregaron al construir los flujos (2026-08-17):**
 >
@@ -111,7 +115,7 @@ Es el tablero de la métrica principal del negocio: **la tasa de finalización**
 |---|---|---|
 | `alumna` | Nombre | n8n |
 | `whatsapp` | Para poder escribirle | n8n |
-| `grupo` | | n8n |
+| `fecha_inicio` | El día que entró. Sin cohortes, es lo único contra lo que se puede calcular `dia_actual` | n8n |
 | `dia_actual` | Qué día del reto va | n8n |
 | `ultimo_checkin` | Última vez que reportó una rutina | n8n |
 | `rutinas_completadas` | De 12 | n8n |

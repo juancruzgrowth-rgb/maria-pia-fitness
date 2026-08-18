@@ -119,7 +119,7 @@ const decidir = (mensaje, filas) =>
     "A3-recepcion-comprobante.json",
     "Decidir",
     {
-      "Configuración": { grupoActual: "Grupo fundador" },
+      "Configuración": {},
       "Leer los datos del mensaje": mensaje,
     },
     filas,
@@ -193,7 +193,15 @@ const confirmar = (comando, filas) =>
   correrNodo(
     "A3bis-confirmacion.json",
     "Buscar la venta",
-    { "Configuración": { precioNivel: 40000, precioPack: 99000, garantiaDias: 10, ...comando } },
+    {
+      "Configuración": {
+        precioNivel: 55000,
+        precioPack: 130000,
+        accesoDias: 28,
+        ventanaPackMeses: 6,
+        ...comando,
+      },
+    },
     filas,
   );
 
@@ -201,14 +209,30 @@ console.log("\nA3-bis · lo que pasa cuando Pía responde\n");
 
 const pendiente = {
   codigo: "4821", whatsapp: "549341555", estado: "pendiente", nombre: "Carolina",
-  email: "c@x.com", plan: "nivel-mensual", grupo: "Grupo fundador", row_number: 7,
+  email: "c@x.com", plan: "nivel-mensual", renovaciones: 0, row_number: 7,
 };
+
+/** Días entre hoy y una fecha YYYY-MM-DD. */
+const diasHasta = (iso) => (new Date(iso) - new Date()) / 86400000;
 
 r = confirmar({ comandoVerbo: "OK", comandoCodigo: "4821" }, [pendiente]);
 chequear("OK sobre una venta pendiente → confirma", r.accion === "confirmar");
-chequear("  el monto sale del plan, no lo escribe nadie", r.fila.monto === 40000);
-chequear("  el pack cotiza distinto", confirmar({ comandoVerbo: "OK", comandoCodigo: "4821" }, [{ ...pendiente, plan: "pack-3-niveles" }]).fila.monto === 99000);
-chequear("  arranca el reloj de la garantía a 10 días", (new Date(r.fila.garantia_vence) - new Date()) / 86400000 > 8.9);
+chequear("  el monto sale del plan, no lo escribe nadie", r.fila.monto === 55000);
+chequear("  el pack cotiza distinto", confirmar({ comandoVerbo: "OK", comandoCodigo: "4821" }, [{ ...pendiente, plan: "pack-3-niveles" }]).fila.monto === 130000);
+chequear(
+  "  un nivel da 28 días de acceso",
+  diasHasta(r.fila.acceso_vence) > 26.9 && diasHasta(r.fila.acceso_vence) < 28.1,
+);
+chequear(
+  "  el pack no vence a los 28 días: da la ventana de 6 meses",
+  diasHasta(
+    confirmar({ comandoVerbo: "OK", comandoCodigo: "4821" }, [{ ...pendiente, plan: "pack-3-niveles" }]).fila.acceso_vence,
+  ) > 150,
+);
+chequear(
+  "  no pisa el contador de renovaciones de quien ya renovó",
+  confirmar({ comandoVerbo: "OK", comandoCodigo: "4821" }, [{ ...pendiente, renovaciones: 2 }]).fila.renovaciones === 2,
+);
 chequear("  no arrastra row_number a la planilla", !("row_number" in r.fila));
 
 chequear(
@@ -222,7 +246,7 @@ chequear(
 
 r = confirmar({ comandoVerbo: "NO", comandoCodigo: "4821" }, [pendiente]);
 chequear("NO → rechaza", r.accion === "rechazar");
-chequear("  y no fija fecha de garantía", r.fila.garantia_vence === "");
+chequear("  y no le da acceso", r.fila.acceso_vence === "");
 
 chequear(
   "Un código que no existe no escribe nada",

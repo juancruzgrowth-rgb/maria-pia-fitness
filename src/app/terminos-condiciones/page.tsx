@@ -4,7 +4,9 @@ import { LegalPage, LegalSection } from "@/components/legal/LegalPage";
 import { SITE } from "@/lib/site";
 import {
   CHALLENGE,
-  GUARANTEE,
+  FOUNDING,
+  RENEWAL,
+  WITHDRAWAL_RIGHT,
   LEVEL_ACCESS,
   TRANSFER,
   VISIBLE_PLANS,
@@ -36,20 +38,18 @@ export default function TerminosCondicionesPage() {
           El {CHALLENGE.name} es un programa de entrenamiento físico y
           orientación nutricional de {CHALLENGE.duration} de duración, prestado
           de forma íntegramente online. Incluye acceso a contenidos
-          audiovisuales, material descargable, una llamada individual de
-          bienvenida, una sesión grupal semanal de corrección de técnica y
-          participación en una comunidad privada durante la vigencia del
-          programa.
+          audiovisuales grabados, material descargable, corrección asincrónica de
+          técnica y participación en una comunidad privada durante la vigencia
+          del programa.
         </p>
         <p>
           <strong>
             El plan de entrenamiento y la guía nutricional no son
             personalizados.
           </strong>{" "}
-          Son los mismos para todas las participantes de un mismo grupo. El
-          único componente individual del servicio es la llamada de bienvenida.
-          La corrección de técnica se realiza en una sesión grupal, en día fijo
-          y con periodicidad semanal.
+          Son los mismos para todas las participantes. El único componente
+          individualizado es la devolución sobre los videos de técnica que la
+          participante decida enviar, que se responde de forma asincrónica.
         </p>
         <p>
           La asesoría 1:1 es un servicio distinto, con alcance, duración y
@@ -65,14 +65,28 @@ export default function TerminosCondicionesPage() {
         <p>
           Los precios vigentes, con impuestos incluidos, son:{" "}
           {VISIBLE_PLANS.map((plan) => `${plan.name}, ${formatARS(plan.priceARS)}`).join("; ")}.
-          En todos los casos se trata de un pago único: no existe suscripción,
-          débito automático ni renovación automática de ningún tipo.
+          Estos importes corresponden al precio promocional de lanzamiento y
+          rigen hasta el {FOUNDING.endsAt} de {new Date(FOUNDING.endsAtISO).getFullYear()}
+          . Las modificaciones de precio no afectan a quienes ya hubieran
+          abonado.
         </p>
         <p>
-          Quien contrate los {LEVEL_ACCESS.totalLevels} niveles dispone de{" "}
-          {LEVEL_ACCESS.windowMonths} meses corridos desde el pago para
-          completarlos. Cada nivel se habilita al completar el{" "}
-          {LEVEL_ACCESS.unlockThresholdPct}% de las sesiones del anterior. La
+          La contratación de un nivel otorga acceso al programa por{" "}
+          {RENEWAL.accessDays} días corridos contados desde la confirmación del
+          acceso. Vencido ese plazo, para continuar es necesario abonar
+          nuevamente. <strong>No existe suscripción ni débito automático:</strong>{" "}
+          ningún importe se cobra sin una nueva transferencia hecha por la
+          participante. La prestadora envía recordatorios antes del
+          vencimiento; si no se abona la renovación, el acceso a la comunidad y
+          al material se da de baja a los {RENEWAL.graceDays} días corridos del
+          vencimiento, es decir el día{" "}
+          {RENEWAL.accessDays + RENEWAL.graceDays} contado desde el alta.
+        </p>
+        <p>
+          Quien contrate los {LEVEL_ACCESS.totalLevels} niveles no debe renovar
+          mensualmente y dispone de {LEVEL_ACCESS.windowMonths} meses corridos
+          desde el pago para completarlos. Cada nivel se habilita al completar
+          el {LEVEL_ACCESS.unlockThresholdPct}% de las sesiones del anterior. La
           participante puede solicitar, por única vez y sin necesidad de
           justificación, la suspensión del plazo por {LEVEL_ACCESS.pauseDays}{" "}
           días corridos.
@@ -86,26 +100,30 @@ export default function TerminosCondicionesPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="4. Grupos, cupos e inicio del programa">
+      <LegalSection heading="4. Inicio y modalidad del programa">
         <p>
-          El programa se dicta por grupos con fecha de inicio determinada y
-          cupo limitado. La cantidad de lugares informada en el sitio es real y
-          está limitada por la disponibilidad de la prestadora para realizar las
-          llamadas individuales de bienvenida.
+          El programa es íntegramente digital y asincrónico. La totalidad del
+          material —rutinas, videos explicativos, biblioteca de ejercicios y
+          guía de nutrición— se encuentra grabado y se pone a disposición de la
+          participante al confirmarse el acceso. No hay fechas de inicio
+          predeterminadas: el programa comienza el día en que se otorga el
+          acceso.
         </p>
         <p>
-          Si la inscripción se encuentra cerrada, podés solicitar ser
-          incorporada a la lista de espera del grupo siguiente, sin costo ni
-          obligación.
+          El servicio no incluye sesiones en vivo, individuales ni grupales. Las
+          consultas y la corrección de técnica se responden de forma
+          asincrónica a través de la comunidad privada y de WhatsApp, dentro de
+          los plazos razonables informados en el sitio.
         </p>
       </LegalSection>
 
-      <LegalSection heading="5. Derecho de revocación (Art. 34, Ley 24.240)">
+      <LegalSection heading={`5. Derecho de revocación (${WITHDRAWAL_RIGHT.law})`}>
         <p>
           De acuerdo con el artículo 34 de la Ley 24.240 de Defensa del
           Consumidor, al tratarse de una contratación celebrada fuera del
           establecimiento comercial, tenés derecho a revocar la contratación
-          dentro de los <strong>diez (10) días corridos</strong> contados a
+          dentro de los{" "}
+          <strong>diez ({WITHDRAWAL_RIGHT.days}) días corridos</strong> contados a
           partir de la fecha en que se te otorgue el acceso al programa, sin
           necesidad de expresar causa y sin responsabilidad alguna de tu parte.
         </p>
@@ -121,31 +139,7 @@ export default function TerminosCondicionesPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="6. Garantía comercial de satisfacción">
-        <p>
-          La prestadora ofrece además una garantía comercial de satisfacción de{" "}
-          {GUARANTEE.days} días, cuyo plazo se encuentra deliberadamente
-          alineado con el derecho de revocación del punto anterior. Durante ese
-          período podés solicitar la devolución íntegra de lo abonado sin
-          expresar causa y sin condición alguna: no se exige haber completado
-          entrenamientos, haber asistido a la llamada de bienvenida ni acreditar
-          ningún tipo de uso del servicio.
-        </p>
-        <p>
-          Esta garantía no sustituye ni limita el derecho de revocación previsto
-          en la Ley 24.240. Ante cualquier diferencia entre ambos, se aplica el
-          régimen más favorable para vos.
-        </p>
-        <p>
-          Los términos completos están disponibles en la{" "}
-          <Link href="/garantia" className="underline underline-offset-2">
-            página de garantía
-          </Link>
-          .
-        </p>
-      </LegalSection>
-
-      <LegalSection heading="7. Obligaciones de la participante">
+      <LegalSection heading="6. Obligaciones de la participante">
         <p>
           El acceso al programa es personal e intransferible. No está permitido
           compartir credenciales, descargar y redistribuir los contenidos, ni
@@ -160,7 +154,7 @@ export default function TerminosCondicionesPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="8. Resultados">
+      <LegalSection heading="7. Resultados">
         <p>
           Los resultados dependen de factores individuales como el punto de
           partida, la adherencia al programa, el descanso, la alimentación y la
@@ -170,7 +164,7 @@ export default function TerminosCondicionesPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="9. Propiedad intelectual">
+      <LegalSection heading="8. Propiedad intelectual">
         <p>
           Todos los contenidos del programa y del sitio (videos, textos,
           planillas, marcas y diseños) son propiedad de {SITE.fiscalName} y se
@@ -180,7 +174,7 @@ export default function TerminosCondicionesPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="10. Suspensión del acceso">
+      <LegalSection heading="9. Suspensión del acceso">
         <p>
           La prestadora podrá suspender el acceso, sin derecho a reembolso, ante
           el incumplimiento de estos términos, la redistribución no autorizada
@@ -189,7 +183,7 @@ export default function TerminosCondicionesPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="11. Datos personales">
+      <LegalSection heading="10. Datos personales">
         <p>
           El tratamiento de tus datos personales se rige por la{" "}
           <Link href="/politica-privacidad" className="underline underline-offset-2">
@@ -199,7 +193,7 @@ export default function TerminosCondicionesPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="12. Modificaciones">
+      <LegalSection heading="11. Modificaciones">
         <p>
           Estos términos pueden actualizarse. Las modificaciones no afectan a las
           contrataciones ya perfeccionadas, que se rigen por la versión vigente
@@ -207,7 +201,7 @@ export default function TerminosCondicionesPage() {
         </p>
       </LegalSection>
 
-      <LegalSection heading="13. Ley aplicable y jurisdicción">
+      <LegalSection heading="12. Ley aplicable y jurisdicción">
         <p>
           Estos términos se rigen por las leyes de la República Argentina. Para
           cualquier controversia serán competentes los tribunales ordinarios de

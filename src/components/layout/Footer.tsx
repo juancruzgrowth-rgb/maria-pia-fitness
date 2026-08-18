@@ -2,10 +2,8 @@ import Link from "next/link";
 import { InstagramLogo, TiktokLogo, YoutubeLogo } from "@phosphor-icons/react/dist/ssr";
 import { Logo } from "@/components/ui/Logo";
 import { CONTACT, SITE, NAV_SECTIONS } from "@/lib/site";
-import { GUARANTEE } from "@/lib/products";
 
 const LEGAL_LINKS = [
-  { href: "/garantia", label: `Garantía de ${GUARANTEE.days} días` },
   { href: "/terminos-condiciones", label: "Términos y Condiciones" },
   { href: "/politica-privacidad", label: "Política de Privacidad" },
   { href: "/proteccion-datos", label: "Protección de Datos" },

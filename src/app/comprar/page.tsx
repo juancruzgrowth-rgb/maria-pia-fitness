@@ -2,21 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowLeft,
+  ArrowsClockwise,
   ClockCounterClockwise,
-  ShieldCheck,
   WhatsappLogo,
 } from "@phosphor-icons/react/dist/ssr";
 import { CopyField } from "@/components/ui/CopyField";
 import { CONTACT } from "@/lib/site";
 import {
   CHALLENGE,
-  GROUP,
-  GUARANTEE,
+  ENROLLMENT_OPEN,
+  FOUNDING,
   PACK_DISCOUNT_PCT,
+  RENEWAL,
   TRANSFER,
   VISIBLE_PLANS,
   formatARS,
-  isGroupOpen,
 } from "@/lib/products";
 
 export const metadata: Metadata = {
@@ -26,15 +26,15 @@ export const metadata: Metadata = {
 };
 
 export default function ComprarPage() {
-  if (!isGroupOpen) {
+  if (!ENROLLMENT_OPEN) {
     return (
       <section className="container-page section-pad max-w-2xl">
         <h1 className="font-display text-3xl font-extrabold tracking-tight md:text-4xl">
           La inscripción está cerrada por ahora.
         </h1>
         <p className="mt-4 text-base leading-relaxed text-mp-carbon/80">
-          El {CHALLENGE.name} funciona por grupos: todas arrancamos el mismo
-          día. Dejame tu contacto y te aviso apenas abra la próxima.
+          Estoy con el cupo de atención completo. Dejame tu contacto y te
+          aviso apenas se libere un lugar.
         </p>
         <a
           href={CONTACT.waitlistUrl}
@@ -64,8 +64,11 @@ export default function ComprarPage() {
       </h1>
 
       <p className="mt-4 text-base leading-relaxed text-mp-carbon/80">
-        {GROUP.label}: arranca el {GROUP.startsAt} y quedan {GROUP.spotsLeft} de{" "}
-        {GROUP.spotsTotal} lugares. El acceso a la Semana 0 lo tenés hoy mismo.
+        Empezás el día que entrás: el material completo te llega apenas
+        confirmo la transferencia, sin esperar a que arranque ningún grupo.
+        {FOUNDING.active
+          ? ` Estos precios son los de lanzamiento y rigen hasta el ${FOUNDING.endsAt}.`
+          : ""}
       </p>
 
       <h2 className="mt-10 font-display text-lg font-bold text-mp-ink md:text-xl">
@@ -151,8 +154,8 @@ export default function ComprarPage() {
             </h2>
           </div>
           <p className="text-sm leading-relaxed text-mp-carbon/80">
-            Verifico la transferencia y te mando el acceso a la comunidad más el
-            link para agendar tu llamada de bienvenida, en{" "}
+            Verifico la transferencia y te mando el acceso a la comunidad, las
+            rutinas y los videos donde te explico cómo usar todo, en{" "}
             {TRANSFER.responseWindow}.
           </p>
         </li>
@@ -172,23 +175,18 @@ export default function ComprarPage() {
         </div>
 
         <div className="flex gap-3 rounded-md border border-mp-line p-4">
-          <ShieldCheck
+          <ArrowsClockwise
             weight="duotone"
             className="mt-0.5 h-5 w-5 shrink-0 text-mp-orange"
             aria-hidden="true"
           />
           <p className="text-sm leading-relaxed text-mp-carbon">
             <span className="font-display font-semibold text-mp-ink">
-              {GUARANTEE.headline}.
+              No hay débito automático.
             </span>{" "}
-            {GUARANTEE.summary}{" "}
-            <Link
-              href="/garantia"
-              className="underline decoration-mp-orange decoration-2 underline-offset-4"
-            >
-              Ver términos
-            </Link>
-            .
+            Un nivel te da {RENEWAL.accessDays} días de acceso. Si querés
+            seguir con el siguiente, transferís de nuevo. Si no hacés nada, se
+            termina y listo.
           </p>
         </div>
       </div>

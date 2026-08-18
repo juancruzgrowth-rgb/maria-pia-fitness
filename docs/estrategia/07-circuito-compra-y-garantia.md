@@ -2,6 +2,17 @@
 
 > Decisiones tomadas el 2026-08-04. Reemplaza lo que decía `01-web-arquitectura.md` sobre el quiz.
 
+> ## ⚠️ PARCIALMENTE SUPERADO — 2026-08-18
+>
+> **Sigue valiendo:** todo el circuito de cobro. Transferencia, comprobante por WhatsApp,
+> el `OK 1234` de Pía, el código de 4 dígitos. Es exactamente lo que se construyó.
+>
+> **Ya no vale:** la § de la garantía y la § de la cadencia de grupos. La garantía salió
+> del marketing (el derecho del art. 34 sigue, en los T&C) y las cohortes desaparecieron:
+> cada clienta arranca el día que compra.
+>
+> Ver [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
+
 ---
 
 ## 0. Qué cambió en esta sesión
@@ -12,8 +23,8 @@
 | Newsletter en la web | **Descartado también** (ver §3 — el razonamiento) |
 | Cobro | Transferencia + comprobante por WhatsApp |
 | Activación del onboarding | **Opción 1: María Pía responde `OK 1234` por WhatsApp** (ver §2.2) |
-| Garantía | **10 días** — alineada con el art. 34 de la Ley 24.240 (ver §4) |
-| Cadencia de grupos | **Cada 14 días** + Semana 0 (ver [`08-grupos-y-cadencia.md`](08-grupos-y-cadencia.md)) |
+| ~~Garantía~~ | ~~**10 días** — alineada con el art. 34 de la Ley 24.240 (ver §4)~~ · **Revertido el 2026-08-18** |
+| ~~Cadencia de grupos~~ | ~~**Cada 14 días** + Semana 0~~ · **Sin grupos desde el 2026-08-18** |
 | CTAs | Uno solo flotante fijo (comprar) + uno de WhatsApp no flotante |
 | VSL | 10 minutos (decisión del cliente) |
 | Formato | Se vende como **reto** |
