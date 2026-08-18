@@ -8,6 +8,19 @@
 >
 > **Fecha de lanzamiento: 31 de agosto de 2026.**
 
+> ## ⚠️ El cobro y la renovación cambiaron — 2026-08-18 (sesión 12)
+>
+> **Sigue valiendo todo lo de producto:** precios, fin de las cohortes, garantía fuera del
+> marketing, precio fundador, la línea entre el Reto y la Asesoría, y dónde vive cada
+> conversación.
+>
+> **Ya no vale el cobro por transferencia ni la mecánica de renovación de la §5.** Con
+> **MercadoPago como pasarela única y suscripción con débito automático**, MercadoPago cobra
+> y reintenta solo: la tabla de días 25 / 28 / 30 queda **sólo para el pack de 3 niveles**,
+> que sí vence en una fecha.
+>
+> Ver [`21-mercadopago-suscripciones.md`](21-mercadopago-suscripciones.md).
+
 ---
 
 ## 1. Las cuatro decisiones

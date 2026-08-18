@@ -8,6 +8,25 @@
 > Para el circuito de compra como decisión de negocio, ver
 > [`07-circuito-compra-y-garantia.md`](07-circuito-compra-y-garantia.md).
 
+> ## ⚠️ PARCIALMENTE SUPERADO — 2026-08-18 (sesión 12)
+>
+> Al pasar a **MercadoPago como pasarela única** y sacar la automatización de WhatsApp, tres
+> de los cinco flujos de este documento quedaron sin razón de ser:
+>
+> | Flujo | Estado |
+> |---|---|
+> | **A0** · Router de WhatsApp | **MUERTO.** No hay callback de Meta |
+> | **A3** · Recepción de comprobante | **MUERTO.** No hay comprobante |
+> | **A3-bis** · Parser de `OK 1234` | **MUERTO.** Lo reemplaza el webhook |
+> | **A4** · Onboarding | **Vive**, con disparador nuevo y sin el brazo de WhatsApp |
+> | **A99** · Centinela | **Vive**, pero avisa por email |
+>
+> Los archivos siguen en [`../setup/n8n/`](../setup/n8n/) como referencia. **No se importan
+> a n8n los tres primeros.** Tampoco van las 2 plantillas de mensaje de Meta de la §7.
+>
+> No es trabajo perdido: eran la respuesta correcta a "los bancos argentinos no exponen API".
+> La pregunta cambió. Ver [`21-mercadopago-suscripciones.md`](21-mercadopago-suscripciones.md).
+
 ---
 
 ## 1. Qué hay construido

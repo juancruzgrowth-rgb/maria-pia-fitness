@@ -67,23 +67,36 @@ quién hay que avisarle que se le vence.
 | Columna | Qué guarda | Quién la escribe |
 |---|---|---|
 | `fecha` | Cuándo llegó el comprobante | n8n |
-| `codigo` | **Los 4 dígitos.** El identificador con el que María Pía confirma (`OK 1234`) | n8n |
 | `nombre` | | n8n |
 | `email` | | n8n |
 | `whatsapp` | | n8n |
 | `plan` | `nivel-mensual` o `pack-3-niveles` | n8n |
 | `monto` | | n8n |
 | `moneda` | `ARS` | n8n |
-| `metodo_pago` | `transferencia` | n8n |
-| `comprobante_url` | Link a la imagen que mandó | n8n |
-| `estado` | `esperando` · `pendiente` · `confirmado` · `rechazado` · `devuelto` | n8n |
+| `metodo_pago` | `mercadopago` | n8n |
+| `pago_id` | El `id` del pago en MercadoPago | n8n |
+| `suscripcion_id` | El `preapproval_id`. Vacío en el pack | n8n |
+| `estado` | `pendiente` · `confirmado` · `rechazado` · `devuelto` | n8n |
+| `estado_suscripcion` | `authorized` · `paused` · `cancelled`. Vacío en el pack | n8n |
+| `proximo_cobro` | La fecha que informa MercadoPago | n8n |
 | `acceso_skool` | `no` · `invitada` · `sí` | n8n |
-| `acceso_vence` | Hasta cuándo tiene acceso pagado. **Se calcula sola** | n8n |
+| `acceso_vence` | **Sólo para el pack.** En el mensual, el acceso vale mientras la suscripción esté `authorized` | n8n |
 | `renovaciones` | Cuántas veces renovó. Arranca en 0 | n8n |
 | `notas` | | **manual** |
 
-> **Por qué `codigo` no estaba en el plan original:** los 4 dígitos son lo que hace posible
-> el `OK 1234`. Es consecuencia de una decisión que se tomó después de escribir el plan.
+> **El esquema cambió otra vez el 2026-08-18 (sesión 12), al pasar a MercadoPago como
+> pasarela única.** Salieron `codigo` y `comprobante_url`: no hay comprobante que recibir ni
+> `OK 1234` que parsear. Entraron `pago_id`, `suscripcion_id`, `estado_suscripcion` y
+> `proximo_cobro`.
+>
+> El cambio conceptual importante: **`acceso_vence` deja de ser una fecha que calculamos
+> nosotros.** En el plan mensual el acceso vale mientras la suscripción esté `authorized`, y
+> de eso lleva la cuenta MercadoPago. La columna sobrevive sólo para el pack de 3 niveles,
+> que sí vence en una fecha. Ver
+> [`21-mercadopago-suscripciones.md`](21-mercadopago-suscripciones.md) §8.
+>
+> También salió el estado `esperando`: existía porque una venta se armaba de a pedazos entre
+> varios mensajes de WhatsApp. Un pago de MercadoPago llega completo o no llega.
 
 > **Tres columnas que se fueron el 2026-08-18:** `grupo`, `fecha_llamada` y
 > `garantia_vence`. Ya no hay grupos, no hay llamada de bienvenida y la garantía dejó de

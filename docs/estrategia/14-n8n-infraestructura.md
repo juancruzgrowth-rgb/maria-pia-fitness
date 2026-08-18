@@ -76,7 +76,7 @@ En n8n: panel izquierdo → **Credentials** → **Add credential**.
 
 | Credencial | Tipo a elegir en n8n | Qué pegás |
 |---|---|---|
-| **WhatsApp** | `WhatsApp API` | El token del usuario del sistema de Meta (paso 5 de la guía 12) |
+| ~~WhatsApp~~ | — | **Ya no hace falta (sesión 12).** WhatsApp no está automatizado |
 | **Google Sheets** | `Google Service Account` | El `client_email` y la `private_key` del archivo JSON |
 | **Brevo** | `Brevo API` | La API key de Brevo |
 | **ManyChat** | `HTTP Header Auth` | La API key de ManyChat |
@@ -90,8 +90,14 @@ En n8n: panel izquierdo → **Credentials** → **Add credential**.
 
 ## 5. Orden de construcción — lo que hago yo
 
-> **Actualización del 2026-08-18:** se cayeron A5, A25, A26 y A24 — dependían de las
-> cohortes y de la Semana 0, que dejaron de existir. Entraron **A27** (renovación
+> **Actualización del 2026-08-18 (sesión 12):** al pasar a **MercadoPago como pasarela
+> única** y sacar la automatización de WhatsApp, **murieron A0, A3 y A3-bis** —que ya estaban
+> construidos— y se canceló **A28**. La confirmación de pago dejó de ser un flujo de n8n y
+> pasó a ser el webhook de MercadoPago, que vive en la web. Ver
+> [`21-mercadopago-suscripciones.md`](21-mercadopago-suscripciones.md).
+>
+> **Actualización del 2026-08-18 (sesión 11):** se cayeron A5, A25, A26 y A24 — dependían de
+> las cohortes y de la Semana 0, que dejaron de existir. Entraron **A27** (renovación
 > mensual) y **A28** (triage de WhatsApp). Ver
 > [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
 >
@@ -108,19 +114,17 @@ Van en este orden porque cada uno usa lo que armó el anterior.
 
 | # | Flujo | Qué hace | Depende de |
 |---|---|---|---|
-| **A0** | Router de WhatsApp | La única puerta de entrada. Reparte hacia A3 o A3-bis | WhatsApp |
-| **A3** | Recepción de comprobante | Acuse automático + código de 4 dígitos + fila en `ventas` + aviso a María Pía | A0, Sheets, Drive |
-| **A3-bis** | Parser de `OK 1234` | Lee la respuesta de María Pía y confirma o rechaza la venta | A3 |
-| **A4** | Onboarding | Acceso a Skool + email + WhatsApp + asignación de grupo + reloj de garantía | A3-bis |
-| **A27** | Renovación mensual | Avisa el día 25 y el 28, y corta el acceso el 31 si no pagó | A4 |
-| **A6** | Detección de abandono | Recalcula `estado_riesgo` todos los días y avisa a María Pía | A4 |
-| **A28** | Triage de WhatsApp | Clasifica lo que entra antes de que llegue al teléfono de Pía | A0 |
-| **A23** | Circuito de devolución | Registra el pedido del art. 34, corta accesos, avisa | A4 |
+| **A4** | Onboarding | Acceso a Skool + email + fila en `comunidad` | El webhook de MercadoPago |
+| **A27** | Renovación | Rechazo definitivo del débito → corta acceso. Y el circuito completo **para el pack** | A4 |
+| **A6** | Detección de abandono | Recalcula `estado_riesgo` todos los días y avisa por email | A4 |
+| **A23** | Circuito de devolución | Registra el pedido del art. 34, da de baja la suscripción, corta accesos | A4 |
 | **A1** | Captura de lead desde Instagram | ManyChat → fila en `leads` → secuencia | ManyChat |
 
 
-**A3 y A3-bis son el corazón.** Si sólo llegáramos a construir esos dos antes del
-lanzamiento, el negocio funcionaría. Los demás ahorran trabajo; esos dos hacen la venta.
+**El corazón ya no es un flujo de n8n: es el webhook de MercadoPago**, que vive en la web
+(`/api/webhooks/mercadopago`) y no en n8n. n8n pasa a encargarse de lo que viene después del
+cobro. Si sólo llegáramos a tener el webhook y A4 antes del lanzamiento, el negocio
+funcionaría.
 
 ### La regla que va en todos los flujos
 
@@ -176,11 +180,16 @@ gente es peor que una que se detiene.
 | ManyChat Pro | ~USD 15 |
 | Brevo | Gratis hasta 300 emails/día |
 | Google Sheets | Gratis |
-| WhatsApp Cloud API | Centavos con este volumen |
 | Vercel (la web) | Gratis en el plan hobby |
-| **Total** | **~USD 140-160/mes** |
+| **Total** | **~USD 115-140/mes** |
 
-Con el reto a $55.000, el punto de equilibrio del stack está en **5-6 ventas al mes**.
+Bajó respecto de la versión anterior: **se cayó WhatsApp Cloud API** al dejar de automatizar
+WhatsApp (sesión 12).
+
+Con el reto a $55.000, el punto de equilibrio del stack está en **5-6 ventas al mes**. A eso
+hay que sumarle la comisión de MercadoPago, que no es costo fijo sino variable: **~7,6% real
+con tarjeta de crédito, y conviene presupuestar 10-12% all-in** contando retenciones. Ver
+[`21-mercadopago-suscripciones.md`](21-mercadopago-suscripciones.md) §9.
 
 ---
 

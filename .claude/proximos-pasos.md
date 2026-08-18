@@ -1,10 +1,10 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-18 (sesión 11)**
-> **Estado del proyecto:** El producto cambió de forma el 2026-08-18: **precios nuevos, sin garantía en el marketing, sin cohortes y sin llamadas**. La web, los flujos de n8n y la documentación ya están alineados. Ver [`docs/estrategia/20-reto-siempre-abierto.md`](../docs/estrategia/20-reto-siempre-abierto.md).
+> Última actualización: **2026-08-18 (sesión 12)**
+> **Estado del proyecto:** **MercadoPago pasa a ser la única pasarela y WhatsApp deja de estar automatizado** (2026-08-18, sesión 12). El plan completo está en [`docs/estrategia/21-mercadopago-suscripciones.md`](../docs/estrategia/21-mercadopago-suscripciones.md). Antes, en la sesión 11, el producto ya había cambiado de forma: precios nuevos, sin garantía en el marketing, sin cohortes y sin llamadas → [`docs/estrategia/20-reto-siempre-abierto.md`](../docs/estrategia/20-reto-siempre-abierto.md).
 > **🚀 FECHA DE LANZAMIENTO: 31 de agosto de 2026.**
-> **Para publicar faltan 2 datos: B2 (datos bancarios) y B3 (WhatsApp argentino).** Los dos los pasa Juan Cruz.
+> **Lo que falta para publicar ya no son datos bancarios: es el checkout de MercadoPago (B20).** Ver el bloque de la sesión 12.
 
 ---
 
@@ -20,12 +20,12 @@
 | `docs/estrategia/04-automatizaciones-n8n.md` | Catálogo original de automatizaciones (⚠️ desactualizado — ver doc 20 §8) |
 | `docs/estrategia/05-skool-estructura.md` | Classroom + guion de grabación |
 | `docs/estrategia/06-comunidad-respuestas.md` | IG + WhatsApp automatizados |
-| `docs/estrategia/07-circuito-compra-y-garantia.md` | Cobro (vigente) + garantía y grupos (⚠️ superados) |
+| ~~`docs/estrategia/07-circuito-compra-y-garantia.md`~~ | ⚠️ **SUPERADO.** El cobro por transferencia se eliminó — ver doc 21 |
 | ~~`docs/estrategia/08-grupos-y-cadencia.md`~~ | ⚠️ **SUPERADO.** Ya no hay grupos |
 | ~~`docs/estrategia/09-semana-cero.md`~~ | ⚠️ **SUPERADO.** La Semana 0 no existe |
 | `docs/estrategia/10-planes-y-niveles.md` | Precios, niveles, desbloqueo y qué pasa si tarda de más |
 | **`docs/estrategia/11-metodo-4f.md`** | **Mi Método 4F — naming, pilares y dónde aparece cada nombre** |
-| **`docs/estrategia/12-whatsapp-cloud-api.md`** | **Paso a paso de Meta. LO PRIMERO A EJECUTAR** |
+| ~~`docs/estrategia/12-whatsapp-cloud-api.md`~~ | ⚠️ **SUPERADO (sesión 12).** No se usa WhatsApp Cloud API. WhatsApp queda como comunidad manual |
 | **`docs/estrategia/13-base-de-datos-sheet.md`** | **La planilla: 4 pestañas, columnas y service account** |
 | **`docs/estrategia/14-n8n-infraestructura.md`** | **n8n Cloud, credenciales y orden de construcción** |
 | **`docs/estrategia/15-skool-arranque.md`** | **Armado + guion del video de 8 min para Pía** |
@@ -33,7 +33,8 @@
 | **`docs/estrategia/17-test-ab-diseno.md`** | **Cómo se sirven varias pieles del sitio a la vez** |
 | **`docs/estrategia/18-identidad-pia-moretto.md`** | **LOGOTIPO, TIPOGRAFÍA Y LOS 3 TEMAS. La identidad vigente** |
 | **`docs/estrategia/19-flujos-n8n-construidos.md`** | **LOS 5 FLUJOS YA CONSTRUIDOS: qué hace cada uno, qué configurar, cómo probarlos** |
-| **`docs/estrategia/20-reto-siempre-abierto.md`** | **⭐ MANDA SOBRE TODO LO DEMÁS. Precios, fin de las cohortes, garantía, renovación y qué automatizaciones faltan** |
+| **`docs/estrategia/20-reto-siempre-abierto.md`** | **⭐ Producto: precios, fin de las cohortes, garantía y renovación** |
+| **`docs/estrategia/21-mercadopago-suscripciones.md`** | **⭐ MANDA SOBRE EL COBRO. MercadoPago único, suscripciones, qué se demuele y los costos reales** |
 | `docs/setup/n8n/*.json` | Los flujos listos para importar a n8n |
 | `docs/setup/n8n/verificar.mjs` | Test de la lógica de cobro. `node docs/setup/n8n/verificar.mjs` |
 | `docs/setup/sheets/*.csv` | Encabezados listos para importar a la planilla |
@@ -49,12 +50,17 @@
 | Nicho | Mujeres que trabajan 8+ h/día |
 | Formato | Se vende como **reto** |
 | Métrica principal | **Tasa de finalización** |
-| Cobro | Transferencia + comprobante por WhatsApp |
-| **Activación del onboarding** | **Opción 1: MP responde `OK 1234` por WhatsApp** ✅ |
+| **Cobro** | ~~Transferencia + comprobante por WhatsApp~~ → **MercadoPago, y sólo MercadoPago (2026-08-18)** ✅ |
+| **Modelo de cobro** | **Suscripción con débito automático** (`preapproval`) para el nivel mensual · **pago único** (`preference`) para el pack de 3 ✅ |
+| **Plan de suscripción** | **Sin plan asociado.** Cada suscripción lleva su propio monto, así que **quien entró a $55.000 se queda en $55.000 para siempre** sin migraciones ✅ |
+| **Activación del onboarding** | ~~Pía responde `OK 1234` por WhatsApp~~ → **el webhook de MercadoPago. Pía sale del circuito** ✅ |
+| **WhatsApp** | **Sólo comunidad, operado a mano. No se automatiza.** Se cae toda la infraestructura de Meta ✅ |
+| **ManyChat** | **Se queda, con alcance acotado:** lead magnets en Instagram y derivación al link de pago. El resto lo responde Pía ✅ |
 | **Garantía** | ~~10 días como argumento de venta~~ → **fuera del marketing (2026-08-18).** El derecho del art. 34 sigue vigente y vive en los T&C ✅ |
 | **Grupos** | ~~Cada 14 días + Semana 0~~ → **SIN COHORTES (2026-08-18).** Cada clienta arranca el día que compra ✅ |
 | **Urgencia** | **Precio fundador con fecha: $55.000 hasta el 30/09**, después sube. Reemplaza a los cupos ✅ |
-| **Renovación** | **Mensual. Aviso el día 25 y el 28, corte de acceso el 31** si no pagó ✅ |
+| **Renovación** | ~~Aviso el día 25 y el 28, corte el 30~~ → **automática: la cobra MercadoPago.** El circuito de avisos queda **sólo para el pack**, que sí vence en fecha ✅ |
+| **Cancelación** | **Autoservicio obligatorio.** Con débito automático, dar de baja tiene que ser tan fácil como suscribirse, y la Resolución 424/2020 exige botón de arrepentimiento en la home ✅ |
 | **Modalidad** | **100% grabado y asincrónico.** Sin llamada de bienvenida, sin sesión grupal ✅ |
 | **Correcciones** | **En Skool, no en el grupo de WhatsApp.** Un lote por semana en día fijo. En WhatsApp se hunden en el scroll y exponen más, y las que no se animan no mandan nada ✅ |
 | **Segmentación de grupos** | **Por nivel (1/2/3), no por plan.** Separar trimestrales crea dos castas; separar por nivel es útil de verdad. Dividir recién a las 40-50 ✅ |
@@ -91,10 +97,13 @@
 Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
 - [x] ~~**B1 · Precio.**~~ **RESUELTO y actualizado el 2026-08-18:** $55.000 por nivel. Ya cargado en `PRICE_ARS`
-- [ ] **B2 · Datos bancarios.** `TRANSFER`: alias, CBU, titular. *Juan Cruz los pasa cuando pueda*
-- [ ] **B3 · WhatsApp AR.** Hoy hay un +34 español en `NEXT_PUBLIC_WHATSAPP_NUMBER`. *Juan Cruz lo confirma cuando pueda*
+- [x] ~~**B2 · Datos bancarios.**~~ **YA NO APLICA (sesión 12).** No se cobra por transferencia. `TRANSFER` se elimina de `products.ts`
+- [ ] **B3 · WhatsApp AR.** Hoy hay un +34 español en `NEXT_PUBLIC_WHATSAPP_NUMBER`. **Degradado: ya no es bloqueante técnico** — no hay API de por medio y puede ser el teléfono normal de Pía. Sigue haciendo falta para el grupo de comunidad
 - [x] ~~**B4 · Nombre del producto.**~~ **RESUELTO 2026-08-17.** "Reto 28 Días" se queda como nombre de la oferta. Se suma **"Mi Método 4F"** como nombre del método, por encima. Ver `11-metodo-4f.md`
 - [x] ~~**B5 · Fechas del grupo fundador.**~~ **YA NO APLICA (2026-08-18).** Se eliminaron las cohortes: cada clienta arranca el día que compra. Esto desbloqueó de un saque A5, A25 y A26 — que en realidad se cancelaron, porque existían para sostener los grupos
+
+- [ ] **B20 · Credenciales de MercadoPago.** Access token de **test y de producción**, public key, y el **secret del webhook** que se genera en "Tus integraciones". Van directo a Vercel y a n8n — nunca al chat. **Es el bloqueante nuevo para publicar:** sin esto no hay forma de cobrar
+- [ ] **B21 · Condición fiscal de Pía en el panel de MercadoPago.** Es un campo, y separa que le retengan ~3% de que le retengan 20%+. Verificar además IIBB de Santa Fe: el monotributo es nacional y la provincia cobra Ingresos Brutos aparte. Y mirar el tope de la categoría — MercadoPago informa todo a ARCA automáticamente
 
 - [ ] **B19 · ¿A cuánto sube el precio el 1 de octubre?** **Propuesto: $69.000 el nivel y $165.000 el pack** — +25% sobre el fundador, debajo de la barrera de los $70.000, y mantiene el descuento del pack en 20% exacto, así que el copy no cambia. **Falta que Pía lo apruebe.** No hace falta publicarlo, pero la suba tiene que ocurrir: una promo que no vence nunca es publicidad engañosa (art. 8, Ley 24.240) y quema la próxima fecha que anunciemos
 
@@ -322,6 +331,76 @@ A5 (Semana 0), A25 (aviso 48 h), A26 (día 1) y A24 (lista de espera). Los cuatr
 
 ---
 
+## ✅ Hecho en la sesión 12 (2026-08-18) — MercadoPago único, WhatsApp fuera
+
+**No se tocó una línea de `src/`.** Esta sesión fue decisión y documentación: el build del
+checkout arranca en la próxima, con aprobación explícita, porque toca áreas de dinero.
+
+### Las dos decisiones
+
+1. **MercadoPago es la única forma de pagar.** Se elimina el cobro por transferencia.
+2. **WhatsApp deja de estar automatizado.** Queda como canal de comunidad, a mano.
+
+Son la misma decisión mirada de dos lados: todo el aparato de WhatsApp existía para que un
+humano pudiera confirmar transferencias sin equivocarse. Sacado el problema, sobra la
+infraestructura.
+
+### La pregunta que hay que dejar contestada
+
+*"¿Y si Pía da el alias de su MercadoPago, no se automatiza igual?"* **No.** MercadoPago
+manda webhooks para **pagos** (algo que generaste vos, con `external_reference`), no para
+**movimientos de cuenta**. Una transferencia al alias no dispara nada.
+
+Y el problema de fondo no es detectar la plata: es **saber de quién es**. Con todas pagando
+el mismo importe, dos clientas que transfieren el mismo martes son indistinguibles, y muchas
+veces el titular no es la clienta. **El corte no es banco contra MercadoPago: es
+transferencia anónima contra cobro identificado.**
+
+### Se eligió suscripción, no pago único
+
+Débito automático desde el arranque. Se descartó "pago único ahora, suscripción en octubre".
+Consecuencia buena: **A27 se encoge a la mitad** — MercadoPago cobra y reintenta solo, y lo
+que queda es manejar el rechazo definitivo, más el circuito completo para el pack.
+
+Decisión de diseño registrada: **`preapproval` sin plan asociado**, para que quien entró al
+precio fundador lo conserve sin migraciones. Convierte la promesa en algo literalmente
+cierto.
+
+### Se cancela el trámite más lento que teníamos
+
+**Las 2 plantillas de mensaje en Meta ya no van.** Tampoco la app de WhatsApp Cloud API, ni
+el token, ni el número dedicado. Era lo que había que empezar primero por los tiempos de
+revisión de Meta; ahora no existe.
+
+### Se demuelen tres flujos construidos
+
+`A0-router-whatsapp.json`, `A3-recepcion-comprobante.json` y `A3bis-confirmacion.json`.
+Estaban construidos y verificados en la sesión 10. No es trabajo perdido: eran la respuesta
+correcta a "no hay API bancaria para cuentas personales". La pregunta cambió.
+
+**A4 sobrevive** con disparador nuevo (el webhook) y sin el brazo de WhatsApp. **A99 y A6
+sobreviven** pero avisan por email.
+
+### El modo de falla nuevo, y su mitigación
+
+Sin WhatsApp, el onboarding queda en email más Skool. Si el mail cae en spam, **una clienta
+pagó y no entró**, y no nos enteramos hasta que reclama. Por eso `/bienvenida` tiene que
+mostrar el acceso ahí mismo —links a Skool y al grupo, primeros pasos— y no decir "revisá tu
+correo". El email pasa a ser respaldo. Media hora de trabajo contra el peor caso del sistema.
+
+### Apareció una obligación legal
+
+Con débito automático, **cancelar tiene que ser tan fácil como suscribirse**, y la
+**Resolución 424/2020** exige **botón de arrepentimiento visible en la home**. Con
+transferencia era discutible; ahora no. Va al build.
+
+### Los costos, verificados
+
+~7,6% real con crédito inmediato (6,29% + IVA), ~3,9% con débito, ~2,2% difiriendo a 35
+días. **Presupuestar 10-12% all-in** contando retenciones. Detalle y fuentes en el doc 21 §9.
+
+---
+
 ## 📊 Rendimiento — el informe de PageSpeed, leído
 
 Juan Cruz pasó las capturas del informe mobile. Lo que dicen, y qué hacer con eso.
@@ -483,17 +562,20 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 
 ### 0. Sprint de la semana — quién hace qué
 
+> ⚠️ **Cancelado en la sesión 12:** Meta Business, la app de WhatsApp Cloud API, las 2
+> plantillas de mensaje, el número dedicado y la carpeta de Drive para comprobantes. Si no
+> lo empezaste, no lo empieces. Si ya lo empezaste, no sigas.
+
 **Tuyo (Juan Cruz), con las manos, en este orden:**
-- [ ] **Meta Business + app + número de prueba + tu español verificado** → `12-whatsapp-cloud-api.md` §5. Es lo primero porque el trámite de verificación del negocio tarda días
-- [ ] **Las 2 plantillas de mensaje en Meta** (`nuevo_comprobante`, `falla_automatizacion`) → textos exactos en `19-flujos-n8n-construidos.md` §7. **Meta las revisa y puede tardar un día: mandalas apenas tengas la app**
+- [ ] **B20 · Credenciales de MercadoPago** — access token de test y de producción, public key, secret del webhook. **Es lo primero: sin esto no se puede cobrar**
+- [ ] **B21 · Condición fiscal de Pía en el panel de MercadoPago** — vale varios puntos de margen
 - [ ] **Planilla de Google + service account** → `13-base-de-datos-sheet.md` §4
-- [ ] **Carpeta de Drive para los comprobantes + credencial OAuth2 de Google** (la cuenta de servicio no sirve para Drive — ver doc 19 §7)
 - [ ] **n8n Cloud + invitarme como Admin** → `14-n8n-infraestructura.md` §3
 - [ ] **Cuenta de Skool + esqueleto + video de 8 min** → `15-skool-arranque.md` §5 y §6
-- [ ] **Conseguir de Pía:** B10, B12, B13, B19 y el chip de la línea nueva
-- [ ] **Pasar B2 (datos bancarios) y B3 (WhatsApp AR)** — quedaron a cargo de Juan Cruz
+- [ ] **Conseguir de Pía:** B10, B12, B13, B19
+- [ ] **B3 · WhatsApp AR** — ya no es bloqueante técnico, pero el grupo de comunidad lo necesita
 
-**Mío:** ~~los flujos de cobro y onboarding~~ **hechos (sesión 10)** · ~~A5, A25, A26, A24~~ **cancelados (sesión 11)** · falta **A27 (renovación — el siguiente)**, A2 (CRM), A6, A28, A1, A23 · cargar los datos en el código · ManyChat · el segundo proyecto en Vercel.
+**Mío:** ~~los flujos de cobro y onboarding~~ **hechos (sesión 10), y demolidos en la 12** · ~~A5, A25, A26, A24~~ **cancelados (sesión 11)** · **el checkout de MercadoPago (lo próximo)** · reescribir `/comprar`, `HowItWorks` y la cláusula de pago de los Términos · reconectar A4 al webhook · A27 (sólo el pack), A2 (CRM), A6, A1, A23 · ManyChat · el segundo proyecto en Vercel.
 
 **De Daiana:** ejecutar `16-lanzamiento-creativos-calendario.md`.
 
@@ -501,39 +583,53 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 
 > ⚠️ **La prueba gratis de Skool vence a los 14 días.** El lanzamiento es el **31/08**: si la creás hoy (18/08) vence el 1/09, justo después. Está justo, pero da. Anotá la fecha.
 
-### 1. Desplegar (bloqueado por B2 y B3) — objetivo 31/08
-- [ ] Cargar los datos bancarios en `products.ts` y el WhatsApp en `.env`
-- [ ] Cargar env vars en Vercel (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_WHATSAPP_NUMBER`, `NEXT_PUBLIC_INSTAGRAM_URL`)
-- [ ] Smoke test en celular real: barra flotante, copiar alias, abrir WhatsApp con el mensaje precargado
+### 1. El checkout de MercadoPago (bloqueado por B20) — objetivo 31/08
+
+**Es el camino del dinero y hoy no existe: no hay una sola ruta de API en el proyecto.**
+`src/lib/mercadopago.ts` tiene el wrapper de preferencias y nada más. Plan completo en
+[`docs/estrategia/21-mercadopago-suscripciones.md`](../docs/estrategia/21-mercadopago-suscripciones.md) §3.
+
+- [ ] `POST /api/checkout/suscripcion` — crea el `preapproval` con `external_reference`, devuelve el `init_point`
+- [ ] `POST /api/checkout/pack` — la preferencia de pago único de los $130.000
+- [ ] `POST /api/webhooks/mercadopago` — **valida `x-signature` antes de tocar nada.** HMAC-SHA256 sobre `id:{data.id};request-id:{x-request-id};ts:{ts};`, comparación en tiempo constante, `401` sin escribir si no coincide
+- [ ] `/bienvenida` — el acceso a la vista, para que no dependa del email
+- [ ] `/cancelar` + **botón de arrepentimiento en la home** (Resolución 424/2020)
+- [ ] Reescribir `/comprar` (hoy muestra alias y CBU) y `HowItWorks`
+- [ ] Eliminar `TRANSFER` de `products.ts` y actualizar la cláusula de pago de los Términos
+- [ ] Nuevo esquema de `ventas`: salen `codigo` y `comprobante_url`, entran `suscripcion_id`, `estado_suscripcion` y `proximo_cobro`
+- [ ] Cargar env vars en Vercel + probar en **sandbox**: alta, cobro recurrente, rechazo y cancelación
+- [ ] **Verificar en sandbox qué medios de pago habilita realmente el `preapproval` en Argentina** antes de prometerlo en la web
+- [ ] Smoke test en celular real, de punta a punta
 
 ### 2. Automatizaciones n8n
 
-**Construidos y verificados (sesión 10).** Los archivos están en `docs/setup/n8n/`. Detalle completo en `docs/estrategia/19-flujos-n8n-construidos.md`.
+**Demolidos en la sesión 12.** Estaban construidos y verificados, y quedaron sin razón de
+ser al salir el cobro por transferencia. Los archivos siguen en `docs/setup/n8n/` como
+referencia, pero **no se importan a n8n**:
 
-- [x] ~~**A0** · Router de WhatsApp~~ — la única puerta de entrada. **Flujo nuevo que no estaba en el plan:** Meta permite una sola URL de callback por app
-- [x] ~~**A3** · Recepción de comprobante~~ — acuse automático, código de 4 dígitos, comprobante a Drive, aviso a Pía
-- [x] ~~**A3-bis** · Parser de `OK 1234` / `NO 1234`~~ — idempotente, verificado con tests
-- [x] ~~**A4** · Onboarding~~ — Skool + Brevo + WhatsApp + fila en `comunidad` + fecha de vencimiento del acceso
-- [x] ~~**A99** · Centinela de errores~~
+- [x] ~~**A0** · Router de WhatsApp~~ — **MUERE.** Existía porque Meta permite una sola URL de callback por app
+- [x] ~~**A3** · Recepción de comprobante~~ — **MUERE.** No hay comprobante que recibir
+- [x] ~~**A3-bis** · Parser de `OK 1234`~~ — **MUERE.** El webhook de MercadoPago lo reemplaza
 
-**Para encenderlos hacen falta las cuentas.** En orden de urgencia:
-- [ ] **Crear las 2 plantillas de mensaje en Meta** (`nuevo_comprobante`, `falla_automatizacion`). **Lo primero: Meta las revisa y puede tardar un día.** Los textos están en el doc 19 §7
-- [ ] Importar los 5 archivos en n8n, en el orden A4 → A3-bis → A3 → A0 → A99
-- [ ] Cargar las credenciales. **Ojo: Drive va con OAuth2, no con la cuenta de servicio** — una service account no tiene cuota de almacenamiento y la subida del comprobante falla
-- [ ] Completar el nodo `Configuración` de cada flujo (la tabla está en el doc 19 §7)
-- [ ] Correr la prueba de 6 pasos contra el número prestado de Meta (doc 19 §8)
-- [ ] **Rehacer los encabezados de `ventas` y `comunidad`** si la planilla ya se creó — el esquema cambió en la sesión 11
+**Sobreviven, con cambios:**
+- [x] ~~**A4** · Onboarding~~ — **disparador nuevo (el webhook) y sin el brazo de WhatsApp.** Queda Skool + Brevo + fila en `comunidad`
+- [x] ~~**A99** · Centinela de errores~~ — **cambia de canal: avisa por email**, no por WhatsApp
+
+**Para encenderlos:**
+- [ ] Importar A4 y A99 en n8n
+- [ ] Cargar las credenciales de Google Sheets y Brevo (**ya no hace falta Drive ni WhatsApp**)
+- [ ] **Rehacer los encabezados de `ventas` y `comunidad`** — el esquema cambió en la sesión 11 y otra vez en la 12
 
 **Lo que falta construir, por orden:**
-- [ ] **A27** · Renovación mensual — avisa el día 25 y el 28, corta el acceso el 31. **El siguiente, y no depende de nada:** la fecha contra la que cuenta ya la escribe A3-bis en `acceso_vence`. Sin esto, $55.000/mes es $55.000 una vez
+- [ ] **A27** · Renovación — **alcance reducido a la mitad.** MercadoPago cobra y reintenta solo. Queda: (a) manejar el rechazo definitivo → cortar acceso y pedir que actualice el medio de pago; (b) el circuito completo de aviso y corte **para el pack**, que sí vence en fecha
 - [ ] **A2** · CRM de leads y clientas: seguimientos, recordatorios, consultas, encuestas. *Sin bloqueantes*
-- [ ] **A6** · Detección de abandono — cuenta desde `comunidad.fecha_inicio`. *Necesita la comunidad en Skool*
-- [ ] **A28** · Triage de WhatsApp entrante. **Alcance reducido:** como para escribir por Skool hay que ser miembro, WhatsApp queda como canal de venta y Skool como el de post-venta. A28 sólo tiene que distinguir *comprobante de pago* de *todo lo demás*. *Se le suma una salida al switch de A0*
+- [ ] **A6** · Detección de abandono — cuenta desde `comunidad.fecha_inicio`, avisa por email. *Necesita la comunidad en Skool*
 - [ ] **A1** · Captura de lead desde Instagram — *necesita ManyChat*
-- [ ] **A23** · Circuito de devolución del art. 34
+- [ ] **A23** · Circuito de devolución del art. 34 — ahora incluye la baja de la suscripción
 - [ ] **A29** · Captura de testimonios y upsell — *después del lanzamiento: el primer testimonio existe a fines de septiembre*
 
 **Cancelados en la sesión 11:** A5 (Semana 0), A25, A26 y A24. Dependían de las cohortes.
+**Cancelado en la sesión 12:** A28 (triage de WhatsApp) — sin automatización de WhatsApp no hay nada que clasificar.
 
 ### 3. Producto (Pía)
 - [ ] Skool: estructura completa en `05-skool-estructura.md` §3
@@ -554,11 +650,15 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 4. **El derecho de revocación de 10 días existe aunque no lo promocionemos.** No es una política nuestra: es el art. 34 de la Ley 24.240 y es irrenunciable. Si una clienta lo pide en plazo, se devuelve, sin discutir.
 5. **En el reto, la consulta va a Skool.** Si empiezan a llegar al WhatsApp personal de Pía, la asesoría de $280.000 deja de justificarse y el producto "fácil de operar" le come el día igual.
 6. **El precio fundador tiene que subir el 1 de octubre.** Una promoción que no vence nunca es publicidad engañosa y quema la próxima fecha que anunciemos.
-7. **El acuse de recibo del comprobante es automático aunque la verificación sea manual.**
-8. **Una sola conversación por pedido de devolución.** Si insiste, se devuelve.
-9. **Las primeras clientas no son para facturar, son para generar testimonios.**
-10. **Automatizar la velocidad, no la relación.**
-11. **Graba cada ejercicio una sola vez** — programación y biblioteca van separadas.
+7. **Una transferencia al alias de MercadoPago no dispara ningún webhook.** MercadoPago avisa de *pagos* (los que generás vos, con `external_reference`), no de *movimientos de cuenta*. Y aunque avisara, no sabrías de quién es. El corte es transferencia anónima contra cobro identificado.
+8. **La firma del webhook se valida antes de escribir una sola celda.** Sin `x-signature` válida: `401` y nada más. Si no, cualquiera que adivine la URL se da de alta gratis.
+9. **`/bienvenida` muestra el acceso, no dice "revisá tu correo".** Sin WhatsApp, el email es el único canal, y un mail en spam es una clienta que pagó y no entró.
+10. **Cancelar tiene que ser tan fácil como suscribirse.** Con débito automático es obligación legal, no cortesía (Resolución 424/2020).
+11. **El acuse de recibo del comprobante es automático aunque la verificación sea manual.**
+12. **Una sola conversación por pedido de devolución.** Si insiste, se devuelve.
+13. **Las primeras clientas no son para facturar, son para generar testimonios.**
+14. **Automatizar la velocidad, no la relación.**
+15. **Graba cada ejercicio una sola vez** — programación y biblioteca van separadas.
 
 ---
 
@@ -568,7 +668,7 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 
 **Dependencias sin usar** — verificado contando imports en `src/` el 2026-08-17. Cero imports: `framer-motion`, `zustand`, `embla-carousel-autoplay`, `react-calendly`, `react-hook-form`, `@hookform/resolvers`. No van al bundle, pero engordan la instalación y `framer-motion` figura en `optimizePackageImports` optimizando algo que no existe. **`mercadopago`, `stripe` y `googleapis` SÍ se importan** (3, 3 y 1 vez) desde las libs desactivadas de abajo — sacarlas rompe el typecheck.
 
-**Libs sin usar** que quedaron a propósito por si vuelve la pasarela: `src/lib/brevo.ts`, `sheets.ts`, `mercadopago.ts`, `stripe.ts`. Hoy esas integraciones las va a manejar n8n.
+**Libs sin usar.** `src/lib/brevo.ts` y `sheets.ts` los maneja n8n. **`mercadopago.ts` deja de estar desactivado y pasa a ser el centro del sistema (sesión 12)** — hoy sólo tiene el wrapper de `Preference`; le falta todo el lado de `preapproval`. **`stripe.ts` se puede borrar:** no hay cobro en USD y MercadoPago es la única pasarela.
 
 **Lint:** 0 errores. Se corrigió `RevealOnScroll` moviendo el manejo de `prefers-reduced-motion` a CSS.
 
@@ -578,8 +678,9 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 
 | Concepto | Valor |
 |---|---|
-| Stack mensual | ~USD 160-185 |
-| Punto de equilibrio | 7-8 ventas/mes |
+| Stack mensual | ~USD 115-140 (bajó: se cae WhatsApp Cloud API) |
+| Comisión de MercadoPago | ~7,6% real con crédito · **presupuestar 10-12% all-in** con retenciones |
+| Punto de equilibrio | 5-6 ventas/mes |
 | Objetivo grupo 1 | 15 alumnas (cupo sugerido 12-15) |
 | Techo actual | ~25/mes (limitado por las llamadas 1:1) |
 | Horas manuales | 34 h/sem → 6 h/sem automatizado |
@@ -597,6 +698,9 @@ Cero. Verificado: no queda ningún `<form>`, `<input>` ni ruta de API en el proy
 ---
 
 ## ✅ Historial
+
+### Sesión 12 — 2026-08-18
+**MercadoPago pasa a ser la única pasarela y WhatsApp deja de estar automatizado.** Se elimina el cobro por transferencia · el onboarding lo dispara el webhook, Pía sale del circuito · suscripción con débito automático (`preapproval` **sin plan asociado**, para que el precio fundador se conserve sin migraciones) + pago único para el pack · **se demuelen A0, A3 y A3-bis**, construidos en la sesión 10 · A4 y A99 sobreviven con cambios · A28 cancelado · **se cancela toda la infraestructura de Meta**, incluidas las plantillas de mensaje · aparece el botón de arrepentimiento como obligación legal (Resolución 424/2020) · B2 muerto, B3 degradado, **B20 y B21 nuevos** · doc 21 como fuente de verdad del cobro · **no se tocó `src/`: el build arranca en la sesión 13**
 
 ### Sesión 11 — 2026-08-18
 El producto cambió de forma: precios a $55.000 / $130.000 · garantía fuera del marketing (el derecho del art. 34 queda en los T&C) · **sin cohortes**, cada clienta arranca el día que compra · sin llamada 1:1 ni sesión grupal · precio fundador hasta el 30/09 como reemplazo de la escasez · renovación mensual con corte de acceso · esquema de la planilla actualizado · A5/A24/A25/A26 cancelados, A27/A28/A29 agregados · doc 20 como fuente de verdad · **lanzamiento fijado para el 31/08**

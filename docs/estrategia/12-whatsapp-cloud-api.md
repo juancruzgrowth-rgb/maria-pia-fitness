@@ -4,6 +4,19 @@
 > Escrito sin dar por sabido nada. Si algo no se entiende, es culpa del documento.
 > **Decidido el 2026-08-17:** proveedor Meta Cloud API (oficial), línea nueva dedicada.
 
+> ## ⚠️ SUPERADO — 2026-08-18 (sesión 12). NO EJECUTAR NADA DE ACÁ
+>
+> **WhatsApp dejó de estar automatizado.** Queda como canal de comunidad, operado a mano por
+> Pía. No hace falta WhatsApp Cloud API: ni app de Meta, ni token, ni plantillas de mensaje,
+> ni número dedicado, ni verificación del negocio.
+>
+> Este documento existía porque el comprobante de transferencia llegaba por WhatsApp y había
+> que confirmarlo. Con **MercadoPago como pasarela única**, el webhook confirma solo y todo
+> este aparato sobra. Ver
+> [`21-mercadopago-suscripciones.md`](21-mercadopago-suscripciones.md) §7.
+>
+> Se conserva por si alguna vez se retoma la automatización de WhatsApp. **Hoy: no ejecutar.**
+
 ---
 
 ## 1. Qué estamos armando y por qué

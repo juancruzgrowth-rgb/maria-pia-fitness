@@ -6,7 +6,26 @@
 >
 > Última actualización: 6 de agosto de 2026
 
-> ## ⚠️ TRES CAPÍTULOS DE ESTE MANUAL YA NO VALEN — 18 de agosto de 2026
+> ## ⚠️ CAMBIÓ LA FORMA DE COBRAR — 18 de agosto de 2026 (sesión 12)
+>
+> **Todo lo que este manual cuenta sobre pagar por transferencia y mandar el comprobante por
+> WhatsApp ya no vale.** Ahora se paga con **MercadoPago y sólo MercadoPago**, con débito
+> automático mensual. Se compra en la web, el acceso llega solo en segundos, y **Pía ya no
+> tiene que confirmar nada a mano**.
+>
+> Con eso también cambió el rol de WhatsApp: **deja de ser el canal de venta y queda como el
+> grupo de comunidad**, atendido por Pía como persona. Instagram sigue teniendo respuestas
+> automáticas para entregar material y derivar a la compra.
+>
+> Y aparece algo nuevo en la web: un **botón para darse de baja** sin tener que escribirle a
+> nadie. Con débito automático es obligación legal, no una gentileza.
+>
+> El detalle está en
+> [`estrategia/21-mercadopago-suscripciones.md`](estrategia/21-mercadopago-suscripciones.md).
+>
+> ---
+>
+> ## ⚠️ TRES CAPÍTULOS DE ESTE MANUAL YA NO VALEN — 18 de agosto de 2026 (sesión 11)
 >
 > El producto cambió de forma. Lo que sigue escrito acá está bien contado pero
 > describe una versión anterior. Lo que cambió:

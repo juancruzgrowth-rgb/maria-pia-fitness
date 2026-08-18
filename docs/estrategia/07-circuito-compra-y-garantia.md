@@ -2,12 +2,25 @@
 
 > Decisiones tomadas el 2026-08-04. Reemplaza lo que decía `01-web-arquitectura.md` sobre el quiz.
 
-> ## ⚠️ PARCIALMENTE SUPERADO — 2026-08-18
+> ## ⚠️ SUPERADO — 2026-08-18 (sesión 12)
 >
-> **Sigue valiendo:** todo el circuito de cobro. Transferencia, comprobante por WhatsApp,
-> el `OK 1234` de Pía, el código de 4 dígitos. Es exactamente lo que se construyó.
+> **El circuito de cobro que describe este documento ya no existe.** Se eliminó el pago por
+> transferencia: **MercadoPago es la única pasarela**, y el onboarding lo dispara el webhook,
+> no un `OK 1234` de Pía. Con eso caen el comprobante por WhatsApp, el código de 4 dígitos y
+> todo el aparato de Meta.
 >
-> **Ya no vale:** la § de la garantía y la § de la cadencia de grupos. La garantía salió
+> El circuito vigente está en
+> [`21-mercadopago-suscripciones.md`](21-mercadopago-suscripciones.md).
+>
+> **Lo único que sigue en pie de este documento:** el análisis de por qué no se puede leer el
+> home banking (§2.2) —que es exactamente la razón por la que se pasó a MercadoPago— y el
+> circuito de devolución del art. 34 (§ garantía), que sigue siendo obligación legal.
+>
+> ---
+>
+> ### Aviso anterior — 2026-08-18 (sesión 11)
+>
+> **Ya no vale:** la § de la garantía como argumento de venta y la § de la cadencia de grupos. La garantía salió
 > del marketing (el derecho del art. 34 sigue, en los T&C) y las cohortes desaparecieron:
 > cada clienta arranca el día que compra.
 >
