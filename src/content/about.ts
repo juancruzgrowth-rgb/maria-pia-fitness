@@ -25,5 +25,5 @@ export const ABOUT = {
       body: "Sesión de corrección de técnica todas las semanas y comunidad activa todos los días.",
     },
   ],
-  imageUrl: "/images/sobre-mi.png",
+  imageUrl: "/images/sobre-mi.jpg",
 } as const;

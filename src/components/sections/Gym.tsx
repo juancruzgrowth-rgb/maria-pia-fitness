@@ -2,7 +2,7 @@ import { ArrowUpRight, MapPin } from "@phosphor-icons/react/dist/ssr";
 import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
 import { CONTACT } from "@/lib/site";
 
-const GYM_POSTER_URL = "/images/centro-entrenamiento.png";
+const GYM_POSTER_URL = "/images/centro-entrenamiento.jpg";
 
 export function Gym() {
   return (
@@ -73,11 +73,11 @@ export function Gym() {
         </div>
 
         <RevealOnScroll delay={120} className="lg:col-span-6">
-          <div className="relative aspect-video overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={GYM_POSTER_URL}
-              alt="Interior del centro de entrenamiento de Pía en Rosario"
+              alt="Pía entrenando en su centro de entrenamiento en Rosario"
               loading="lazy"
               className="h-full w-full object-cover opacity-90"
             />

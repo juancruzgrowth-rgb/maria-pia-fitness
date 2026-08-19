@@ -75,11 +75,14 @@ export function Hero() {
           <div className="lg:col-span-6">
             {playing ? (
               <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink">
-                <iframe
-                  src={`${HERO.videoUrl}?autoplay=1&rel=0`}
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                  className="h-full w-full"
+                <video
+                  src={HERO.videoUrl}
+                  poster={HERO.videoPosterUrl}
+                  autoPlay
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="h-full w-full object-contain"
                   title="Pía explica el método del Reto 28 Días"
                 />
                 <button
@@ -95,12 +98,12 @@ export function Hero() {
               <button
                 type="button"
                 onClick={() => setPlaying(true)}
-                className="group relative block aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink sm:aspect-video lg:aspect-[4/5]"
+                className="group relative block aspect-video w-full overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink"
                 aria-label="Reproducir el video donde Pía explica el método"
               >
                 <Image
                   src={HERO.videoPosterUrl}
-                  alt="Pía, entrenadora personal y nutricionista"
+                  alt="Pía explicando el método del Reto 28 Días en su centro de entrenamiento"
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   priority

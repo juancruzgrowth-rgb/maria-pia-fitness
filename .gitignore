@@ -18,9 +18,10 @@ next-env.d.ts
 .claude/CLAUDE.local.md
 .claude/settings.local.json
 
-# Assets locales (videos e imágenes van en CDN/Pexels, no en el repo)
-videos/
-images/
+# Assets locales sin procesar (originales pesados) — sólo en la raíz.
+# Los assets servidos viven en public/ y SÍ van al repo.
+/videos/
+/images/
 
 # Intermedios
 .tmp/
