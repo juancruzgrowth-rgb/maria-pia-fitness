@@ -35,6 +35,9 @@
 | **`docs/estrategia/19-flujos-n8n-construidos.md`** | **LOS 5 FLUJOS YA CONSTRUIDOS: qué hace cada uno, qué configurar, cómo probarlos** |
 | **`docs/estrategia/20-reto-siempre-abierto.md`** | **⭐ Producto: precios, fin de las cohortes, garantía y renovación** |
 | **`docs/estrategia/21-mercadopago-suscripciones.md`** | **⭐ MANDA SOBRE EL COBRO. MercadoPago único, suscripciones, qué se demuele y los costos reales** |
+| **`docs/estrategia/22-brief-skool.md`** | **Brief autocontenido de Skool: marca, avatar, producto, tono. Para pasarle a otra IA o a Daiana** |
+| **`docs/estrategia/23-skool-copy.md`** | **Todos los textos de Skool listos para pegar: reglas, bienvenida, módulos, niveles, emails** |
+| **`docs/estrategia/24-acceso-skool-desde-mercadopago.md`** | **⭐ Cómo entra la clienta a Skool después de pagar: el circuito, los tres puntos manuales y el orden de build** |
 | `docs/setup/n8n/*.json` | Los flujos listos para importar a n8n |
 | `docs/setup/n8n/verificar.mjs` | Test de la lógica de cobro. `node docs/setup/n8n/verificar.mjs` |
 | `docs/setup/sheets/*.csv` | Encabezados listos para importar a la planilla |

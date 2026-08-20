@@ -98,28 +98,24 @@ export function Hero() {
               <button
                 type="button"
                 onClick={() => setPlaying(true)}
-                className="group relative block aspect-video w-full overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-ink"
+                className="group relative block aspect-video w-full overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-canvas"
                 aria-label="Reproducir el video donde Pía explica el método"
               >
                 <Image
                   src={HERO.videoPosterUrl}
-                  alt="Pía explicando el método del Reto 28 Días en su centro de entrenamiento"
+                  alt="Reto 28 Días · Método 4F: Fuerza, Función, Flexibilidad y Foco. Pía Moretto entrenando con bandas elásticas"
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   priority
-                  className="object-cover opacity-90"
+                  className="object-cover"
                 />
                 <span
                   aria-hidden="true"
-                  className="absolute inset-0 bg-mp-ink/25 transition-colors group-hover:bg-mp-ink/15"
-                />
-                <span
-                  aria-hidden="true"
-                  className="absolute left-1/2 top-1/2 inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-mp-canvas text-mp-ink transition-transform duration-300 group-hover:scale-95 md:h-20 md:w-20"
+                  className="absolute left-[58%] top-1/2 inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-mp-ink text-mp-canvas transition-transform duration-300 group-hover:scale-95 md:h-20 md:w-20"
                 >
                   <Play weight="fill" className="h-6 w-6 translate-x-0.5 md:h-7 md:w-7" />
                 </span>
-                <span className="absolute inset-x-3 bottom-3 inline-flex items-center gap-2 rounded-md bg-mp-canvas/90 px-3 py-2 text-left font-display text-[11px] font-semibold uppercase tracking-[0.12em] text-mp-ink backdrop-blur-sm">
+                <span className="absolute left-3 right-3 top-3 inline-flex items-center gap-2 rounded-md bg-mp-ink/90 px-3 py-2 text-left font-display text-[11px] font-semibold uppercase tracking-[0.12em] text-mp-canvas backdrop-blur-sm sm:right-auto">
                   <span
                     aria-hidden="true"
                     className="h-1.5 w-1.5 shrink-0 rounded-full bg-mp-orange"

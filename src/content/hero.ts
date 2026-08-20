@@ -5,7 +5,7 @@ export const HERO = {
   description:
     "Un reto de 28 días para mujeres que no tienen tiempo de sobra, pero sí ganas de sentirse bien. Tres sesiones por semana, en el gimnasio o en tu casa, con el seguimiento de Pía.",
   videoBadge: "Te explico el método completo en 2 minutos",
-  videoPosterUrl: "/images/hero-poster.jpg",
+  videoPosterUrl: "/images/miniatura-reto-28-dias.jpg",
   videoUrl: "/videos/presentacion.mp4",
   trustPoints: [
     { label: "3 días", caption: "por semana, no más" },
