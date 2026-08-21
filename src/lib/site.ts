@@ -29,7 +29,6 @@ export const SITE = {
 export const NAV_SECTIONS = [
   { id: "el-reto", label: "El reto" },
   { id: "que-recibis", label: "Qué recibís" },
-  { id: "testimonios", label: "Testimonios" },
   { id: "sobre-mi", label: "Sobre mí" },
   { id: "faq", label: "Preguntas" },
 ] as const;
@@ -45,17 +44,18 @@ function waLink(message: string): string {
 const ASK_MESSAGE = `Hola Pía! Vi la web del ${CHALLENGE.name} y tengo una consulta antes de entrar.`;
 
 /**
- * Mensaje precargado para enviar el comprobante de transferencia.
- * Pide nombre y email explícitamente: sin esos datos la automatización
- * no puede dar el acceso a Skool.
+ * Mensaje precargado para pedir ayuda con el pago.
+ *
+ * Con la suscripción de MercadoPago el alta es automática y este mensaje deja
+ * de ser el camino normal de compra: queda para cuando el débito falla o la
+ * clienta no puede pagar con MercadoPago.
  */
-const RECEIPT_MESSAGE = [
-  `Hola Pía! Quiero entrar al ${CHALLENGE.name}.`,
-  "Ya hice la transferencia y te adjunto el comprobante.",
+const PAYMENT_HELP_MESSAGE = [
+  `Hola Pía! Quiero entrar al ${CHALLENGE.name} y tuve un problema con el pago.`,
   "",
   "Mi nombre:",
   "Mi email:",
-  "Plan (un nivel / los 3 niveles):",
+  "Qué me pasó:",
 ].join("\n");
 
 /**
@@ -73,7 +73,7 @@ const ADVISORY_MESSAGE = `Hola Pía! Me interesa la asesoría 1:1 y quiero saber
 export const CONTACT = {
   whatsappNumber: cleanedNumber,
   askUrl: waLink(ASK_MESSAGE),
-  receiptUrl: waLink(RECEIPT_MESSAGE),
+  paymentHelpUrl: waLink(PAYMENT_HELP_MESSAGE),
   waitlistUrl: waLink(WAITLIST_MESSAGE),
   advisoryUrl: waLink(ADVISORY_MESSAGE),
   instagramUrl: publicEnv.instagramUrl || "https://www.instagram.com/mp.cep",

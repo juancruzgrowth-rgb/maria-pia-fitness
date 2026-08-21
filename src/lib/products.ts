@@ -4,31 +4,18 @@
  */
 
 /**
- * Precio de un nivel (28 días). Confirmado por Pía el 2026-08-18.
- * Es el precio fundador: rige hasta la fecha de FOUNDING.endsAt y después sube.
- * Ver FOUNDING más abajo — la fecha es una promesa pública y hay que cumplirla.
+ * Precio mensual de la suscripción. Confirmado por Pía el 2026-08-18.
+ * Es el precio fundador: rige para las primeras FOUNDING.spotsTotal clientas
+ * y queda congelado para ellas mientras no cancelen. Ver FOUNDING más abajo.
  */
 const PRICE_ARS = 55000;
 
 /**
- * Pack de 3 niveles. Confirmado el 2026-08-18.
- * 3 x $55.000 = $165.000 comprando nivel por nivel, contra $130.000 el pack.
- * El descuento es real y por eso se puede anunciar sin violar el art. 8 de la
- * Ley 24.240. Nunca fijar este precio por encima de PRICE_ARS * 3.
- */
-const PACK_PRICE_ARS = 130000;
-
-/** Descuento real del pack contra pagar nivel por nivel. Se calcula, no se afirma. */
-export const PACK_DISCOUNT_PCT = Math.round(
-  (1 - PACK_PRICE_ARS / (PRICE_ARS * 3)) * 100,
-);
-
-/**
  * El método. Naming aprobado el 2026-08-17 (propuesta de Daiana).
  *
- * Arquitectura de marca: el método está POR ENCIMA de la oferta. "Reto 28 Días"
+ * Arquitectura de marca: el método está POR ENCIMA de la oferta. "El Reto"
  * es lo que se compra; "Mi Método 4F" es el sistema, y sobrevive a que el reto
- * cambie de formato o de duración. Ver docs/estrategia/11-metodo-4f.md.
+ * cambie de formato. Ver docs/estrategia/11-metodo-4f.md.
  *
  * El "Mi" es la firma de Pía: funciona cuando habla ella, no en un botón
  * de compra. Los CTA siguen hablando del reto.
@@ -69,84 +56,139 @@ export interface Challenge {
   id: string;
   name: string;
   shortName: string;
-  duration: string;
   promise: string;
   forWhom: string;
   priceARS: number;
   includes: readonly string[];
 }
 
+/**
+ * Naming actualizado el 2026-08-21 por pedido de Pía: se cae "28 días" de todo
+ * el copy público. El plan sigue estructurado por bloques mensuales, pero la
+ * duración deja de ser la promesa: lo que se compra es un proceso que sigue
+ * mientras la clienta avanza de nivel, no un programa que termina.
+ * Nombre elegido: "El Reto", a secas.
+ */
 export const CHALLENGE: Challenge = {
-  id: "reto-28-dias",
-  name: "Reto 28 Días",
+  id: "el-reto",
+  name: "El Reto",
   shortName: "el Reto",
-  duration: "28 días",
   promise:
-    "Volver a entrenar y comer bien con tres sesiones por semana, sin renunciar a tu trabajo ni a tu vida.",
+    "Volver a entrenar y sostenerlo con tres sesiones por semana, sin renunciar a tu trabajo ni a tu vida.",
   forWhom:
     "Mujeres que trabajan ocho horas o más y quieren sostener hábitos sin que les coma el día.",
   priceARS: PRICE_ARS,
   /**
-   * Alcance actualizado el 2026-08-18. Se cayeron la llamada 1:1 de bienvenida
-   * y la sesión grupal de los viernes: el reto pasa a ser 100% grabado y
-   * asincrónico, y la corrección de técnica se hace por Skool. Es lo que hace
-   * posible que cada clienta arranque el día que compra en vez de esperar a
-   * que se arme un grupo.
+   * Alcance actualizado el 2026-08-21. Salieron la guía de nutrición, la
+   * biblioteca de ejercicios y el plan B: no están armados y no se prometen.
+   * El entrenamiento asume equipamiento del B2 en adelante —ver EQUIPMENT—
+   * y todo el material
+   * vive en Skool.
    */
   includes: [
-    "3 sesiones por semana de 50 a 60 minutos",
-    "Cada rutina en dos versiones: gimnasio y casa",
+    "3 sesiones por semana, de 30 a 60 minutos cada una",
+    "Videos cortos que muestran ejercicio por ejercicio qué hacer ese día",
     "Videos donde Pía explica el método y cómo usar todo",
-    "Corrección de técnica: subís tu video a Skool y te responde Pía",
-    "Guía de nutrición del reto",
-    "Biblioteca de ejercicios en video, con variantes fácil y difícil",
+    "Corrección de técnica: subís tu video a Skool y te responde Pía una vez por semana",
     "Comunidad privada en Skool y grupo de WhatsApp",
     "Planilla de seguimiento y check-in diario",
   ],
 } as const;
 
-/** 3 sesiones por semana durante 4 semanas. Confirmado el 2026-08-13. */
-export const SESSIONS_PER_LEVEL = 12;
-
 /**
- * Reglas de acceso al pack de 3 niveles. Confirmadas el 2026-08-13,
- * ratificadas el 2026-08-18 al sacar las cohortes.
- * Ver docs/estrategia/10-planes-y-niveles.md §5.
+ * Estructura del plan de entrenamiento. Confirmada por Pía el 2026-08-21.
+ *
+ * Cada nivel tiene 3 días de entrenamiento y cada día 3 sets de ejercicios.
+ * El desbloqueo no va por calendario: cada clienta pasa al siguiente cuando
+ * su avance lo justifica. Es lo que sostiene el relato de proceso largo en
+ * lugar de programa con fecha de vencimiento.
+ *
+ * `available` es lo que HOY está cargado en Skool. Si se publica un nivel que
+ * no existe, alguien lo va a buscar y no lo va a encontrar: sumar B3 acá
+ * recién cuando esté subido.
  */
-export const LEVEL_ACCESS = {
-  totalLevels: 3,
-  /** Porcentaje del nivel anterior que hay que completar para desbloquear el siguiente. */
-  unlockThresholdPct: 80,
-  /** Meses desde la compra para usar los 3 niveles. */
-  windowMonths: 6,
-  /** Días de pausa que se pueden pedir una vez, sin justificar. */
-  pauseDays: 30,
+export const TRAINING = {
+  daysPerLevel: 3,
+  setsPerDay: 3,
+  available: ["B1", "B2"],
+  levels: [
+    {
+      id: "B1",
+      name: "B1",
+      body: "El punto de partida, para las que recién arrancan. Alterna ejercicios que hacés en casa sin equipamiento con otros de gimnasio.",
+    },
+    {
+      id: "B2",
+      name: "B2",
+      body: "Bastante más exigente. Acá ya entrenás en el gimnasio, o en casa si tenés equipamiento.",
+    },
+    {
+      id: "B3",
+      name: "B3",
+      body: "El siguiente escalón, todavía más avanzado. Se suma cuando el grupo llega.",
+    },
+  ],
 } as const;
 
 /**
- * Renovación mensual del plan de un nivel. Confirmado el 2026-08-18.
+ * Qué hace falta para entrenar. Corregido el 2026-08-21.
  *
- * No hay débito automático: el cobro es por transferencia, así que la
- * renovación la sostiene la automatización de recordatorios. Estos números
- * son los que consume el flujo A27 — cambiarlos acá los cambia allá.
+ * ANTES el sitio prometía que cada rutina venía en versión gimnasio y versión
+ * casa, y que no hacía falta equipamiento. Es falso de la mitad para arriba:
+ * el B1 alterna casa y gimnasio, pero del B2 en adelante la mayoría de los
+ * ejercicios necesitan peso. Decirlo de entrada evita la peor devolución
+ * posible —alguien que paga y no puede entrenar—. No suavizar este texto.
  */
-export const RENEWAL = {
-  /** Días desde el alta en los que se avisa que se vence el acceso. */
-  reminderDays: [25, 28],
-  /** Tolerancia después del vencimiento. Confirmado el 2026-08-18: el corte es el día 30. */
-  graceDays: 2,
-  /** Duración del acceso pagado, en días. */
-  accessDays: 28,
+export const EQUIPMENT = {
+  short: "Vas a necesitar gimnasio o equipamiento",
+  detail:
+    "El B1, que es donde arrancás, alterna ejercicios que hacés en casa sin nada con otros de gimnasio. Del B2 en adelante la mayoría necesita mancuernas, barra o máquinas: lo más simple es entrenar en un gimnasio, y si tenés equipamiento en casa también funciona.",
+} as const;
+
+/**
+ * Suscripción con débito automático por MercadoPago. Confirmado el 2026-08-21.
+ *
+ * Reemplaza al cobro por transferencia: se cobra solo todos los meses y la
+ * clienta cancela cuando quiere desde MercadoPago. Eso es lo que hace que el
+ * producto pueda leerse como un proceso largo en vez de como un programa
+ * con fecha de vencimiento.
+ */
+export const SUBSCRIPTION = {
+  provider: "MercadoPago",
+  /** Cada cuánto se debita. */
+  frequencyLabel: "por mes",
+  autoRenews: true,
+  cancelNote:
+    "Cancelás cuando quieras desde MercadoPago, sin llamar a nadie ni dar explicaciones.",
 } as const;
 
 export interface Plan {
   id: string;
   name: string;
   priceARS: number;
+  /** Cada cuánto se debita ese importe. Va al lado del precio. */
+  frequencyLabel: string;
   /** Si es false, no se muestra en la web. */
   visible: boolean;
   summary: string;
 }
+
+/**
+ * Precio del plan trimestral: 3 meses de entrenamiento al ritmo de cada una,
+ * NO un pack de 3 niveles. Los niveles se desbloquean por avance real.
+ *
+ * TODO(B21): PRECIO SIN CONFIRMAR. Se reusa el importe que Pía había aprobado
+ * el 2026-08-18 para el pack de 3 niveles. Contra 3 x $55.000 = $165.000 el
+ * descuento es real y por eso se puede anunciar sin violar el art. 8 de la
+ * Ley 24.240. Confirmar con Pía antes de publicar, y nunca fijarlo por encima
+ * de PRICE_ARS * 3.
+ */
+const QUARTERLY_PRICE_ARS = 130000;
+
+/** Descuento real del trimestral contra pagar mes a mes. Se calcula, no se afirma. */
+export const QUARTERLY_DISCOUNT_PCT = Math.round(
+  (1 - QUARTERLY_PRICE_ARS / (PRICE_ARS * 3)) * 100,
+);
 
 /**
  * Formas de comprar el reto. La asesoría 1:1 no entra acá: se vende aparte.
@@ -156,19 +198,23 @@ export interface Plan {
  */
 export const PLANS: Plan[] = [
   {
+    /* El id lo consumen los flujos de n8n: no renombrar sin tocarlos. */
     id: "nivel-mensual",
-    name: "Un nivel",
+    name: "Suscripción mensual",
     priceARS: PRICE_ARS,
+    frequencyLabel: "por mes",
     visible: true,
     summary:
-      "Pagás 28 días. Al completarlo podés renovar y seguir con el siguiente nivel.",
+      "Débito automático por MercadoPago. Entrenás, avanzás de nivel y seguís mientras te sirva. Cancelás cuando quieras.",
   },
   {
-    id: "pack-3-niveles",
-    name: "Los 3 niveles",
-    priceARS: PACK_PRICE_ARS,
+    id: "trimestral",
+    name: "Plan trimestral",
+    priceARS: QUARTERLY_PRICE_ARS,
+    frequencyLabel: "cada 3 meses",
     visible: true,
-    summary: `Los 3 niveles pagos de una vez, sin renovar cada mes. Se desbloquean a medida que los completás y tenés ${LEVEL_ACCESS.windowMonths} meses para usarlos.`,
+    summary:
+      "Tres meses por adelantado, a un precio menor que mes a mes. Entrenás a tu ritmo y vas desbloqueando los niveles a medida que avanzás.",
   },
 ];
 
@@ -206,34 +252,33 @@ export const ADVISORY = {
 } as const;
 
 /**
- * Precio fundador. Reemplaza a las cohortes como motor de urgencia.
+ * Grupo fundador. Confirmado por Pía el 2026-08-21.
  *
- * Se sacaron los grupos el 2026-08-18: sin llamada de bienvenida ni sesión
- * grupal, un grupo no compartía nada más que la fecha de inicio, y esa fecha
- * costaba hasta 13 días de espera entre que alguien decidía comprar y podía
- * empezar. Ahora cada clienta arranca el día que paga.
+ * La escasez es el cupo, no una fecha: 20 lugares al precio fundador, y ese
+ * precio queda CONGELADO para las fundadoras mientras no cancelen la
+ * suscripción. Cuando se llenan los 20, el precio sube para las que entren
+ * después.
  *
- * Eso deja la oferta sin escasez, y sin escasez no hay razón para comprar hoy.
- * La reemplaza una fecha: hasta `endsAt` el reto sale PRICE_ARS y después sube.
- * Es verdadero y verificable, a diferencia de un cupo inventado.
+ * `spotsTaken` se actualiza a mano a medida que entran clientas. Es un dato
+ * público: si dice 14 tienen que ser 14 de verdad, porque un cupo inventado es
+ * publicidad engañosa (art. 8, Ley 24.240).
  *
- * TODO(B19): confirmar con Pía a cuánto sube el 1 de octubre. Propuesto el
- * 2026-08-18: **$69.000 el nivel y $165.000 el pack** — es +25% sobre el precio
- * fundador, que es el rango donde una suba se lee como "me perdí la promo", y
- * mantiene el descuento del pack en 20% exacto (3 x 69.000 = 207.000).
- *
- * No se publica el precio futuro —no hace falta— pero la suba tiene que ocurrir
- * de verdad: si el precio fundador no vence nunca, es publicidad engañosa
- * (art. 8 Ley 24.240) y además la próxima fecha no se la cree nadie.
+ * El lanzamiento en redes es el 30/08, pero la web ya vende: quien llegue
+ * antes entra igual y ocupa lugar.
  */
 export const FOUNDING = {
   active: true,
-  label: "Precio fundador",
-  /** Cómo se escribe la fecha en la web. */
-  endsAt: "30 de septiembre",
-  /** Formato YYYY-MM-DD, para datos estructurados. */
-  endsAtISO: "2026-09-30",
+  label: "Grupo fundador",
+  spotsTotal: 20,
+  spotsTaken: 0,
+  priceLocked: true,
 } as const;
+
+/** Lugares que quedan libres en el grupo fundador. Nunca menos de cero. */
+export const FOUNDING_SPOTS_LEFT = Math.max(
+  FOUNDING.spotsTotal - FOUNDING.spotsTaken,
+  0,
+);
 
 /**
  * Interruptor de venta. Con arranque inmediato la inscripción está siempre
@@ -256,18 +301,6 @@ export const ENROLLMENT_OPEN = true;
 export const WITHDRAWAL_RIGHT = {
   days: 10,
   law: "art. 34, Ley 24.240",
-} as const;
-
-/**
- * Datos de la cuenta para transferencia.
- * TODO(B2): completar con los datos reales antes de publicar.
- */
-export const TRANSFER = {
-  alias: "MP.CEP.RETO",
-  cbu: "0000000000000000000000",
-  holder: "Pía",
-  bank: "",
-  responseWindow: "menos de 2 horas",
 } as const;
 
 const ARS_FORMATTER = new Intl.NumberFormat("es-AR", {

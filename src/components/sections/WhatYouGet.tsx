@@ -1,7 +1,13 @@
 import { ArrowsClockwise, Lightning } from "@phosphor-icons/react/dist/ssr";
 import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
 import { WHAT_YOU_GET } from "@/content/offer";
-import { CHALLENGE, FOUNDING, formatARS } from "@/lib/products";
+import {
+  CHALLENGE,
+  FOUNDING,
+  FOUNDING_SPOTS_LEFT,
+  SUBSCRIPTION,
+  formatARS,
+} from "@/lib/products";
 
 export function WhatYouGet() {
   return (
@@ -20,7 +26,7 @@ export function WhatYouGet() {
             Qué recibís
           </span>
           <h2 className="font-display text-3xl font-extrabold leading-[1.08] tracking-tight md:text-4xl lg:text-5xl">
-            Todo lo que entra en los 28 días.
+            Todo lo que tenés desde el primer día.
           </h2>
           <p className="text-base leading-relaxed text-mp-carbon/80">
             Todo el material está grabado y te lo doy completo el día que
@@ -54,14 +60,15 @@ export function WhatYouGet() {
         >
           <div className="flex flex-col gap-2">
             <span className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-mp-carbon/70">
-              {CHALLENGE.name} · 28 días
+              {CHALLENGE.name} · {SUBSCRIPTION.frequencyLabel}
             </span>
             <p className="font-display text-4xl font-extrabold leading-none tracking-tight text-mp-ink md:text-5xl">
               {formatARS(CHALLENGE.priceARS)}
             </p>
             <p className="text-sm text-mp-carbon/80">
-              Sin débito automático. Cuando terminan los 28 días decidís si
-              seguís con el nivel siguiente o lo dejás acá.
+              Suscripción con débito automático por {SUBSCRIPTION.provider}.
+              {" "}
+              {SUBSCRIPTION.cancelNote}
             </p>
           </div>
 
@@ -92,7 +99,9 @@ export function WhatYouGet() {
                     {FOUNDING.label}
                   </span>
                   <br />
-                  Hasta el {FOUNDING.endsAt}. Después sube.
+                  {FOUNDING_SPOTS_LEFT > 0
+                    ? `Quedan ${FOUNDING_SPOTS_LEFT} de ${FOUNDING.spotsTotal} lugares. Después sube.`
+                    : `Los ${FOUNDING.spotsTotal} lugares ya están tomados.`}
                 </span>
               </li>
             )}

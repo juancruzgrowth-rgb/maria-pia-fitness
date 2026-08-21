@@ -32,8 +32,8 @@ Manual visual oficial. Cualquier desviación del color, tipografía o tono requi
 | `mp.canvas` | `#F5F5F2` | Fondo principal del sitio (Blanco Suave) |
 | `mp.ink` | `#050505` | Texto principal, CTAs primarios (Negro Profundo) |
 | `mp.carbon` | `#161616` | Texto secundario, bordes oscuros (Carbón) |
-| `mp.orange` | `#F2A31B` | Acento primario (Naranja Principal — del logo) |
-| `mp.amber` | `#D98A17` | Hover/active de naranja (Ámbar Cálido) |
+| `mp.orange` | `#EAA959` | Acento primario (Naranja Principal — del logo) |
+| `mp.amber` | `#D0904C` | Hover/active de naranja (Ámbar Cálido) |
 | `mp.sky` | `#BFDFFF` | Acento secundario decorativo (Celeste) |
 | `mp.line` | `#EAEAEA` | Bordes ultra claros, separadores |
 

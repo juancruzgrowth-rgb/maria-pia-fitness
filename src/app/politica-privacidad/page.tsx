@@ -25,8 +25,9 @@ export default function PoliticaPrivacidadPage() {
       <LegalSection heading="2. Qué datos recolectamos">
         <p>
           <strong>Datos de contacto y contratación:</strong> nombre y apellido,
-          correo electrónico, número de teléfono o WhatsApp, y el comprobante de
-          transferencia que nos envíes.
+          correo electrónico, número de teléfono o WhatsApp, y los datos de tu
+          suscripción que nos informa MercadoPago (estado del pago, fecha y
+          monto debitado).
         </p>
         <p>
           <strong>Datos de salud y actividad física:</strong> si durante la
@@ -43,8 +44,9 @@ export default function PoliticaPrivacidadPage() {
         </p>
         <p>
           <strong>No recolectamos datos de tarjetas ni bancarios.</strong> El
-          pago se realiza por transferencia desde tu propio home banking; sólo
-          vemos el comprobante que decidís enviarnos.
+          pago y el débito automático los procesa íntegramente MercadoPago en
+          su propia plataforma: nosotras no vemos ni almacenamos el número de
+          tu tarjeta ni tus credenciales bancarias.
         </p>
       </LegalSection>
 

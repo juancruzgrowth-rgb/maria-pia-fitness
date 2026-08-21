@@ -1,6 +1,6 @@
 import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
 import { HOW_IT_WORKS } from "@/content/offer";
-import { TRANSFER } from "@/lib/products";
+import { SUBSCRIPTION } from "@/lib/products";
 
 export function HowItWorks() {
   return (
@@ -45,9 +45,11 @@ export function HowItWorks() {
 
         <RevealOnScroll delay={120}>
           <p className="mt-6 text-sm leading-relaxed text-mp-carbon/70">
-            El pago es por transferencia bancaria y confirmo el acceso en{" "}
-            {TRANSFER.responseWindow} desde que recibo el comprobante. No hay
-            fechas de inicio ni lista de espera: el día 1 es el día que entrás.
+            El pago es una suscripción con débito automático por{" "}
+            {SUBSCRIPTION.provider}: se cobra solo todos los meses y tu acceso
+            sigue activo sin que tengas que hacer nada. {SUBSCRIPTION.cancelNote}{" "}
+            No hay fechas de inicio ni lista de espera: el día 1 es el día que
+            entrás.
           </p>
         </RevealOnScroll>
       </div>

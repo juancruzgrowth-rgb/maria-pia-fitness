@@ -13,6 +13,8 @@ const envSchema = z.object({
   MERCADOPAGO_ACCESS_TOKEN: optionalString,
   NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: optionalString,
   MERCADOPAGO_WEBHOOK_SECRET: optionalString,
+  /** Link público del plan de suscripción de MercadoPago (débito automático). */
+  NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL: optionalString,
 
   STRIPE_SECRET_KEY: optionalString,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: optionalString,
@@ -39,6 +41,8 @@ const parsed = envSchema.safeParse({
   NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY:
     process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
   MERCADOPAGO_WEBHOOK_SECRET: process.env.MERCADOPAGO_WEBHOOK_SECRET,
+  NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL:
+    process.env.NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL,
 
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
@@ -73,6 +77,7 @@ export const publicEnv = {
   siteUrl: env.NEXT_PUBLIC_SITE_URL,
   calendlyUrl: env.NEXT_PUBLIC_CALENDLY_URL,
   mercadopagoPublicKey: env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
+  mercadopagoSubscriptionUrl: env.NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL,
   stripePublishableKey: env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   whatsappNumber: env.NEXT_PUBLIC_WHATSAPP_NUMBER,
   instagramUrl: env.NEXT_PUBLIC_INSTAGRAM_URL,

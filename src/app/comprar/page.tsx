@@ -3,25 +3,27 @@ import Link from "next/link";
 import {
   ArrowLeft,
   ArrowsClockwise,
-  ClockCounterClockwise,
+  Barbell,
+  Users,
   WhatsappLogo,
 } from "@phosphor-icons/react/dist/ssr";
-import { CopyField } from "@/components/ui/CopyField";
 import { CONTACT } from "@/lib/site";
+import { publicEnv } from "@/lib/env";
 import {
   CHALLENGE,
   ENROLLMENT_OPEN,
+  EQUIPMENT,
   FOUNDING,
-  PACK_DISCOUNT_PCT,
-  RENEWAL,
-  TRANSFER,
+  FOUNDING_SPOTS_LEFT,
+  QUARTERLY_DISCOUNT_PCT,
+  SUBSCRIPTION,
   VISIBLE_PLANS,
   formatARS,
 } from "@/lib/products";
 
 export const metadata: Metadata = {
-  title: `Reservá tu lugar en el ${CHALLENGE.name}`,
-  description: `Cómo pagar el ${CHALLENGE.name} por transferencia bancaria y recibir el acceso en ${TRANSFER.responseWindow}.`,
+  title: `Suscribite ${CHALLENGE.shortName}`,
+  description: `Cómo suscribirte ${CHALLENGE.shortName} con débito automático por ${SUBSCRIPTION.provider} y recibir el acceso.`,
   robots: { index: false, follow: true },
 };
 
@@ -49,6 +51,12 @@ export default function ComprarPage() {
     );
   }
 
+  /* Sin link de suscripción cargado el botón manda a WhatsApp: es preferible
+     a un CTA muerto. Cargar NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL en Vercel
+     apenas Pía cree el plan en MercadoPago. */
+  const subscriptionUrl = publicEnv.mercadopagoSubscriptionUrl;
+  const hasSubscriptionUrl = subscriptionUrl.length > 0;
+
   return (
     <section className="container-page section-pad max-w-2xl">
       <Link
@@ -64,18 +72,14 @@ export default function ComprarPage() {
       </h1>
 
       <p className="mt-4 text-base leading-relaxed text-mp-carbon/80">
-        Empezás el día que entrás: el material completo te llega apenas
-        confirmo la transferencia, sin esperar a que arranque ningún grupo.
-        {FOUNDING.active
-          ? ` Estos precios son los de lanzamiento y rigen hasta el ${FOUNDING.endsAt}.`
+        Empezás el día que entrás: el acceso te llega apenas se confirma el
+        pago, sin esperar a que arranque ningún grupo.
+        {FOUNDING.active && FOUNDING_SPOTS_LEFT > 0
+          ? ` Este es el precio del grupo fundador: son ${FOUNDING.spotsTotal} lugares, quedan ${FOUNDING_SPOTS_LEFT}, y el precio te queda congelado mientras sigas suscripta.`
           : ""}
       </p>
 
-      <h2 className="mt-10 font-display text-lg font-bold text-mp-ink md:text-xl">
-        Elegí cómo entrar
-      </h2>
-
-      <ul className="mt-4 flex flex-col gap-4">
+      <ul className="mt-8 flex flex-col gap-4">
         {VISIBLE_PLANS.map((plan) => (
           <li
             key={plan.id}
@@ -87,36 +91,53 @@ export default function ComprarPage() {
               </span>
               <span className="font-display text-2xl font-extrabold text-mp-ink md:text-3xl">
                 {formatARS(plan.priceARS)}
+                <span className="ml-1 text-sm font-semibold text-mp-carbon/70">
+                  {plan.frequencyLabel}
+                </span>
               </span>
             </div>
             <p className="text-sm leading-relaxed text-mp-carbon/80">
               {plan.summary}
             </p>
-            {plan.id === "pack-3-niveles" && (
+            {plan.id === "trimestral" && (
               <p className="font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-ember">
-                {PACK_DISCOUNT_PCT}% menos que comprarlos de a uno
+                {QUARTERLY_DISCOUNT_PCT}% menos que pagando mes a mes
               </p>
             )}
           </li>
         ))}
       </ul>
 
-      <ol className="mt-10 flex flex-col gap-8">
+      <a
+        href={hasSubscriptionUrl ? subscriptionUrl : CONTACT.paymentHelpUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-mp-ink px-6 py-4 font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-canvas transition-transform hover:scale-[0.99] active:scale-[0.98]"
+      >
+        {hasSubscriptionUrl ? (
+          `Suscribirme con ${SUBSCRIPTION.provider}`
+        ) : (
+          <>
+            <WhatsappLogo weight="fill" className="h-5 w-5" aria-hidden="true" />
+            Escribime y te paso el link de pago
+          </>
+        )}
+      </a>
+
+      <ol className="mt-12 flex flex-col gap-8">
         <li className="flex flex-col gap-4">
           <div className="flex items-center gap-3">
             <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-mp-ink font-display text-sm font-bold text-mp-canvas">
               1
             </span>
             <h2 className="font-display text-lg font-bold text-mp-ink md:text-xl">
-              Transferí el monto de tu plan
+              Te suscribís con {SUBSCRIPTION.provider}
             </h2>
           </div>
-
-          <div className="rounded-[var(--radius-card)] border border-mp-line px-5">
-            <CopyField label="Alias" value={TRANSFER.alias} />
-            <CopyField label="CBU" value={TRANSFER.cbu} />
-            <CopyField label="Titular" value={TRANSFER.holder} />
-          </div>
+          <p className="text-sm leading-relaxed text-mp-carbon/80">
+            Elegís tu medio de pago una sola vez y queda configurado el débito
+            automático. Sin transferencias y sin mandarme ningún comprobante.
+          </p>
         </li>
 
         <li className="flex flex-col gap-4">
@@ -125,23 +146,13 @@ export default function ComprarPage() {
               2
             </span>
             <h2 className="font-display text-lg font-bold text-mp-ink md:text-xl">
-              Mandame el comprobante
+              Recibís el acceso a Skool
             </h2>
           </div>
           <p className="text-sm leading-relaxed text-mp-carbon/80">
-            El botón abre WhatsApp con el mensaje ya escrito. Adjuntá el
-            comprobante y completá tu nombre, tu email y qué plan elegiste: los
-            necesito para darte el acceso.
+            Ahí están las rutinas, los videos de cada ejercicio y la comunidad
+            donde subís tus videos de técnica y preguntás lo que necesites.
           </p>
-          <a
-            href={CONTACT.receiptUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-mp-ink px-6 py-4 font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-canvas transition-transform hover:scale-[0.99] active:scale-[0.98]"
-          >
-            <WhatsappLogo weight="fill" className="h-5 w-5" aria-hidden="true" />
-            Ya transferí — enviar comprobante
-          </a>
         </li>
 
         <li className="flex flex-col gap-4">
@@ -150,30 +161,17 @@ export default function ComprarPage() {
               3
             </span>
             <h2 className="font-display text-lg font-bold text-mp-ink md:text-xl">
-              Recibís el acceso
+              Entrenás ese mismo día
             </h2>
           </div>
           <p className="text-sm leading-relaxed text-mp-carbon/80">
-            Verifico la transferencia y te mando el acceso a la comunidad, las
-            rutinas y los videos donde te explico cómo usar todo, en{" "}
-            {TRANSFER.responseWindow}.
+            Mirás los videos de arranque, abrís la sesión 1 y empezás. Tres
+            sesiones por semana, de 30 a 60 minutos cada una.
           </p>
         </li>
       </ol>
 
       <div className="mt-10 flex flex-col gap-4">
-        <div className="flex gap-3 rounded-md border border-mp-line p-4">
-          <ClockCounterClockwise
-            weight="duotone"
-            className="mt-0.5 h-5 w-5 shrink-0 text-mp-orange"
-            aria-hidden="true"
-          />
-          <p className="text-sm leading-relaxed text-mp-carbon">
-            Si transferís de noche, vas a recibir la confirmación de que llegó
-            enseguida, y el acceso a primera hora de la mañana.
-          </p>
-        </div>
-
         <div className="flex gap-3 rounded-md border border-mp-line p-4">
           <ArrowsClockwise
             weight="duotone"
@@ -182,17 +180,47 @@ export default function ComprarPage() {
           />
           <p className="text-sm leading-relaxed text-mp-carbon">
             <span className="font-display font-semibold text-mp-ink">
-              No hay débito automático.
+              Se renueva solo todos los meses.
             </span>{" "}
-            Un nivel te da {RENEWAL.accessDays} días de acceso. Si querés
-            seguir con el siguiente, transferís de nuevo. Si no hacés nada, se
-            termina y listo.
+            {SUBSCRIPTION.cancelNote}
           </p>
         </div>
+
+        <div className="flex gap-3 rounded-md border border-mp-line p-4">
+          <Barbell
+            weight="duotone"
+            className="mt-0.5 h-5 w-5 shrink-0 text-mp-orange"
+            aria-hidden="true"
+          />
+          <p className="text-sm leading-relaxed text-mp-carbon">
+            <span className="font-display font-semibold text-mp-ink">
+              {EQUIPMENT.short}.
+            </span>{" "}
+            {EQUIPMENT.detail}
+          </p>
+        </div>
+
+        {FOUNDING.active && FOUNDING_SPOTS_LEFT > 0 && (
+          <div className="flex gap-3 rounded-md border border-mp-line p-4">
+            <Users
+              weight="duotone"
+              className="mt-0.5 h-5 w-5 shrink-0 text-mp-orange"
+              aria-hidden="true"
+            />
+            <p className="text-sm leading-relaxed text-mp-carbon">
+              <span className="font-display font-semibold text-mp-ink">
+                {FOUNDING.label}: quedan {FOUNDING_SPOTS_LEFT} de{" "}
+                {FOUNDING.spotsTotal} lugares.
+              </span>{" "}
+              Cuando se completa el cupo el precio sube, pero el tuyo no: te
+              queda congelado mientras no canceles.
+            </p>
+          </div>
+        )}
       </div>
 
       <p className="mt-8 text-xs leading-relaxed text-mp-carbon/70">
-        Al comprar aceptás los{" "}
+        Al suscribirte aceptás los{" "}
         <Link href="/terminos-condiciones" className="underline underline-offset-2">
           Términos y Condiciones
         </Link>{" "}

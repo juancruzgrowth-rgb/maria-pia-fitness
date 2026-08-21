@@ -28,7 +28,7 @@ Web (landing + e-commerce). Fase 2 futura: Automatizaciones de marketing y venta
 ## Branding (oficial — guía recibida)
 - Lienzo: Blanco Suave `#F5F5F2`
 - Texto / CTA primario: Negro Profundo `#050505` y Carbón `#161616`
-- Acento principal: Naranja `#F2A31B` y Ámbar Cálido `#D98A17`
+- Acento principal: Naranja `#EAA959` y Ámbar Cálido `#D0904C`
 - Acento secundario: Celeste `#BFDFFF`
 - Tipografía: **Fraunces** (titulares) + **Newsreader** (texto) + **Montserrat** (etiquetas y CTAs)
 - Tono: Sobrio, motivador, profesional, directo. Hablamos de vos, con empatía.

@@ -5,7 +5,11 @@ import Image from "next/image";
 import { Play, X, WhatsappLogo } from "@phosphor-icons/react";
 import { HERO } from "@/content/hero";
 import { CONTACT } from "@/lib/site";
-import { ENROLLMENT_OPEN, FOUNDING } from "@/lib/products";
+import {
+  ENROLLMENT_OPEN,
+  FOUNDING,
+  FOUNDING_SPOTS_LEFT,
+} from "@/lib/products";
 
 export function Hero() {
   const [playing, setPlaying] = useState(false);
@@ -42,8 +46,12 @@ export function Hero() {
                   {FOUNDING.label}
                 </span>
                 <p className="text-sm leading-relaxed text-mp-carbon">
-                  Empezás el día que entrás, no cuando arranque un grupo. El
-                  precio de lanzamiento vale hasta el {FOUNDING.endsAt}.
+                  Empezás el día que entrás, no cuando arranque un grupo. Somos{" "}
+                  {FOUNDING.spotsTotal} lugares al precio de lanzamiento
+                  {FOUNDING_SPOTS_LEFT > 0
+                    ? ` —quedan ${FOUNDING_SPOTS_LEFT}—`
+                    : ""}
+                  , y ese precio te queda congelado mientras sigas entrenando.
                 </p>
               </div>
             )}
@@ -83,7 +91,7 @@ export function Hero() {
                   playsInline
                   preload="metadata"
                   className="h-full w-full object-contain"
-                  title="Pía explica el método del Reto 28 Días"
+                  title="Pía explica el método del Reto"
                 />
                 <button
                   type="button"
@@ -103,7 +111,7 @@ export function Hero() {
               >
                 <Image
                   src={HERO.videoPosterUrl}
-                  alt="Reto 28 Días · Método 4F: Fuerza, Función, Flexibilidad y Foco. Pía Moretto entrenando con bandas elásticas"
+                  alt="El Reto · Método 4F: Fuerza, Función, Flexibilidad y Foco. Pía Moretto entrenando con bandas elásticas"
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   priority

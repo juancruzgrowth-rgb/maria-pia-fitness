@@ -21,9 +21,9 @@ No hay `tailwind.config.ts`: con Tailwind v4 los tokens viven en el CSS.
 --color-mp-canvas: #f5f5f2;   /* fondo principal */
 --color-mp-ink:    #050505;   /* texto / CTA primario */
 --color-mp-carbon: #161616;   /* texto secundario */
---color-mp-orange: #f2a31b;   /* acento principal — NO usar en texto (1.9:1) */
---color-mp-amber:  #d98a17;   /* acento hover */
---color-mp-ember:  #8f5600;   /* acento para TEXTO sobre canvas (5.4:1) */
+--color-mp-orange: #eaa959;   /* acento principal — NO usar en texto (1.9:1) */
+--color-mp-amber:  #d0904c;   /* acento hover */
+--color-mp-ember:  #8a5a24;   /* acento para TEXTO sobre canvas (5.4:1) */
 --color-mp-sky:    #bfdfff;   /* acento decorativo */
 --color-mp-line:   #eaeaea;   /* bordes */
 ```

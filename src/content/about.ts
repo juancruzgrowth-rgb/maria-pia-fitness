@@ -1,20 +1,20 @@
 export const ABOUT = {
   heading: "Soy Pía.",
   intro:
-    "Entrenadora personal y nutricionista. Hace más de ocho años acompaño a mujeres que trabajan todo el día y quieren entrenar con criterio, sin pelearse con la balanza ni con el reloj.",
+    "Entrenadora personal. Hace muchos años acompaño a mujeres que trabajan todo el día y quieren entrenar con criterio, sin pelearse con la balanza ni con el reloj.",
   paragraphs: [
-    "Tengo un centro de entrenamiento en Rosario donde entreno personas todos los días. No soy una coach que aparece sólo en Instagram: lo que vas a hacer en estos 28 días es el mismo método que uso ahí, adaptado para que puedas seguirlo desde tu casa.",
-    "Empecé a estudiar el cuerpo en serio cuando una lesión me obligó a hacerlo. De esos años de rehabilitación salió mi forma de trabajar: progresión técnica, respeto por la fatiga y un plan que se adapta a la semana real, no a la semana ideal.",
+    "Tengo un centro de entrenamiento en Rosario donde entreno personas todos los días. No soy una coach que aparece sólo en Instagram: lo que vas a hacer acá es el mismo método que uso ahí, adaptado para que puedas seguirlo por tu cuenta.",
+    "Me apasiona estudiar el cuerpo. Cómo se adapta al entrenamiento, qué pasa cuando dormís mal, por qué la cabeza afloja antes que las piernas, qué rol juega lo que comés en todo eso. Estudio, pruebo en mí y después lo llevo a la sala: si algo no funciona con personas reales, no llega a tus rutinas.",
     "La mayoría de las mujeres que entreno tienen jornadas largas y muy poco tiempo libre. No les falta voluntad: les falta un sistema que entre en su día. Eso es exactamente lo que armamos acá.",
   ],
   pillars: [
     {
       title: "Tres días, no siete",
-      body: "Tres sesiones por semana, cada una en versión gimnasio y versión casa.",
+      body: "Tres sesiones por semana, de 30 a 60 minutos, con todo dicho en video.",
     },
     {
       title: "Con criterio",
-      body: "Formación en entrenamiento, nutrición deportiva y cambio de hábitos. Sin recetas mágicas.",
+      body: "Formación y estudio permanente en entrenamiento, hábitos y recuperación. Sin recetas mágicas.",
     },
     {
       title: "Sostenible",
@@ -22,7 +22,7 @@ export const ABOUT = {
     },
     {
       title: "Acompañada",
-      body: "Sesión de corrección de técnica todas las semanas y comunidad activa todos los días.",
+      body: "Corrección de técnica una vez por semana y comunidad activa todos los días.",
     },
   ],
   imageUrl: "/images/sobre-mi.jpg",

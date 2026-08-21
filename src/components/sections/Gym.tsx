@@ -30,7 +30,7 @@ export function Gym() {
             <p className="text-base leading-relaxed text-mp-carbon/80 md:text-lg">
               Tengo un centro de entrenamiento en Rosario donde entreno personas
               todos los días, cara a cara. Ahí probé, corregí y ajusté durante
-              años lo que hoy es el Reto 28 Días.
+              años lo que hoy es El Reto.
             </p>
           </RevealOnScroll>
 
@@ -46,10 +46,11 @@ export function Gym() {
             <div className="rounded-md border border-mp-line bg-mp-canvas p-4">
               <p className="text-sm leading-relaxed text-mp-carbon">
                 <span className="font-display font-semibold text-mp-ink">
-                  El Reto 28 Días es 100% online.
+                  El Reto es 100% online.
                 </span>{" "}
                 No hace falta que vivas en Rosario ni que vengas al centro: lo
-                hacés desde tu casa, en tus horarios.
+                hacés en tu gimnasio o donde tengas equipamiento, en tus
+                horarios.
               </p>
             </div>
           </RevealOnScroll>

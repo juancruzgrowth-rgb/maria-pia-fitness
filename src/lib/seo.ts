@@ -48,9 +48,6 @@ export function challengeJsonLd() {
       availability: ENROLLMENT_OPEN
         ? "https://schema.org/InStock"
         : "https://schema.org/PreOrder",
-      /* El precio fundador vence: declararlo acá evita que Google siga
-         mostrando $55.000 en los resultados después de que suba. */
-      priceValidUntil: FOUNDING.active ? FOUNDING.endsAtISO : undefined,
       url: `${BASE_URL}/comprar`,
       seller: { "@type": "Person", name: SITE.ownerName },
     },
@@ -73,6 +70,6 @@ export function faqJsonLd() {
 export function homeDescription(): string {
   const price = formatARS(CHALLENGE.priceARS);
   return ENROLLMENT_OPEN
-    ? `Reto de 28 días online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, en gimnasio o en casa, con el seguimiento de Pía. Empezás el día que entrás. ${price} hasta el ${FOUNDING.endsAt}.`
-    : `Reto de 28 días online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, en gimnasio o en casa, con el seguimiento de Pía. Inscripción cerrada por ahora — anotate y te aviso.`;
+    ? `Entrenamiento online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, con el seguimiento de Pía. Empezás el día que entrás. ${price} por mes para las primeras ${FOUNDING.spotsTotal} del grupo fundador.`
+    : `Entrenamiento online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, con el seguimiento de Pía. Inscripción cerrada por ahora — anotate y te aviso.`;
 }

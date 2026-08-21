@@ -4,11 +4,11 @@ import { LegalPage, LegalSection } from "@/components/legal/LegalPage";
 import { SITE } from "@/lib/site";
 import {
   CHALLENGE,
+  EQUIPMENT,
   FOUNDING,
-  RENEWAL,
+  SUBSCRIPTION,
+  TRAINING,
   WITHDRAWAL_RIGHT,
-  LEVEL_ACCESS,
-  TRANSFER,
   VISIBLE_PLANS,
   formatARS,
 } from "@/lib/products";
@@ -22,7 +22,7 @@ export default function TerminosCondicionesPage() {
   return (
     <LegalPage
       title="Términos y Condiciones"
-      updatedAt="13 de agosto de 2026"
+      updatedAt="21 de agosto de 2026"
       intro={`Estos términos regulan la contratación del ${CHALLENGE.name} ofrecido por ${SITE.fiscalName}. Al contratar el servicio declarás haberlos leído y aceptado.`}
     >
       <LegalSection heading="1. Identificación del prestador">
@@ -35,21 +35,23 @@ export default function TerminosCondicionesPage() {
 
       <LegalSection heading="2. Objeto del servicio">
         <p>
-          El {CHALLENGE.name} es un programa de entrenamiento físico y
-          orientación nutricional de {CHALLENGE.duration} de duración, prestado
-          de forma íntegramente online. Incluye acceso a contenidos
-          audiovisuales grabados, material descargable, corrección asincrónica de
-          técnica y participación en una comunidad privada durante la vigencia
-          del programa.
+          El {CHALLENGE.name} es un programa de entrenamiento físico prestado
+          de forma íntegramente online, contratado bajo la modalidad de
+          suscripción mensual. Incluye acceso a contenidos audiovisuales
+          grabados, material descargable, corrección asincrónica de técnica y
+          participación en una comunidad privada mientras la suscripción se
+          encuentre vigente.
         </p>
         <p>
-          <strong>
-            El plan de entrenamiento y la guía nutricional no son
-            personalizados.
-          </strong>{" "}
-          Son los mismos para todas las participantes. El único componente
+          <strong>El plan de entrenamiento no es personalizado.</strong> Es el
+          mismo para todas las participantes. El único componente
           individualizado es la devolución sobre los videos de técnica que la
           participante decida enviar, que se responde de forma asincrónica.
+        </p>
+        <p>
+          El entrenamiento está organizado en niveles ({TRAINING.levels.join(" y ")}),
+          de {TRAINING.daysPerLevel} días cada uno y {TRAINING.setsPerDay} sets
+          por día. {EQUIPMENT.detail}
         </p>
         <p>
           La asesoría 1:1 es un servicio distinto, con alcance, duración y
@@ -65,47 +67,37 @@ export default function TerminosCondicionesPage() {
         <p>
           Los precios vigentes, con impuestos incluidos, son:{" "}
           {VISIBLE_PLANS.map((plan) => `${plan.name}, ${formatARS(plan.priceARS)}`).join("; ")}.
-          Estos importes corresponden al precio promocional de lanzamiento y
-          rigen hasta el {FOUNDING.endsAt} de {new Date(FOUNDING.endsAtISO).getFullYear()}
-          . Las modificaciones de precio no afectan a quienes ya hubieran
-          abonado.
+          Estos importes corresponden al precio promocional de lanzamiento,
+          disponible para las primeras {FOUNDING.spotsTotal} participantes y
+          hasta agotar ese cupo. Quienes contraten a ese precio lo conservan sin
+          aumentos mientras mantengan la suscripción activa y sin interrupciones.
         </p>
         <p>
-          La contratación de un nivel otorga acceso al programa por{" "}
-          {RENEWAL.accessDays} días corridos contados desde la confirmación del
-          acceso. Vencido ese plazo, para continuar es necesario abonar
-          nuevamente. <strong>No existe suscripción ni débito automático:</strong>{" "}
-          ningún importe se cobra sin una nueva transferencia hecha por la
-          participante. La prestadora envía recordatorios antes del
-          vencimiento; si no se abona la renovación, el acceso a la comunidad y
-          al material se da de baja a los {RENEWAL.graceDays} días corridos del
-          vencimiento, es decir el día{" "}
-          {RENEWAL.accessDays + RENEWAL.graceDays} contado desde el alta.
+          La contratación es una <strong>suscripción con débito automático</strong>{" "}
+          gestionada a través de {SUBSCRIPTION.provider}. El importe se debita
+          del medio de pago informado por la participante una vez por mes, de
+          forma automática, y el acceso al programa se mantiene vigente mientras
+          los débitos se acrediten.
         </p>
         <p>
-          Quien contrate los {LEVEL_ACCESS.totalLevels} niveles no debe renovar
-          mensualmente y dispone de {LEVEL_ACCESS.windowMonths} meses corridos
-          desde el pago para completarlos. Cada nivel se habilita al completar
-          el {LEVEL_ACCESS.unlockThresholdPct}% de las sesiones del anterior. La
-          participante puede solicitar, por única vez y sin necesidad de
-          justificación, la suspensión del plazo por {LEVEL_ACCESS.pauseDays}{" "}
-          días corridos.
+          La participante puede dar de baja la suscripción en cualquier momento
+          y sin expresar causa, desde su cuenta de {SUBSCRIPTION.provider} o
+          comunicándolo a {SITE.email}. La baja surte efecto al finalizar el
+          período mensual ya abonado, sin generar cargos posteriores. Los
+          importes correspondientes a períodos ya transcurridos no se
+          reintegran, sin perjuicio del derecho de revocación del punto 5.
         </p>
         <p>
-          El pago se realiza mediante transferencia bancaria a la cuenta
-          informada en la página de compra. La contratación se perfecciona una
-          vez que la prestadora verifica el ingreso de los fondos y confirma el
-          acceso, lo que ocurre habitualmente en {TRANSFER.responseWindow} desde
-          la recepción del comprobante.
+          Ante el rechazo o la falta de acreditación de un débito, la prestadora
+          podrá suspender el acceso hasta su regularización.
         </p>
       </LegalSection>
 
       <LegalSection heading="4. Inicio y modalidad del programa">
         <p>
           El programa es íntegramente digital y asincrónico. La totalidad del
-          material —rutinas, videos explicativos, biblioteca de ejercicios y
-          guía de nutrición— se encuentra grabado y se pone a disposición de la
-          participante al confirmarse el acceso. No hay fechas de inicio
+          material —rutinas y videos explicativos— se encuentra grabado y se
+          pone a disposición de la participante al confirmarse el acceso. No hay fechas de inicio
           predeterminadas: el programa comienza el día en que se otorga el
           acceso.
         </p>
@@ -130,8 +122,9 @@ export default function TerminosCondicionesPage() {
         <p>
           Para ejercer este derecho alcanza con comunicarlo por WhatsApp o por
           correo electrónico a {SITE.email}. La devolución del importe se
-          realizará mediante transferencia bancaria a la misma cuenta de origen,
-          dentro de los cinco (5) días hábiles siguientes.
+          realizará por el mismo medio de pago utilizado en la contratación,
+          dentro de los cinco (5) días hábiles siguientes, y la suscripción se
+          da de baja sin cargos posteriores.
         </p>
         <p>
           Este derecho es irrenunciable y prevalece sobre cualquier otra
@@ -159,8 +152,7 @@ export default function TerminosCondicionesPage() {
           Los resultados dependen de factores individuales como el punto de
           partida, la adherencia al programa, el descanso, la alimentación y la
           genética. La prestadora no garantiza resultados físicos específicos ni
-          en un plazo determinado. Los testimonios publicados corresponden a
-          experiencias individuales y no constituyen una promesa de resultado.
+          en un plazo determinado.
         </p>
       </LegalSection>
 

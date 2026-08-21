@@ -6,6 +6,8 @@ import {
   CHALLENGE,
   ENROLLMENT_OPEN,
   FOUNDING,
+  FOUNDING_SPOTS_LEFT,
+  SUBSCRIPTION,
   formatARS,
 } from "@/lib/products";
 import { PRIMARY_CTA } from "@/lib/site";
@@ -22,7 +24,7 @@ export function BuyBar() {
       <span className="flex flex-col text-left leading-tight">
         <span className="font-display font-extrabold text-base sm:text-lg">
           {ENROLLMENT_OPEN
-            ? `Desde ${formatARS(CHALLENGE.priceARS)}`
+            ? `${formatARS(CHALLENGE.priceARS)} ${SUBSCRIPTION.frequencyLabel}`
             : "Lista de espera"}
         </span>
         {/* La urgencia va ACÁ dentro y no debajo de la barra: afuera flota sobre
@@ -31,8 +33,8 @@ export function BuyBar() {
         <span className="text-[11px] font-medium text-mp-canvas/75">
           {!ENROLLMENT_OPEN
             ? "Te aviso cuando abra"
-            : FOUNDING.active
-              ? `Precio fundador hasta el ${FOUNDING.endsAt}`
+            : FOUNDING.active && FOUNDING_SPOTS_LEFT > 0
+              ? `${FOUNDING.label}: quedan ${FOUNDING_SPOTS_LEFT} lugares`
               : CHALLENGE.name}
         </span>
       </span>
