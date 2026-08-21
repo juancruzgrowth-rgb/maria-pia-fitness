@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import { Play, X, WhatsappLogo } from "@phosphor-icons/react";
 import { HERO } from "@/content/hero";
 import { CONTACT } from "@/lib/site";
@@ -11,8 +11,43 @@ import {
   FOUNDING_SPOTS_LEFT,
 } from "@/lib/products";
 
+/** Ancho real de la miniatura. Las dos versiones son 16:9. */
+const POSTER_WIDTH = 1920;
+const POSTER_HEIGHT = 1080;
+const POSTER_SIZES = "(min-width: 1024px) 45vw, 100vw";
+const POSTER_ALT =
+  "Mi Método 4F: Fuerza, Función, Flexibilidad y Foco. Pía Moretto entrenando con una pesa rusa";
+
+/**
+ * Art direction de la miniatura: mobile y desktop llevan fotos distintas de
+ * Pía. No alcanza con `sizes` —eso resuelve resolución, no encuadre—, así que
+ * usamos <picture> con getImageProps para que el navegador baje UNA sola de
+ * las dos y no las dos. Con dos <Image> y `hidden` bajaría ambas y duplicaría
+ * el peso del LCP.
+ */
+function usePosterSources() {
+  const common = {
+    alt: POSTER_ALT,
+    width: POSTER_WIDTH,
+    height: POSTER_HEIGHT,
+    sizes: POSTER_SIZES,
+    priority: true,
+  };
+
+  const {
+    props: { srcSet: desktopSrcSet },
+  } = getImageProps({ ...common, src: HERO.videoPosterUrl });
+
+  const {
+    props: { srcSet: mobileSrcSet, ...imgProps },
+  } = getImageProps({ ...common, src: HERO.videoPosterUrlMobile });
+
+  return { desktopSrcSet, mobileSrcSet, imgProps };
+}
+
 export function Hero() {
   const [playing, setPlaying] = useState(false);
+  const { desktopSrcSet, mobileSrcSet, imgProps } = usePosterSources();
 
   return (
     <section id="inicio" aria-label="Presentación" className="pt-8 pb-16 md:pt-16 md:pb-24">
@@ -109,14 +144,16 @@ export function Hero() {
                 className="group relative block aspect-video w-full overflow-hidden rounded-[var(--radius-card)] border border-mp-line bg-mp-canvas"
                 aria-label="Reproducir el video donde Pía explica el método"
               >
-                <Image
-                  src={HERO.videoPosterUrl}
-                  alt="Mi Método 4F: Fuerza, Función, Flexibilidad y Foco. Pía Moretto entrenando con una pesa rusa"
-                  fill
-                  sizes="(min-width: 1024px) 45vw, 100vw"
-                  priority
-                  className="object-cover"
-                />
+                <picture>
+                  <source media="(min-width: 768px)" srcSet={desktopSrcSet} />
+                  <source media="(max-width: 767px)" srcSet={mobileSrcSet} />
+                  <img
+                    {...imgProps}
+                    alt={POSTER_ALT}
+                    fetchPriority="high"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </picture>
                 <span
                   aria-hidden="true"
                   className="absolute left-[58%] top-1/2 inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-mp-ink text-mp-canvas transition-transform duration-300 group-hover:scale-95 md:h-20 md:w-20"
