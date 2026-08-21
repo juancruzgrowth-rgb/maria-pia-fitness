@@ -156,7 +156,7 @@ export function Hero() {
                 </picture>
                 <span
                   aria-hidden="true"
-                  className="absolute left-[58%] top-1/2 inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-mp-ink text-mp-canvas transition-transform duration-300 group-hover:scale-95 md:h-20 md:w-20"
+                  className="absolute left-1/2 top-1/2 inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-mp-ink text-mp-canvas transition-transform duration-300 group-hover:scale-95 md:h-20 md:w-20"
                 >
                   <Play weight="fill" className="h-6 w-6 translate-x-0.5 md:h-7 md:w-7" />
                 </span>
