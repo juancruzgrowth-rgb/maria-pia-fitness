@@ -101,7 +101,7 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
 - [x] ~~**B1 · Precio.**~~ **RESUELTO y actualizado el 2026-08-18:** $55.000 por nivel. Ya cargado en `PRICE_ARS`
 - [x] ~~**B2 · Datos bancarios.**~~ **YA NO APLICA (sesión 12).** No se cobra por transferencia. `TRANSFER` se elimina de `products.ts`
-- [ ] **B3 · WhatsApp AR.** Hoy hay un +34 español en `NEXT_PUBLIC_WHATSAPP_NUMBER`. **Degradado: ya no es bloqueante técnico** — no hay API de por medio y puede ser el teléfono normal de Pía. Sigue haciendo falta para el grupo de comunidad
+- [x] ~~**B3 · WhatsApp AR.**~~ **RESUELTO 2026-08-21:** `+54 9 3416 13-4367`. Cargado en `.env.example` y en `.env.local`. **Falta cargarlo en Vercel** (`NEXT_PUBLIC_WHATSAPP_NUMBER=5493416134367`) y redeployar: hasta entonces producción sigue mandando al +34
 - [x] ~~**B4 · Nombre del producto.**~~ **RESUELTO 2026-08-17.** "Reto 28 Días" se queda como nombre de la oferta. Se suma **"Mi Método 4F"** como nombre del método, por encima. Ver `11-metodo-4f.md`
 - [x] ~~**B5 · Fechas del grupo fundador.**~~ **YA NO APLICA (2026-08-18).** Se eliminaron las cohortes: cada clienta arranca el día que compra. Esto desbloqueó de un saque A5, A25 y A26 — que en realidad se cancelaron, porque existían para sostener los grupos
 
