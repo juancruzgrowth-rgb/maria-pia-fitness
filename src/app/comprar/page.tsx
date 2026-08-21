@@ -8,7 +8,10 @@ import {
   WhatsappLogo,
 } from "@phosphor-icons/react/dist/ssr";
 import { CONTACT } from "@/lib/site";
-import { publicEnv } from "@/lib/env";
+import {
+  CheckoutForm,
+  type CheckoutPlanOption,
+} from "@/components/checkout/CheckoutForm";
 import {
   CHALLENGE,
   ENROLLMENT_OPEN,
@@ -18,7 +21,6 @@ import {
   QUARTERLY_DISCOUNT_PCT,
   SUBSCRIPTION,
   VISIBLE_PLANS,
-  formatARS,
 } from "@/lib/products";
 
 export const metadata: Metadata = {
@@ -51,11 +53,28 @@ export default function ComprarPage() {
     );
   }
 
-  /* Sin link de suscripción cargado el botón manda a WhatsApp: es preferible
-     a un CTA muerto. Cargar NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL en Vercel
-     apenas Pía cree el plan en MercadoPago. */
-  const subscriptionUrl = publicEnv.mercadopagoSubscriptionUrl;
-  const hasSubscriptionUrl = subscriptionUrl.length > 0;
+  /* El endpoint sale de acá, no del cliente: el importe de cada plan lo pone
+     el servidor desde products.ts. Si el plan viniera del formulario, alguien
+     podría suscribirse al trimestral pagando el mensual. */
+  const CHECKOUT_ENDPOINTS: Record<string, string> = {
+    "nivel-mensual": "/api/checkout/suscripcion",
+    trimestral: "/api/checkout/pack",
+  };
+
+  const planOptions: CheckoutPlanOption[] = VISIBLE_PLANS.filter(
+    (plan) => plan.id in CHECKOUT_ENDPOINTS,
+  ).map((plan) => ({
+    id: plan.id,
+    name: plan.name,
+    priceARS: plan.priceARS,
+    frequencyLabel: plan.frequencyLabel,
+    summary: plan.summary,
+    endpoint: CHECKOUT_ENDPOINTS[plan.id],
+    note:
+      plan.id === "trimestral"
+        ? `${QUARTERLY_DISCOUNT_PCT}% menos que pagando mes a mes`
+        : "",
+  }));
 
   return (
     <section className="container-page section-pad max-w-2xl">
@@ -79,50 +98,9 @@ export default function ComprarPage() {
           : ""}
       </p>
 
-      <ul className="mt-8 flex flex-col gap-4">
-        {VISIBLE_PLANS.map((plan) => (
-          <li
-            key={plan.id}
-            className="flex flex-col gap-3 rounded-[var(--radius-card)] border border-mp-line p-6"
-          >
-            <div className="flex items-baseline justify-between gap-4">
-              <span className="font-display text-sm font-semibold text-mp-ink">
-                {plan.name}
-              </span>
-              <span className="font-display text-2xl font-extrabold text-mp-ink md:text-3xl">
-                {formatARS(plan.priceARS)}
-                <span className="ml-1 text-sm font-semibold text-mp-carbon/70">
-                  {plan.frequencyLabel}
-                </span>
-              </span>
-            </div>
-            <p className="text-sm leading-relaxed text-mp-carbon/80">
-              {plan.summary}
-            </p>
-            {plan.id === "trimestral" && (
-              <p className="font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-ember">
-                {QUARTERLY_DISCOUNT_PCT}% menos que pagando mes a mes
-              </p>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      <a
-        href={hasSubscriptionUrl ? subscriptionUrl : CONTACT.paymentHelpUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-mp-ink px-6 py-4 font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-canvas transition-transform hover:scale-[0.99] active:scale-[0.98]"
-      >
-        {hasSubscriptionUrl ? (
-          `Suscribirme con ${SUBSCRIPTION.provider}`
-        ) : (
-          <>
-            <WhatsappLogo weight="fill" className="h-5 w-5" aria-hidden="true" />
-            Escribime y te paso el link de pago
-          </>
-        )}
-      </a>
+      <div className="mt-8">
+        <CheckoutForm plans={planOptions} />
+      </div>
 
       <ol className="mt-12 flex flex-col gap-8">
         <li className="flex flex-col gap-4">

@@ -13,12 +13,14 @@ const envSchema = z.object({
   MERCADOPAGO_ACCESS_TOKEN: optionalString,
   NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: optionalString,
   MERCADOPAGO_WEBHOOK_SECRET: optionalString,
-  /** Link público del plan de suscripción de MercadoPago (débito automático). */
-  NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL: optionalString,
 
-  STRIPE_SECRET_KEY: optionalString,
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: optionalString,
-  STRIPE_WEBHOOK_SECRET: optionalString,
+  /** Webhook de n8n que dispara A4 (onboarding). Vacío = no se dispara. */
+  N8N_ONBOARDING_WEBHOOK_URL: optionalString,
+
+  /** Link de invitación a la comunidad de Skool. Se muestra en /bienvenida. */
+  NEXT_PUBLIC_SKOOL_INVITE_URL: optionalString,
+  /** Link de invitación al grupo de WhatsApp. Se muestra en /bienvenida. */
+  NEXT_PUBLIC_WHATSAPP_GROUP_URL: optionalString,
 
   BREVO_API_KEY: optionalString,
   BREVO_LIST_ID: optionalString,
@@ -41,13 +43,11 @@ const parsed = envSchema.safeParse({
   NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY:
     process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
   MERCADOPAGO_WEBHOOK_SECRET: process.env.MERCADOPAGO_WEBHOOK_SECRET,
-  NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL:
-    process.env.NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL,
 
-  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+  N8N_ONBOARDING_WEBHOOK_URL: process.env.N8N_ONBOARDING_WEBHOOK_URL,
+
+  NEXT_PUBLIC_SKOOL_INVITE_URL: process.env.NEXT_PUBLIC_SKOOL_INVITE_URL,
+  NEXT_PUBLIC_WHATSAPP_GROUP_URL: process.env.NEXT_PUBLIC_WHATSAPP_GROUP_URL,
 
   BREVO_API_KEY: process.env.BREVO_API_KEY,
   BREVO_LIST_ID: process.env.BREVO_LIST_ID,
@@ -77,8 +77,8 @@ export const publicEnv = {
   siteUrl: env.NEXT_PUBLIC_SITE_URL,
   calendlyUrl: env.NEXT_PUBLIC_CALENDLY_URL,
   mercadopagoPublicKey: env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY,
-  mercadopagoSubscriptionUrl: env.NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL,
-  stripePublishableKey: env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+  skoolInviteUrl: env.NEXT_PUBLIC_SKOOL_INVITE_URL,
+  whatsappGroupUrl: env.NEXT_PUBLIC_WHATSAPP_GROUP_URL,
   whatsappNumber: env.NEXT_PUBLIC_WHATSAPP_NUMBER,
   instagramUrl: env.NEXT_PUBLIC_INSTAGRAM_URL,
   tiktokUrl: env.NEXT_PUBLIC_TIKTOK_URL,

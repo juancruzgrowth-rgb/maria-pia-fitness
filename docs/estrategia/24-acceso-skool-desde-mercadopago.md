@@ -117,24 +117,44 @@ casos", y esos pocos casos aparecen en la lista de A30 para resolverlos a ojo.
 
 ---
 
-## 5. Estado real del build al 2026-08-20
+## 5. Estado real del build al 2026-08-21
 
-Nada del circuito de la §1 está construido. En `src/` hay:
+Los pasos 1 a 5 y el 7 de la §6 están construidos. Falta probarlos contra MercadoPago:
+sin las credenciales de B20 no se puede correr una sola compra de sandbox.
 
 | Pieza | Estado |
 |---|---|
-| [`src/lib/mercadopago.ts`](../../src/lib/mercadopago.ts) | Existe, pero **sólo `createPreference`**. No hay `preapproval` |
-| `POST /api/checkout/suscripcion` | **No existe** |
-| `POST /api/checkout/pack` | **No existe** |
-| `POST /api/webhooks/mercadopago` | **No existe** |
-| `/bienvenida` | **No existe** |
-| `/cancelar` | **No existe** — y es obligación legal, Res. 424/2020 |
-| [`src/app/comprar/page.tsx`](../../src/app/comprar/page.tsx) | Sigue siendo la pantalla vieja de alias, CBU y comprobante por WhatsApp. **Se reescribe entera** |
-| `A4-onboarding.json` | Construido, pero con el disparador viejo y el brazo de WhatsApp. Hay que reconectarlo al webhook |
+| [`src/lib/mercadopago.ts`](../../src/lib/mercadopago.ts) | ✅ `createSubscription` (preapproval sin plan), `createPreference`, `getPayment`, `getAuthorizedPayment`, `cancelSubscription` y `verifyWebhookSignature` |
+| `POST /api/checkout/suscripcion` | ✅ Construido. El importe sale de `products.ts`, nunca del cuerpo de la request |
+| `POST /api/checkout/pack` | ✅ Construido |
+| `POST /api/webhooks/mercadopago` | ✅ Construido. Firma validada en tiempo constante — probado: firma válida 200, firma rota / ausente / `request-id` cambiado 401 |
+| `/bienvenida` | ✅ Construida. Muestra el acceso en pantalla; los links salen de `NEXT_PUBLIC_SKOOL_INVITE_URL` y `NEXT_PUBLIC_WHATSAPP_GROUP_URL` |
+| `/cancelar` | ✅ Construida, más el link en el footer de la home (Res. 424/2020) |
+| [`src/app/comprar/page.tsx`](../../src/app/comprar/page.tsx) | ✅ Reescrita: formulario de nombre + email contra los dos endpoints |
+| `A4-onboarding.json` | ⛔ Sigue con el disparador viejo. La web ya le pega a `N8N_ONBOARDING_WEBHOOK_URL` si está cargada |
 
-**Es el bloque de trabajo más grande que queda antes del 31 de agosto.**
+**Lo que falta para cobrar de verdad:** las credenciales (B20), una compra de prueba en
+sandbox, y las tres variables nuevas en Vercel.
 
----
+### Lo que NO hace `/cancelar`, y por qué
+
+No cancela la suscripción en el acto. Sin sesión iniciada, un formulario que da de baja
+sabiendo sólo el email deja que cualquiera cancele la de otra. El pedido queda registrado
+en la pestaña `bajas` y lo procesa una persona dentro de las 24 h —que es lo que exige la
+Res. 424/2020—, y el camino instantáneo está a la vista arriba de todo en la página: la
+propia app de MercadoPago.
+
+### La pestaña `ventas` cambió
+
+Se le suma una columna al final: **`external_reference`**. Es el id nuestro y es la clave
+con la que el webhook encuentra la fila. Va al final para no correr los índices de las
+columnas que los flujos ya leen. El encabezado nuevo está en
+`docs/setup/sheets/ventas.csv`, y hay una pestaña nueva, `bajas`, en
+`docs/setup/sheets/bajas.csv`.
+
+La fila se escribe **al crear el checkout**, con estado `pendiente` y con el nombre y el
+email de nuestro formulario. El webhook después la actualiza. Es lo que resuelve el §4:
+el email que guardamos es el de ella, no el de la cuenta con la que pagó.
 
 ## 6. Orden sugerido para la próxima sesión
 

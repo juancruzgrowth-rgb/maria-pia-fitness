@@ -1,10 +1,36 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-18 (sesión 12)**
+> Última actualización: **2026-08-21 (sesión 14)**
 > **Estado del proyecto:** **MercadoPago pasa a ser la única pasarela y WhatsApp deja de estar automatizado** (2026-08-18, sesión 12). El plan completo está en [`docs/estrategia/21-mercadopago-suscripciones.md`](../docs/estrategia/21-mercadopago-suscripciones.md). Antes, en la sesión 11, el producto ya había cambiado de forma: precios nuevos, sin garantía en el marketing, sin cohortes y sin llamadas → [`docs/estrategia/20-reto-siempre-abierto.md`](../docs/estrategia/20-reto-siempre-abierto.md).
 > **🚀 FECHA DE LANZAMIENTO: 31 de agosto de 2026.**
-> **Lo que falta para publicar ya no son datos bancarios: es el checkout de MercadoPago (B20).** Ver el bloque de la sesión 12.
+> **El checkout de MercadoPago está construido (sesión 14). Lo que falta para publicar son las credenciales (B20) y una compra de prueba en sandbox.**
+
+---
+
+## 🆕 Sesión 14 — el checkout existe
+
+Construido y verificado con `typecheck`, `lint` y `build` en verde:
+
+| Pieza | Nota |
+|---|---|
+| `POST /api/checkout/suscripcion` | `preapproval` **sin plan asociado**. El importe sale de `products.ts`, nunca del cuerpo de la request: si viniera del cliente, cualquiera se suscribe por $1 |
+| `POST /api/checkout/pack` | `preference` de pago único para el trimestral |
+| `POST /api/webhooks/mercadopago` | Firma validada en tiempo constante **antes de tocar nada**. Probado contra el server real: firma válida → 200, firma rota / ausente / `request-id` cambiado → 401 |
+| `/comprar` | Reescrita. Formulario de nombre + email contra los dos endpoints |
+| `/bienvenida` | El acceso se muestra en pantalla, que es el canal principal. El email es el respaldo |
+| `/cancelar` + link en el footer | Res. 424/2020. Registra el pedido en la pestaña `bajas` y explica la baja instantánea desde MercadoPago |
+| Stripe | Borrado: `src/lib/stripe.ts`, las cuatro variables de entorno y la dependencia del `package.json` |
+
+**Cambia la planilla:** `ventas` suma la columna `external_reference` **al final**, y hay una pestaña nueva `bajas`. Encabezados en `docs/setup/sheets/`.
+
+**Variables de entorno nuevas** (las tres opcionales, el sitio compila sin ellas): `N8N_ONBOARDING_WEBHOOK_URL`, `NEXT_PUBLIC_SKOOL_INVITE_URL`, `NEXT_PUBLIC_WHATSAPP_GROUP_URL`. Se fue `NEXT_PUBLIC_MERCADOPAGO_SUBSCRIPTION_URL`: ya no hay link manual, lo crea el endpoint.
+
+**Lo que NO se pudo hacer sin vos:**
+1. **Cargar las variables en Vercel** — el MCP de Vercel no está autorizado en esta sesión
+2. **Probar una compra en sandbox** — hace falta B20
+3. **Reconectar A4 en n8n** al webhook nuevo, y crear en la planilla la pestaña `bajas` y la columna nueva de `ventas`
+4. **Cómo se da el acceso a Skool hoy** — sigue sin respuesta, y de eso depende `NEXT_PUBLIC_SKOOL_INVITE_URL`
 
 ---
 

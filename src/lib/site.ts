@@ -76,6 +76,13 @@ export const CONTACT = {
   paymentHelpUrl: waLink(PAYMENT_HELP_MESSAGE),
   waitlistUrl: waLink(WAITLIST_MESSAGE),
   advisoryUrl: waLink(ADVISORY_MESSAGE),
+  /* La comunidad. El link es publico y estable, asi que va con fallback en
+     codigo: si nadie carga la variable en Vercel, /bienvenida sigue mostrando
+     el acceso en pantalla en vez de mandarla a esperar un mail. */
+  skoolUrl:
+    publicEnv.skoolInviteUrl ||
+    "https://www.skool.com/mi-metodo-4f-6827/about",
+  whatsappGroupUrl: publicEnv.whatsappGroupUrl,
   instagramUrl: publicEnv.instagramUrl || "https://www.instagram.com/mp.cep",
   tiktokUrl: publicEnv.tiktokUrl,
   youtubeUrl: publicEnv.youtubeUrl,

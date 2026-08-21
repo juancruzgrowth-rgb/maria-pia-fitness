@@ -3,7 +3,10 @@ import { InstagramLogo, TiktokLogo, YoutubeLogo } from "@phosphor-icons/react/di
 import { Logo } from "@/components/ui/Logo";
 import { CONTACT, SITE, NAV_SECTIONS } from "@/lib/site";
 
+/* El botón de arrepentimiento es obligatorio en la home desde que se cobra con
+   débito automático (Res. 424/2020). Va primero para que se vea sin buscarlo. */
 const LEGAL_LINKS = [
+  { href: "/cancelar", label: "Botón de arrepentimiento" },
   { href: "/terminos-condiciones", label: "Términos y Condiciones" },
   { href: "/politica-privacidad", label: "Política de Privacidad" },
   { href: "/proteccion-datos", label: "Protección de Datos" },

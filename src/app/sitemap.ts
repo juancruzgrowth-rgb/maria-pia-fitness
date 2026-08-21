@@ -9,6 +9,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: BASE_URL, lastModified, changeFrequency: "weekly", priority: 1 },
     {
+      /* Obligatorio y tiene que ser fácil de encontrar (Res. 424/2020). */
+      url: `${BASE_URL}/cancelar`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.4,
+    },
+    {
       url: `${BASE_URL}/terminos-condiciones`,
       lastModified,
       changeFrequency: "yearly",
