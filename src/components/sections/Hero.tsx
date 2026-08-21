@@ -46,7 +46,7 @@ export function Hero() {
                   {FOUNDING.label}
                 </span>
                 <p className="text-sm leading-relaxed text-mp-carbon">
-                  Empezás el día que entrás, no cuando arranque un grupo. Somos{" "}
+                  Empezás el día que entrás, no cuando arranque un grupo. Hay{" "}
                   {FOUNDING.spotsTotal} lugares al precio de lanzamiento
                   {FOUNDING_SPOTS_LEFT > 0
                     ? ` —quedan ${FOUNDING_SPOTS_LEFT}—`

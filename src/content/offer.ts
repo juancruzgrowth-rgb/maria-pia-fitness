@@ -4,18 +4,19 @@ export const FOR_WHOM = {
     items: [
       "Trabajás ocho horas o más y llegás a casa sin energía para nada.",
       "Ya intentaste empezar varias veces y siempre se te cayó a las dos semanas.",
-      "Tenés gimnasio, o equipamiento en casa, para la parte que se entrena con peso.",
+      "Vas a un gimnasio, o tenés equipamiento en casa, para la parte que se entrena con peso.",
       "Preferís que alguien te diga qué hacer hoy, sin tener que decidirlo vos.",
       "Querés poder preguntar cuando algo no te sale, y no quedarte con la duda.",
+      "Estás dispuesta a construir hábitos nuevos y sostenerlos: sabés que los cambios que duran se ven a los meses, no a los diez días.",
     ],
   },
   no: {
     title: "No es para vos si...",
     items: [
-      "No tenés ni gimnasio ni equipamiento en casa: del B2 en adelante te vas a quedar sin poder hacer la mayoría de los ejercicios.",
+      "No vas a un gimnasio ni tenés equipamiento en casa: del B2 en adelante te vas a quedar sin poder hacer la mayoría de los ejercicios.",
       "Buscás un plan hecho a medida sólo para tu caso: este es el mismo para todas.",
       "Querés bajar diez kilos en un mes. Acá no vendemos eso.",
-      "No estás dispuesta a reservar tres horarios fijos por semana.",
+      "No estás dispuesta a reservarte tres momentos de una hora por semana, sólo para vos.",
       "Necesitás clases en vivo o alguien que te mire entrenar en tiempo real.",
     ],
   },
@@ -32,7 +33,7 @@ export const WHAT_YOU_GET = [
   },
   {
     title: "Un camino por niveles",
-    body: "Arrancás en el B1 y seguís con el B2, que ya está listo en Skool. Tres días de entrenamiento por nivel y tres sets por día. Vas subiendo a medida que avanzás, no cuando lo dice el calendario, y los niveles que siguen se van sumando.",
+    body: "Vas subiendo de nivel a medida que avanzás, no cuando lo dice el calendario, y los niveles que siguen se van sumando.",
   },
   {
     title: "Casa y gimnasio, según el nivel",
@@ -51,8 +52,8 @@ export const WHAT_YOU_GET = [
     body: "Ahí preguntás lo que sea: un ejercicio que no te sale, una duda del plan, un día que no pudiste. WhatsApp para el día a día, Skool para las rutinas y tu progreso.",
   },
   {
-    title: "Seguimiento y check-in diario",
-    body: "Planilla simple para registrar lo que hacés y ver, semana a semana, que estás avanzando de verdad.",
+    title: "Tu progreso, a la vista",
+    body: "No hay planillas que llenar: tu avance se ve en la comunidad. Lo que vas subiendo, lo que te sale hoy y no te salía hace un mes, y lo que vamos ajustando juntas por el camino.",
   },
 ] as const;
 
