@@ -4,9 +4,8 @@ export const HERO = {
   headlineAccent: "Te falta un plan que entre en tu semana.",
   description:
     "El Reto es entrenamiento online para mujeres que no tienen tiempo de sobra, pero sí ganas de sentirse bien. Tres sesiones por semana, con el seguimiento de Pía, y un nivel nuevo cuando completás el anterior.",
-  videoBadge: "Te explico el método completo en 2 minutos",
-  /** TODO(contenido): reemplazar por la miniatura nueva, sin "28 días". */
-  videoPosterUrl: "/images/miniatura-reto-28-dias.jpg",
+  videoBadge: "Te lo explico en 2 minutos",
+  videoPosterUrl: "/images/miniatura-presentacion.jpg",
   videoUrl: "/videos/presentacion.mp4",
   trustPoints: [
     { label: "3 días", caption: "por semana, no más" },

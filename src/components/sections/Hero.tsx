@@ -111,7 +111,7 @@ export function Hero() {
               >
                 <Image
                   src={HERO.videoPosterUrl}
-                  alt="El Reto · Método 4F: Fuerza, Función, Flexibilidad y Foco. Pía Moretto entrenando con bandas elásticas"
+                  alt="Mi Método 4F: Fuerza, Función, Flexibilidad y Foco. Pía Moretto entrenando con una pesa rusa"
                   fill
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   priority
