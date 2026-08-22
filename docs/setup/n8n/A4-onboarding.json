@@ -3,47 +3,109 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Las primeras 48 horas deciden la retención\n\nLo llama **A3-bis** cuando Pía confirma. Desde que escribe `OK` hasta que la clienta tiene todo: menos de 30 segundos.\n\n**Dos cosas que este flujo NO hace, y por qué:**\n\n**No crea el acceso a Skool.** Skool no tiene API. Se manda el link de invitación y la clienta hace un clic. La columna `acceso_skool` dice «invitada», no «adentro» — la diferencia importa, porque quien no acepta en 48 h necesita que le vuelvan a escribir.\n\n**No la agrega al grupo de WhatsApp.** La Cloud API de Meta no administra grupos. Se manda el link de invitación del grupo.\n\nLas dos son limitaciones de las herramientas, no atajos.",
-        "height": 420,
+        "content": "## Lo dispara el webhook de MercadoPago\n\nLa web recibe la notificación de MP, valida la firma, escribe la venta en `ventas` y **recién ahí** llama a este flujo. Desde que la clienta termina de pagar hasta que tiene el mail: unos segundos.\n\nEl POST que llega trae sólo tres campos —`externalReference`, `plan` y el id del cobro—. **El nombre y el email no vienen en el POST a propósito:** se leen de la fila de `ventas`, que tiene el email de NUESTRO formulario y no el de la cuenta de MercadoPago con la que pagó (que muchas veces es la del marido o la madre).\n\nVer `src/app/api/webhooks/mercadopago/route.ts` → `triggerOnboarding()`.",
+        "height": 340,
         "width": 460,
         "color": 4
       },
-      "id": "d-nota",
-      "name": "Nota",
+      "id": "d-nota-trigger",
+      "name": "Cómo entra",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
-      "position": [-680, -140]
+      "position": [-880, -240]
     },
     {
-      "parameters": { "inputSource": "passthrough" },
+      "parameters": {
+        "content": "## Dos cosas que este flujo NO hace\n\n**No mete a la clienta en Skool.** Skool no tiene API pública. Se le manda el link de invitación y ella hace un clic. Por eso `acceso_skool` queda en «invitada» y no en «adentro»: la diferencia importa, porque quien no acepta en 48 h necesita que le vuelvan a escribir, y eso lo levanta A30.\n\n*Se puede automatizar:* Skool tiene integración oficial con Zapier (acción «invitar miembro») y un plugin de aprobación instantánea, pero los dos son exclusivos del plan Pro (USD 99/mes contra USD 9 del Hobby). Decisión pospuesta hasta que el volumen la justifique.\n\n**No manda nada por WhatsApp.** WhatsApp quedó fuera de la automatización el 2026-08-18: es comunidad, a mano. El link del grupo viaja dentro del email.",
+        "height": 340,
+        "width": 460,
+        "color": 4
+      },
+      "id": "d-nota-limites",
+      "name": "Límites",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-380, -240]
+    },
+    {
+      "parameters": {
+        "content": "## Idempotencia\n\nMercadoPago reintenta las notificaciones. Este flujo se puede ejecutar dos veces por la misma venta y no puede mandar dos mails.\n\nEl candado es `acceso_skool`: la web escribe la fila con `no`, y el último paso de acá la deja en `invitada`. Si ya dice `invitada`, la segunda corrida sale por la rama de abajo sin tocar nada.",
+        "height": 260,
+        "width": 380,
+        "color": 5
+      },
+      "id": "d-nota-idem",
+      "name": "Por qué el candado",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-160, 560]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "onboarding-reto",
+        "responseMode": "responseNode",
+        "options": {}
+      },
       "id": "d-trigger",
-      "name": "Lo llama A3-bis",
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
-      "typeVersion": 1.1,
-      "position": [-620, 340]
+      "name": "Lo llama el webhook de MercadoPago",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-860, 340],
+      "webhookId": "a4-onboarding-reto"
     },
     {
       "parameters": {
         "assignments": {
           "assignments": [
-            { "id": "d1", "name": "phoneNumberId", "value": "REEMPLAZAR_PHONE_NUMBER_ID", "type": "string" },
             { "id": "d2", "name": "sheetId", "value": "REEMPLAZAR_ID_DE_LA_PLANILLA", "type": "string" },
             { "id": "d3", "name": "skoolInviteUrl", "value": "REEMPLAZAR_LINK_DE_INVITACION_DE_SKOOL", "type": "string" },
             { "id": "d4", "name": "grupoWhatsappUrl", "value": "REEMPLAZAR_LINK_DEL_GRUPO_DE_WHATSAPP", "type": "string" },
             { "id": "d6", "name": "brevoListaAlumnas", "value": 0, "type": "number" },
             { "id": "d7", "name": "remitenteEmail", "value": "hola@piamoretto.com", "type": "string" },
-            { "id": "d8", "name": "remitenteNombre", "value": "Pía Moretto", "type": "string" }
+            { "id": "d8", "name": "remitenteNombre", "value": "Pía Moretto", "type": "string" },
+            {
+              "id": "d9",
+              "name": "externalReference",
+              "value": "={{ $json.body.externalReference }}",
+              "type": "string"
+            }
           ],
-          "includeOtherFields": true
+          "includeOtherFields": false
         },
-        "includeOtherFields": true,
         "options": {}
       },
       "id": "d-config",
       "name": "Configuración",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [-400, 340]
+      "position": [-620, 340]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": { "__rl": true, "value": "ventas", "mode": "name" },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "external_reference",
+              "lookupValue": "={{ $json.externalReference }}"
+            }
+          ]
+        },
+        "options": { "returnFirstMatch": true }
+      },
+      "id": "d-buscar",
+      "name": "Buscar la venta en la planilla",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [-400, 340],
+      "alwaysOutputData": true,
+      "notes": "La fila ya existe: la escribió la web al crear el checkout, con estado 'pendiente'. De acá salen nombre, email y acceso_vence."
     },
     {
       "parameters": {
@@ -52,13 +114,13 @@
           "conditions": [
             {
               "id": "d-idem",
-              "leftValue": "={{ String($json.acceso_skool || 'no').toLowerCase() }}",
-              "rightValue": "no",
-              "operator": { "type": "string", "operation": "equals" }
+              "leftValue": "={{ String($json.acceso_skool ?? 'no').trim().toLowerCase() }}",
+              "rightValue": "invitada",
+              "operator": { "type": "string", "operation": "notEquals" }
             },
             {
               "id": "d-email",
-              "leftValue": "={{ $json.email }}",
+              "leftValue": "={{ String($json.email ?? '').trim() }}",
               "rightValue": "",
               "operator": { "type": "string", "operation": "notEmpty", "singleValue": true }
             }
@@ -72,32 +134,19 @@
       "name": "¿Hace falta hacerlo?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [-180, 340]
+      "position": [-180, 340],
+      "notes": "Corta dos casos: la notificación repetida (ya dice 'invitada') y la fila que no apareció (viene vacía, sin email)."
     },
     {
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "/**\n * Arma los textos del onboarding en un solo lugar.\n *\n * Están acá y no dentro de cada nodo por una razón práctica: el día que Pía\n * quiera cambiar una frase, no tiene que abrir cuatro nodos distintos ni\n * entender de expresiones. Se edita este nodo y listo.\n *\n * Actualizado el 2026-08-18: se cayeron la llamada de bienvenida, la Semana 0 y\n * la garantía como promesa comercial. Ahora el mensaje empuja a entrenar el\n * mismo día, que es lo único que predice que una clienta termine el reto.\n */\nconst cfg = $('Configuración').first().json;\nconst v = $input.first().json;\n\nconst nombreCorto = String(v.nombre ?? '').trim().split(/\\s+/)[0] || '';\nconst saludo = nombreCorto ? `Hola ${nombreCorto}` : 'Hola';\n\nconst whatsapp = [\n  `${saludo}, ¡estás adentro!`,\n  '',\n  'Tres cosas para hacer hoy, en este orden:',\n  '',\n  `1. Entrá a la comunidad: ${cfg.skoolInviteUrl}`,\n  `2. Sumate al grupo de WhatsApp: ${cfg.grupoWhatsappUrl}`,\n  '3. Mirá los videos de arranque. Son 20 minutos y te explican todo.',\n  '',\n  'Con eso ya podés hacer la sesión 1 hoy mismo. Cualquier duda me escribís por acá.',\n].join('\\n');\n\nconst html = `\n<p>${saludo},</p>\n<p>Ya está confirmada tu entrada al Reto 28 Días. Tenés todo el material disponible desde ahora: no hay nada que esperar.</p>\n<p><strong>Qué hacer hoy, en este orden:</strong></p>\n<ol>\n  <li><a href=\"${cfg.skoolInviteUrl}\">Entrá a la comunidad</a> y presentate en el feed.</li>\n  <li><a href=\"${cfg.grupoWhatsappUrl}\">Sumate al grupo de WhatsApp</a>.</li>\n  <li>Mirá los videos de arranque. En 20 minutos sabés cómo funciona el método, cómo leer tu rutina y cómo mandarme un video para que te corrija la técnica.</li>\n</ol>\n<p>Y después, si podés, hacé la sesión 1 hoy. Las que entrenan el mismo día que entran son las que llegan al día 28.</p>\n<p>Tu acceso está activo hasta el <strong>${v.acceso_vence ?? ''}</strong>. Te voy a avisar antes de que se venza.</p>\n<p>Nos vemos adentro.<br>Pía</p>\n`.trim();\n\nreturn [{\n  json: {\n    ...v,\n    nombreCorto,\n    mensajeWhatsapp: whatsapp,\n    asuntoEmail: 'Estás adentro del Reto 28 Días',\n    cuerpoEmail: html,\n  },\n}];"
+        "jsCode": "/**\n * Arma el email del onboarding en un solo lugar.\n *\n * Está acá y no dentro del nodo de Brevo por una razón práctica: el día que\n * Pía quiera cambiar una frase, se edita este nodo y listo.\n *\n * 2026-08-18: se cayeron la llamada de bienvenida, la Semana 0 y la garantía\n * como promesa comercial. El mensaje empuja a entrenar el mismo día, que es lo\n * único que predice que una clienta termine el reto.\n * 2026-08-22: se cayó el brazo de WhatsApp (quedó fuera de la automatización) y\n * el disparador pasó a ser el webhook de MercadoPago. Como ahora la suscripción\n * se renueva sola, `acceso_vence` viene vacío en el plan mensual: la línea del\n * vencimiento sólo se escribe si la fila la trae.\n */\nconst cfg = $('Configuración').first().json;\nconst v = $input.first().json;\n\nconst nombreCorto = String(v.nombre ?? '').trim().split(/\\s+/)[0] || '';\nconst saludo = nombreCorto ? `Hola ${nombreCorto}` : 'Hola';\n\nconst vence = String(v.acceso_vence ?? '').trim();\nconst lineaVence = vence\n  ? `<p>Tu acceso está activo hasta el <strong>${vence}</strong>. Te aviso antes de que se venza.</p>`\n  : '<p>Se renueva solo todos los meses, así que no tenés que hacer nada. Cancelás cuando quieras desde tu cuenta de MercadoPago.</p>';\n\nconst html = `\n<p>${saludo},</p>\n<p>Ya está confirmado tu pago. Tenés todo el material disponible desde ahora: no hay nada que esperar ni ningún grupo que arranque.</p>\n<p><strong>Qué hacer hoy, en este orden:</strong></p>\n<ol>\n  <li><a href=\"${cfg.skoolInviteUrl}\">Entrá a la comunidad</a> y presentate en el feed. Si te pide esperar aprobación, avisame y te abro en el momento.</li>\n  <li><a href=\"${cfg.grupoWhatsappUrl}\">Sumate al grupo de WhatsApp</a>.</li>\n  <li>Mirá los videos de arranque. En 20 minutos sabés cómo funciona el método, cómo leer tu rutina y cómo mandarme un video para que te corrija la técnica.</li>\n</ol>\n<p>Y después, si podés, hacé la sesión 1 hoy. Las que entrenan el mismo día que entran son las que llegan al día 28.</p>\n${lineaVence}\n<p>Nos vemos adentro.<br>Pía</p>\n`.trim();\n\nreturn [{\n  json: {\n    ...v,\n    nombreCorto,\n    asuntoEmail: 'Estás adentro del Reto 28 Días',\n    cuerpoEmail: html,\n  },\n}];"
       },
       "id": "d-textos",
-      "name": "Armar los mensajes",
+      "name": "Armar el email",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [80, 240]
-    },
-    {
-      "parameters": {
-        "operation": "send",
-        "phoneNumberId": "={{ $('Configuración').first().json.phoneNumberId }}",
-        "recipientPhoneNumber": "={{ $json.whatsapp }}",
-        "textBody": "={{ $json.mensajeWhatsapp }}",
-        "additionalFields": {}
-      },
-      "id": "d-wa",
-      "name": "Darle la bienvenida por WhatsApp",
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1,
-      "position": [340, 100]
+      "position": [80, 260]
     },
     {
       "parameters": {
@@ -107,14 +156,14 @@
         "nodeCredentialType": "sendInBlueApi",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({\n  email: $json.email,\n  attributes: {\n    NOMBRE: $json.nombre || '',\n    WHATSAPP: $json.whatsapp || '',\n    VENCE: $json.acceso_vence || '',\n    PLAN: $json.plan || '',\n    CODIGO: $json.codigo || ''\n  },\n  listIds: [$('Configuración').first().json.brevoListaAlumnas],\n  updateEnabled: true\n}) }}",
+        "jsonBody": "={{ JSON.stringify({\n  email: $json.email,\n  attributes: {\n    NOMBRE: $json.nombre || '',\n    VENCE: $json.acceso_vence || '',\n    PLAN: $json.plan || '',\n    REFERENCIA: $json.external_reference || ''\n  },\n  listIds: [$('Configuración').first().json.brevoListaAlumnas],\n  updateEnabled: true\n}) }}",
         "options": {}
       },
       "id": "d-brevo-contacto",
       "name": "Pasarla a la lista de alumnas",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [340, 260]
+      "position": [300, 260]
     },
     {
       "parameters": {
@@ -124,25 +173,25 @@
         "nodeCredentialType": "sendInBlueApi",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({\n  sender: {\n    email: $('Configuración').first().json.remitenteEmail,\n    name: $('Configuración').first().json.remitenteNombre\n  },\n  to: [{ email: $('Armar los mensajes').first().json.email, name: $('Armar los mensajes').first().json.nombre || '' }],\n  subject: $('Armar los mensajes').first().json.asuntoEmail,\n  htmlContent: $('Armar los mensajes').first().json.cuerpoEmail\n}) }}",
+        "jsonBody": "={{ JSON.stringify({\n  sender: {\n    email: $('Configuración').first().json.remitenteEmail,\n    name: $('Configuración').first().json.remitenteNombre\n  },\n  to: [{ email: $('Armar el email').first().json.email, name: $('Armar el email').first().json.nombre || '' }],\n  subject: $('Armar el email').first().json.asuntoEmail,\n  htmlContent: $('Armar el email').first().json.cuerpoEmail\n}) }}",
         "options": {}
       },
       "id": "d-brevo-email",
       "name": "Mandar el email de bienvenida",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [560, 260]
+      "position": [520, 260]
     },
     {
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// La fila de `comunidad` arranca en cero. Es el tablero de la métrica principal\n// del negocio —la tasa de finalización— y A6 la recalcula todos los días.\n//\n// `fecha_inicio` reemplazó a `grupo` el 2026-08-18. Sin cohortes ya no hay una\n// fecha de arranque compartida, así que el día del reto en que va cada alumna\n// sólo se puede calcular contra el día en que entró ella.\nconst v = $('Armar los mensajes').first().json;\n\nreturn [{\n  json: {\n    alumna: v.nombre ?? '',\n    whatsapp: v.whatsapp ?? '',\n    fecha_inicio: new Date().toISOString().slice(0, 10),\n    dia_actual: 0,\n    ultimo_checkin: '',\n    rutinas_completadas: 0,\n    estado_riesgo: 'ok',\n  },\n}];"
+        "jsCode": "// La fila de `comunidad` arranca en cero. Es el tablero de la métrica principal\n// del negocio —la tasa de finalización— y A6 la recalcula todos los días.\n//\n// `fecha_inicio` reemplazó a `grupo` el 2026-08-18: sin cohortes no hay fecha de\n// arranque compartida, así que el día del reto sólo se calcula contra el día en\n// que entró ella.\n//\n// La clave pasó de `whatsapp` a `email` el 2026-08-22. Nuestro formulario de\n// checkout pide nombre y email nada más, así que la columna `whatsapp` de\n// `ventas` viene vacía y no sirve para cruzar nada.\nconst v = $('Armar el email').first().json;\n\nreturn [{\n  json: {\n    alumna: v.nombre ?? '',\n    email: v.email ?? '',\n    whatsapp: v.whatsapp ?? '',\n    fecha_inicio: new Date().toISOString().slice(0, 10),\n    dia_actual: 0,\n    ultimo_checkin: '',\n    rutinas_completadas: 0,\n    estado_riesgo: 'ok',\n  },\n}];"
       },
       "id": "d-fila-comunidad",
       "name": "Armar la fila de comunidad",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [780, 260]
+      "position": [740, 260]
     },
     {
       "parameters": {
@@ -155,7 +204,7 @@
         "sheetName": { "__rl": true, "value": "comunidad", "mode": "name" },
         "columns": {
           "mappingMode": "autoMapInputData",
-          "matchingColumns": ["whatsapp"],
+          "matchingColumns": ["email"],
           "value": {},
           "schema": []
         },
@@ -165,18 +214,18 @@
       "name": "Sumarla al tablero de comunidad",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [1000, 260]
+      "position": [960, 260]
     },
     {
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Se marca «invitada» y no «sí»: el acceso lo completa ella cuando acepta la\n// invitación de Skool. A5 vuelve a escribirle a las 48 h si sigue en este estado.\nconst v = $('Armar los mensajes').first().json;\n\nreturn [{\n  json: {\n    codigo: v.codigo,\n    acceso_skool: 'invitada',\n  },\n}];"
+        "jsCode": "// Se marca «invitada» y no «sí»: el acceso lo completa ella cuando acepta la\n// invitación de Skool. A30 levanta a las que quedan colgadas en este estado.\n//\n// Este es además el candado de idempotencia del flujo: mientras la fila diga\n// «no», una notificación repetida de MercadoPago volvería a mandar el mail.\n// Por eso este paso va último, cuando ya salió todo lo demás.\nconst v = $('Armar el email').first().json;\n\nreturn [{\n  json: {\n    external_reference: v.external_reference,\n    acceso_skool: 'invitada',\n  },\n}];"
       },
       "id": "d-marcar",
       "name": "Armar la marca de acceso",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1220, 260]
+      "position": [1180, 260]
     },
     {
       "parameters": {
@@ -189,7 +238,7 @@
         "sheetName": { "__rl": true, "value": "ventas", "mode": "name" },
         "columns": {
           "mappingMode": "autoMapInputData",
-          "matchingColumns": ["codigo"],
+          "matchingColumns": ["external_reference"],
           "value": {},
           "schema": []
         },
@@ -199,7 +248,7 @@
       "name": "Marcar el acceso en ventas",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
-      "position": [1440, 260]
+      "position": [1400, 260]
     },
     {
       "parameters": {},
@@ -207,25 +256,40 @@
       "name": "Ya estaba hecho",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
-      "position": [80, 500]
+      "position": [80, 480]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true }) }}",
+        "options": {}
+      },
+      "id": "d-responder",
+      "name": "Responderle a la web",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1620, 340],
+      "notes": "Siempre 200. La web no reintenta y no le muestra nada de esto a la clienta: el acceso lo ve igual en /bienvenida."
     }
   ],
   "connections": {
-    "Lo llama A3-bis": { "main": [[{ "node": "Configuración", "type": "main", "index": 0 }]] },
-    "Configuración": { "main": [[{ "node": "¿Hace falta hacerlo?", "type": "main", "index": 0 }]] },
+    "Lo llama el webhook de MercadoPago": {
+      "main": [[{ "node": "Configuración", "type": "main", "index": 0 }]]
+    },
+    "Configuración": {
+      "main": [[{ "node": "Buscar la venta en la planilla", "type": "main", "index": 0 }]]
+    },
+    "Buscar la venta en la planilla": {
+      "main": [[{ "node": "¿Hace falta hacerlo?", "type": "main", "index": 0 }]]
+    },
     "¿Hace falta hacerlo?": {
       "main": [
-        [{ "node": "Armar los mensajes", "type": "main", "index": 0 }],
+        [{ "node": "Armar el email", "type": "main", "index": 0 }],
         [{ "node": "Ya estaba hecho", "type": "main", "index": 0 }]
       ]
     },
-    "Armar los mensajes": {
-      "main": [
-        [
-          { "node": "Darle la bienvenida por WhatsApp", "type": "main", "index": 0 },
-          { "node": "Pasarla a la lista de alumnas", "type": "main", "index": 0 }
-        ]
-      ]
+    "Armar el email": {
+      "main": [[{ "node": "Pasarla a la lista de alumnas", "type": "main", "index": 0 }]]
     },
     "Pasarla a la lista de alumnas": {
       "main": [[{ "node": "Mandar el email de bienvenida", "type": "main", "index": 0 }]]
@@ -241,6 +305,12 @@
     },
     "Armar la marca de acceso": {
       "main": [[{ "node": "Marcar el acceso en ventas", "type": "main", "index": 0 }]]
+    },
+    "Marcar el acceso en ventas": {
+      "main": [[{ "node": "Responderle a la web", "type": "main", "index": 0 }]]
+    },
+    "Ya estaba hecho": {
+      "main": [[{ "node": "Responderle a la web", "type": "main", "index": 0 }]]
     }
   },
   "settings": {
