@@ -1,0 +1,311 @@
+{
+  "name": "A30 · Conciliación semanal",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Por qué existe este flujo\n\nMercadoPago avisa la cancelación en el mismo segundo. **Sacarla de Skool lo hace una persona a mano.** Sin una rutina fija, en tres meses hay gente adentro que dejó de pagar hace ocho semanas y nadie lo nota: la comunidad no se queja de tener más miembros.\n\nEsto corre todos los lunes a la mañana y manda un email con lo que hay que resolver esa semana.\n\nVer `docs/estrategia/24-acceso-skool-desde-mercadopago.md` §2.3 y §3.",
+        "height": 300,
+        "width": 440,
+        "color": 4
+      },
+      "id": "e-nota-porque",
+      "name": "Por qué existe",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -900,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## El paso manual que sostiene todo lo demás\n\nSkool no tiene API pública en el plan Hobby. **La lista de miembros hay que exportarla a mano** y pegarla en la pestaña `skool_miembros` de la planilla: una columna `email` alcanza, el resto es opcional.\n\nEs un trabajo de dos minutos por semana. Si esa pestaña no se actualiza, el informe llega igual pero mirando la foto de la semana pasada —por eso el email lo dice al pie—.\n\nEncabezado en `docs/setup/sheets/skool-miembros.csv`.",
+        "height": 300,
+        "width": 440,
+        "color": 3
+      },
+      "id": "e-nota-manual",
+      "name": "El paso manual",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Son tres listas, no dos\n\nEl doc pedía dos —**sacar** y **repescar**—. Hay una tercera, **revisar**, y no es un lujo.\n\nElla paga con la cuenta de MercadoPago que tiene a mano y después se crea el usuario de Skool con su correo personal. Cuando eso pasa, el cruce por email no matchea. Si esas filas cayeran en «sacar», estaríamos echando a alguien que paga todos los meses.\n\n**Lo que no matchea nunca se saca automáticamente: se mira.**",
+        "height": 300,
+        "width": 440,
+        "color": 5
+      },
+      "id": "e-nota-tres",
+      "name": "Las tres listas",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        60,
+        -260
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 9,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "e-trigger",
+      "name": "Todos los lunes a las 9",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -880,
+        300
+      ],
+      "notes": "Lunes a la mañana: la semana arranca con la lista de lo que hay que resolver, no termina con ella."
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e2",
+              "name": "sheetId",
+              "value": "REEMPLAZAR_ID_DE_LA_PLANILLA",
+              "type": "string"
+            },
+            {
+              "id": "e3",
+              "name": "destinatarioEmail",
+              "value": "REEMPLAZAR_EMAIL_DE_QUIEN_LO_EJECUTA",
+              "type": "string"
+            },
+            {
+              "id": "e4",
+              "name": "destinatarioNombre",
+              "value": "Daiana",
+              "type": "string"
+            },
+            {
+              "id": "e5",
+              "name": "remitenteEmail",
+              "value": "hola@piamoretto.com",
+              "type": "string"
+            },
+            {
+              "id": "e6",
+              "name": "remitenteNombre",
+              "value": "Pía Moretto",
+              "type": "string"
+            },
+            {
+              "id": "e7",
+              "name": "horasParaRepescar",
+              "value": 48,
+              "type": "number"
+            },
+            {
+              "id": "e8",
+              "name": "diasDelPack",
+              "value": 90,
+              "type": "number"
+            }
+          ],
+          "includeOtherFields": false
+        },
+        "options": {}
+      },
+      "id": "e-config",
+      "name": "Configuración",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "ventas",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "e-ventas",
+      "name": "Leer las ventas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -440,
+        300
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "skool_miembros",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "e-miembros",
+      "name": "Leer los miembros de Skool",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -220,
+        300
+      ],
+      "alwaysOutputData": true,
+      "notes": "La pestaña la llena una persona a mano, pegando la exportación de Skool. Si está vacía, el informe sale con todo en «volver a invitar» — que es la señal correcta de que nadie la actualizó."
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/**\n * El cruce. Compara lo que dice la planilla contra quién está adentro de Skool\n * y devuelve tres listas, no dos.\n *\n * La tercera —«revisar»— existe por el §4 del doc 24: ella paga con la cuenta\n * de MercadoPago que tiene a mano (la del marido, la de la madre) pero se crea\n * el usuario de Skool con su correo personal. Si el cruce fuera sólo por email,\n * esas filas caerían en «sacar» y terminaríamos echando a alguien que paga.\n * Por eso lo que no matchea NO se saca: se mira a ojo.\n *\n * Nada de esto ejecuta nada sobre Skool. Skool no tiene API pública en el plan\n * Hobby: este flujo arma el listado y una persona lo aplica.\n */\nconst cfg = $('Configuración').first().json;\nconst HORAS_REPESCA = Number(cfg.horasParaRepescar) || 48;\nconst DIAS_PACK = Number(cfg.diasDelPack) || 90;\n\nconst norm = (x) => String(x ?? '').trim().toLowerCase();\nconst limpio = (x) => String(x ?? '').trim();\nconst ahora = Date.now();\nconst dias = (ms) => Math.floor(ms / 86400000);\n\nconst miembros = $input.all()\n  .map((i) => i.json)\n  .filter((m) => norm(m.email));\n\nconst ventas = $('Leer las ventas').all()\n  .map((i) => i.json)\n  .filter((v) => norm(v.email));\n\n/* Una misma persona puede tener varias filas: se dio de baja y volvió, o compró\n   el pack después del mensual. Vale la más nueva. */\nconst ultimaVenta = new Map();\nfor (const v of ventas) {\n  const clave = norm(v.email);\n  const previa = ultimaVenta.get(clave);\n  const fecha = Date.parse(limpio(v.fecha)) || 0;\n  if (!previa || fecha >= previa._fecha) {\n    ultimaVenta.set(clave, { ...v, _fecha: fecha });\n  }\n}\n\n/**\n * Cuándo se le vence el acceso.\n *\n * El plan mensual no vence: se renueva solo hasta que cancela. El pack sí, pero\n * hoy NADIE escribe `acceso_vence` —ni el checkout ni el webhook—, así que si la\n * columna viene vacía se calcula acá desde la fecha de compra. Es un parche: lo\n * correcto es que lo escriba el webhook al confirmar el pago del pack.\n */\nfunction venceEl(v) {\n  const declarado = Date.parse(limpio(v.acceso_vence));\n  if (declarado) return declarado;\n  if (norm(v.plan).includes('trimestral') && v._fecha) {\n    return v._fecha + DIAS_PACK * 86400000;\n  }\n  return null;\n}\n\nconst sacar = [];\nconst revisar = [];\n\nfor (const m of miembros) {\n  const v = ultimaVenta.get(norm(m.email));\n\n  if (!v) {\n    revisar.push({\n      email: limpio(m.email),\n      nombre: limpio(m.nombre),\n      motivo: 'Está en Skool y no hay ninguna venta con ese email. Puede ser que haya pagado con otro correo, o que la hayas invitado vos a mano.',\n    });\n    continue;\n  }\n\n  const estado = norm(v.estado);\n  const suscripcion = norm(v.estado_suscripcion);\n  const vence = venceEl(v);\n\n  if (estado === 'cancelado' || suscripcion === 'cancelled') {\n    sacar.push({\n      email: limpio(v.email),\n      nombre: limpio(v.nombre) || limpio(m.nombre),\n      motivo: 'Canceló la suscripción.',\n    });\n  } else if (vence && vence < ahora) {\n    sacar.push({\n      email: limpio(v.email),\n      nombre: limpio(v.nombre) || limpio(m.nombre),\n      motivo: `Se le venció el acceso del pack hace ${dias(ahora - vence)} días.`,\n    });\n  } else if (estado === 'cobro_rechazado') {\n    revisar.push({\n      email: limpio(v.email),\n      nombre: limpio(v.nombre) || limpio(m.nombre),\n      motivo: 'MercadoPago le rechazó el último cobro. Todavía no la saques: puede que se destrabe sola con el reintento.',\n    });\n  }\n}\n\n/* Repescar: pagó, se le mandó la invitación y no la aceptó. El corte de horas\n   evita levantar a la que compró hace veinte minutos. */\nconst enSkool = new Set(miembros.map((m) => norm(m.email)));\nconst repescar = [];\n\nfor (const v of ultimaVenta.values()) {\n  if (norm(v.estado) !== 'pagado') continue;\n  if (enSkool.has(norm(v.email))) continue;\n  if (norm(v.acceso_skool) === 'no') continue;\n\n  const horas = v._fecha ? (ahora - v._fecha) / 3600000 : Infinity;\n  if (horas < HORAS_REPESCA) continue;\n\n  repescar.push({\n    email: limpio(v.email),\n    nombre: limpio(v.nombre),\n    motivo: `Pagó hace ${dias(ahora - v._fecha)} días y todavía no entró a Skool.`,\n  });\n}\n\nreturn [{\n  json: {\n    sacar,\n    repescar,\n    revisar,\n    totales: {\n      miembrosSkool: miembros.length,\n      ventasVivas: ultimaVenta.size,\n      sacar: sacar.length,\n      repescar: repescar.length,\n      revisar: revisar.length,\n    },\n  },\n}];\n"
+      },
+      "id": "e-cruce",
+      "name": "Cruzar las dos listas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "/**\n * Arma el email. Sale todas las semanas aunque no haya nada que hacer: el\n * silencio no se distingue de un flujo roto, y la semana que este informe deje\n * de llegar tiene que notarse.\n */\nconst d = $input.first().json;\nconst hoy = new Date().toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });\n\nconst bloque = (titulo, bajada, filas) => {\n  if (!filas.length) return '';\n  const items = filas.map((f) => {\n    const quien = f.nombre ? `<strong>${f.nombre}</strong> (${f.email})` : `<strong>${f.email}</strong>`;\n    return `<li>${quien} — ${f.motivo}</li>`;\n  }).join('\\n');\n  return `<h3>${titulo} (${filas.length})</h3>\\n<p>${bajada}</p>\\n<ul>\\n${items}\\n</ul>`;\n};\n\nconst partes = [\n  bloque('Sacar de Skool', 'Ya no están pagando. Quitalas de la comunidad.', d.sacar),\n  bloque('Volver a invitar', 'Pagaron y nunca aceptaron la invitación. Reenviales el link.', d.repescar),\n  bloque('Revisar a ojo', 'No las toques sin mirar primero: casi siempre es que el email de Skool no es el mismo con el que pagó.', d.revisar),\n].filter(Boolean);\n\nconst cuerpo = partes.length\n  ? partes.join('\\n<hr>\\n')\n  : '<p>Ninguna baja pendiente, ninguna invitación colgada y nada raro para revisar. No hay que hacer nada esta semana.</p>';\n\nconst html = `\n<p>Conciliación del ${hoy}.</p>\n<p>${d.totales.miembrosSkool} miembros en Skool contra ${d.totales.ventasVivas} personas en la planilla.</p>\n<hr>\n${cuerpo}\n<hr>\n<p style=\"font-size:13px;color:#666\">La lista de miembros de Skool sale de la pestaña <strong>skool_miembros</strong> de la planilla. Si no la actualizaste esta semana, este informe está mirando la foto vieja.</p>\n`.trim();\n\nconst pendientes = d.totales.sacar + d.totales.repescar + d.totales.revisar;\nconst asunto = pendientes\n  ? `Conciliación semanal: ${pendientes} cosas para resolver`\n  : 'Conciliación semanal: nada que hacer';\n\nreturn [{ json: { ...d, asuntoEmail: asunto, cuerpoEmail: html } }];\n"
+      },
+      "id": "e-informe",
+      "name": "Armar el informe",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/smtp/email",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  sender: {\n    email: $('Configuración').first().json.remitenteEmail,\n    name: $('Configuración').first().json.remitenteNombre\n  },\n  to: [{ email: $('Configuración').first().json.destinatarioEmail, name: $('Configuración').first().json.destinatarioNombre }],\n  subject: $json.asuntoEmail,\n  htmlContent: $json.cuerpoEmail\n}) }}",
+        "options": {}
+      },
+      "id": "e-enviar",
+      "name": "Mandar el informe",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        300
+      ],
+      "notes": "Sale siempre, aunque no haya nada que hacer. El silencio no se distingue de un flujo roto."
+    }
+  ],
+  "connections": {
+    "Todos los lunes a las 9": {
+      "main": [
+        [
+          {
+            "node": "Configuración",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuración": {
+      "main": [
+        [
+          {
+            "node": "Leer las ventas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer las ventas": {
+      "main": [
+        [
+          {
+            "node": "Leer los miembros de Skool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer los miembros de Skool": {
+      "main": [
+        [
+          {
+            "node": "Cruzar las dos listas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cruzar las dos listas": {
+      "main": [
+        [
+          {
+            "node": "Armar el informe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar el informe": {
+      "main": [
+        [
+          {
+            "node": "Mandar el informe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  },
+  "pinData": {}
+}

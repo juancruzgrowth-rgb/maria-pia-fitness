@@ -40,9 +40,28 @@ sistema. El email es el respaldo. Esto ya estaba escrito en el §4 del doc 21 y 
 
 ## 2. Dónde se corta la automatización
 
-**Skool no tiene API.** Ni para invitar, ni para leer la lista de miembros, ni para dar de baja.
-Todo el circuito de arriba es automático hasta el paso 5; del 6 en adelante hay manos humanas.
-Tres consecuencias, y ninguna es cosmética.
+**Skool no tiene API pública.** Ni para invitar, ni para leer la lista de miembros, ni para dar
+de baja. Todo el circuito de arriba es automático hasta el paso 5; del 6 en adelante hay manos
+humanas. Tres consecuencias, y ninguna es cosmética.
+
+> **Corrección del 2026-08-22 — sí hay una salida, y cuesta USD 90 por mes.**
+>
+> Skool no expone una API, pero tiene **integración oficial con Zapier** con una acción
+> «invitar miembro», y un plugin de **aprobación instantánea de miembros**. Con eso el
+> circuito cierra entero: nuestro webhook → Zapier → invitación de Skool → la clienta hace
+> clic en `JOIN NOW` y entra **pre-aprobada**, sin cola y sin que Pía toque nada.
+>
+> El detalle: los dos plugins son **exclusivos del plan Pro**, USD 99/mes contra USD 9 del
+> Hobby. La comisión del 10 % del Hobby no nos afecta —no vendemos por Skool—, así que el
+> delta real es de USD 90/mes por no aprobar a mano.
+>
+> **Decisión: se lanza en Hobby, aprobando a mano.** El día 1 no hay volumen, son treinta
+> segundos por alta, y ese chequeo manual es hoy la única defensa contra el reenvío del link
+> (§2.1). Se pasa a Pro cuando el volumen lo justifique. No bloquea el 31 de agosto.
+>
+> Ojo con una cosa que no cambia ni con Pro: la pre-aprobación **exige que la persona haga
+> clic en el `JOIN NOW` del mail**. Si el mail cae en spam, volvemos al §4. `/bienvenida`
+> sigue siendo el canal principal.
 
 ### 2.1 El link de invitación es genérico, no personal
 
@@ -74,7 +93,27 @@ ocho semanas, y nadie lo nota porque la comunidad no se queja de tener más miem
 
 ---
 
-## 3. La pieza que falta: A30 · Conciliación semanal
+## 3. A30 · Conciliación semanal
+
+> **Construido el 2026-08-22.** El archivo es
+> [`docs/setup/n8n/A30-conciliacion-semanal.json`](../setup/n8n/A30-conciliacion-semanal.json)
+> y la lógica del cruce está probada con 16 casos en `docs/setup/n8n/verificar.mjs`
+> (`node docs/setup/n8n/verificar.mjs`). **Falta importarlo a n8n**, cargar las siete
+> constantes y crear la pestaña `skool_miembros`.
+>
+> **Son tres listas, no dos.** Se le sumó **revisar**, y no es un lujo: es la respuesta
+> al §4 de acá abajo. Lo que no matchea por email nunca cae en «sacar» —si cayera,
+> estaríamos echando a alguien que paga todos los meses—.
+>
+> Dos detalles del build que no estaban en este plan:
+>
+> - **El informe sale todas las semanas, aunque no haya nada que hacer.** El silencio no
+>   se distingue de un flujo roto, y la semana que este email deje de llegar tiene que notarse.
+> - **`acceso_vence` no lo escribe nadie.** Ni el checkout ni el webhook la tocan, así que
+>   para el pack A30 calcula el vencimiento desde la fecha de compra más 90 días. Es un
+>   parche: lo correcto es que el webhook la escriba al confirmar el pago del pack.
+
+### El plan original
 
 Un flujo nuevo, semanal, que compara la lista de miembros de Skool contra la pestaña `ventas` y
 devuelve **dos listas por email**:
@@ -131,7 +170,8 @@ sin las credenciales de B20 no se puede correr una sola compra de sandbox.
 | `/bienvenida` | ✅ Construida. Muestra el acceso en pantalla; los links salen de `NEXT_PUBLIC_SKOOL_INVITE_URL` y `NEXT_PUBLIC_WHATSAPP_GROUP_URL` |
 | `/cancelar` | ✅ Construida, más el link en el footer de la home (Res. 424/2020) |
 | [`src/app/comprar/page.tsx`](../../src/app/comprar/page.tsx) | ✅ Reescrita: formulario de nombre + email contra los dos endpoints |
-| `A4-onboarding.json` | ⛔ Sigue con el disparador viejo. La web ya le pega a `N8N_ONBOARDING_WEBHOOK_URL` si está cargada |
+| `A30-conciliacion-semanal.json` | ✅ Construido el 2026-08-22. Corre los lunes 9 h, cruza `ventas` contra `skool_miembros` y manda tres listas por email. Lógica probada con 16 casos. **Falta importarlo a n8n, cargar las siete constantes y crear la pestaña `skool_miembros`.** |
+| `A4-onboarding.json` | ✅ Reescrito el 2026-08-22. Dispara por webhook (`POST /webhook/onboarding-reto`), lee la venta de `ventas` por `external_reference`, sin brazo de WhatsApp. **Falta importarlo a n8n y cargar las cinco constantes.** |
 
 **Lo que falta para cobrar de verdad:** las credenciales (B20), una compra de prueba en
 sandbox, y las tres variables nuevas en Vercel.
@@ -166,7 +206,7 @@ el email que guardamos es el de ella, no el de la cuenta con la que pagó.
 5. `/bienvenida` mostrando el acceso en pantalla
 6. Reconectar A4 al webhook
 7. `/cancelar` y el botón de arrepentimiento en la home
-8. A30 · conciliación semanal — puede esperar al 30/09
+8. ~~A30 · conciliación semanal~~ — hecho el 2026-08-22, adelantado del 30/09
 
 Los pasos 1 a 6 son la venta. El 7 es la ley. El 8 es lo que evita la fuga silenciosa.
 

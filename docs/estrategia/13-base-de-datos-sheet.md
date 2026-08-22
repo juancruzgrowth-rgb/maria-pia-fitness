@@ -10,7 +10,7 @@
 
 Toda empresa necesita un lugar donde esté escrito **quién es quién**: quién preguntó, quién
 pagó, en qué grupo entró, qué día del reto va, y si está por abandonar. Ese lugar, para
-nosotros, es **una única planilla de Google con cuatro pestañas**.
+nosotros, es **una única planilla de Google con seis pestañas**.
 
 Podríamos armar una base de datos de verdad. No conviene todavía, por tres razones:
 
@@ -38,7 +38,7 @@ pisan. La excepción son las columnas marcadas como *manual* más abajo.
 
 ---
 
-## 3. Las cuatro pestañas
+## 3. Las pestañas
 
 ### `leads` — gente que mostró interés pero todavía no pagó
 
@@ -124,10 +124,14 @@ quién hay que avisarle que se le vence.
 
 Es el tablero de la métrica principal del negocio: **la tasa de finalización**.
 
+> La clave pasó de `whatsapp` a `email` el 2026-08-22. El checkout propio pide nombre
+> y email nada más, así que `whatsapp` queda vacío y no sirve para cruzar filas.
+
 | Columna | Qué guarda | Quién la escribe |
 |---|---|---|
 | `alumna` | Nombre | n8n |
-| `whatsapp` | Para poder escribirle | n8n |
+| `email` | **La clave de la pestaña.** Es el email de nuestro formulario de checkout, el mismo que en `ventas` | n8n |
+| `whatsapp` | Para poder escribirle. Hoy viene vacío: el formulario de checkout no lo pide | n8n |
 | `fecha_inicio` | El día que entró. Sin cohortes, es lo único contra lo que se puede calcular `dia_actual` | n8n |
 | `dia_actual` | Qué día del reto va | n8n |
 | `ultimo_checkin` | Última vez que reportó una rutina | n8n |
@@ -157,6 +161,30 @@ termina — y una alumna que termina es el testimonio que vende el grupo siguien
 Esta pestaña es la única mayormente manual, y es la que responde la pregunta más cara del
 marketing: **qué publicación trajo plata**. Sin ella se publica a ciegas.
 
+### `bajas` — quién pidió cancelar
+
+La escribe `/cancelar`. Existe por la Res. 424/2020: el pedido de baja tiene que quedar
+registrado y resolverse dentro de las 24 h. Encabezado en
+[`../setup/sheets/bajas.csv`](../setup/sheets/bajas.csv).
+
+### `skool_miembros` — la foto de quién está adentro de la comunidad
+
+| Columna | Qué guarda | Quién la escribe |
+|---|---|---|
+| `email` | **La clave de la pestaña.** El correo con el que se creó la cuenta de Skool | **manual** |
+| `nombre` | Opcional, para leer el informe sin descifrar emails | **manual** |
+| `fecha_ingreso` | Opcional | **manual** |
+| `notas` | Opcional | **manual** |
+
+Es la única pestaña que se llena copiando y pegando, y es a propósito: **Skool no tiene API
+pública en el plan Hobby**, así que la lista de miembros se exporta a mano una vez por
+semana. Sin ella, A30 no tiene contra qué comparar: no hay forma de saber quién está adentro
+de la comunidad.
+
+Sólo la lee [A30 · conciliación semanal](../setup/n8n/A30-conciliacion-semanal.json). Si se
+queda desactualizada el informe llega igual, pero mirando la foto vieja —por eso el propio
+email lo aclara al pie—.
+
 ---
 
 ## 4. Qué tenés que hacer vos
@@ -166,8 +194,8 @@ marketing: **qué publicación trajo plata**. Sin ella se publica a ciegas.
 1. Entrá a Google Drive **con la cuenta del proyecto**, no con la personal. Esta planilla va
    a tener datos personales de las clientas y no puede vivir en la cuenta de nadie.
 2. Nueva hoja de cálculo. Nombre: **`MP CEP — Base de datos`**.
-3. Creá las cuatro pestañas con estos nombres exactos, **en minúscula y sin acentos**:
-   `leads` · `ventas` · `comunidad` · `contenido`
+3. Creá las pestañas con estos nombres exactos, **en minúscula y sin acentos**:
+   `leads` · `ventas` · `comunidad` · `contenido` · `bajas` · `skool_miembros`
 4. En [`../setup/sheets/`](../setup/sheets/) hay un CSV por pestaña con los encabezados ya
    escritos. Abrí cada uno y **copiá la fila de encabezados a la fila 1** de su pestaña.
    Alternativamente: **Archivo → Importar → Subir**, y elegí *Reemplazar hoja actual*.

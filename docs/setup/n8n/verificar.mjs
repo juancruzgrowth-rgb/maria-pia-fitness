@@ -102,7 +102,10 @@ for (const archivo of fs.readdirSync(DIR).filter((f) => f.endsWith(".json")).sor
 function correrNodo(archivo, nombreNodo, contexto, filas) {
   const nodo = flujos[archivo].nodes.find((n) => n.name === nombreNodo);
   if (!nodo) throw new Error(`No existe el nodo "${nombreNodo}" en ${archivo}`);
-  const $ = (n) => ({ first: () => ({ json: contexto[n] }) });
+  const $ = (n) => {
+    const filas = Array.isArray(contexto[n]) ? contexto[n] : [contexto[n]];
+    return { first: () => ({ json: filas[0] }), all: () => filas.map((json) => ({ json })) };
+  };
   const $input = { all: () => filas.map((json) => ({ json })) };
   return new Function("$", "$input", `${nodo.parameters.jsCode}\n`)($, $input)[0].json;
 }
@@ -260,6 +263,92 @@ chequear(
   "Google Sheets devuelve el código como número y matchea igual",
   confirmar({ comandoVerbo: "OK", comandoCodigo: "4821" }, [{ ...pendiente, codigo: 4821 }]).accion === "confirmar",
 );
+
+// ---------------------------------------------------------------------------
+// 4 · La lógica de A30 — "Cruzar las dos listas"
+// ---------------------------------------------------------------------------
+//
+// Es el nodo que decide a quién se saca de la comunidad. Un falso positivo acá
+// echa a una clienta que paga todos los meses, así que se prueba entero: los
+// dos criterios de baja, la repesca por horas y —sobre todo— que lo que no
+// matchea por email nunca caiga en "sacar".
+
+const hace = (dias) => new Date(Date.now() - dias * 86400000).toISOString();
+
+const cruzar = (ventas, miembros) =>
+  correrNodo(
+    "A30-conciliacion-semanal.json",
+    "Cruzar las dos listas",
+    {
+      "Configuración": { horasParaRepescar: 48, diasDelPack: 90 },
+      "Leer las ventas": ventas,
+    },
+    miembros,
+  );
+
+const emails = (lista) => lista.map((x) => x.email).sort();
+
+console.log("\nA30 · el cruce contra Skool\n");
+
+const activa = {
+  fecha: hace(40), nombre: "Carolina", email: "caro@gmail.com", plan: "nivel-mensual",
+  estado: "pagado", estado_suscripcion: "authorized", acceso_skool: "invitada", acceso_vence: "",
+};
+const cancelada = { ...activa, nombre: "Sol", email: "sol@gmail.com", estado: "cancelado", estado_suscripcion: "cancelled" };
+
+r = cruzar([activa, cancelada], [{ email: "caro@gmail.com" }, { email: "sol@gmail.com" }]);
+chequear("La que canceló se saca", emails(r.sacar).join() === "sol@gmail.com");
+chequear("  y la que sigue pagando no se toca", r.repescar.length === 0 && r.revisar.length === 0);
+
+r = cruzar([activa], [{ email: "CARO@Gmail.com  " }]);
+chequear("El email matchea con mayúsculas y espacios de más", r.sacar.length === 0 && r.revisar.length === 0);
+
+// El §4 del doc 24: pagó con la cuenta del marido y se creó Skool con su correo.
+r = cruzar([activa], [{ email: "caro@gmail.com" }, { email: "otra@gmail.com", nombre: "Vale" }]);
+chequear("La que está en Skool sin venta NO se saca: se manda a revisar", r.sacar.length === 0);
+chequear("  y aparece en la lista de revisar", emails(r.revisar).join() === "otra@gmail.com");
+
+// El pack: nadie escribe acceso_vence hoy, así que se calcula desde la compra.
+const packVivo = { ...activa, nombre: "Ana", email: "ana@x.com", plan: "trimestral", fecha: hace(30) };
+const packVencido = { ...packVivo, email: "vieja@x.com", fecha: hace(100) };
+r = cruzar([packVivo, packVencido], [{ email: "ana@x.com" }, { email: "vieja@x.com" }]);
+chequear("El pack de hace 100 días está vencido y se saca", emails(r.sacar).join() === "vieja@x.com");
+chequear("  el de hace 30 días sigue adentro", r.sacar.length === 1);
+
+r = cruzar([{ ...packVivo, acceso_vence: hace(5).slice(0, 10) }], [{ email: "ana@x.com" }]);
+chequear("Si la columna acceso_vence tiene fecha, manda ella y no el cálculo", r.sacar.length === 1);
+
+// Repesca.
+r = cruzar([{ ...activa, fecha: hace(5) }], []);
+chequear("Pagó hace 5 días y no está en Skool → repescar", emails(r.repescar).join() === "caro@gmail.com");
+r = cruzar([{ ...activa, fecha: new Date().toISOString() }], []);
+chequear("  pero la que compró recién no se levanta todavía", r.repescar.length === 0);
+r = cruzar([{ ...activa, fecha: hace(5), acceso_skool: "no" }], []);
+chequear("  ni la que nunca recibió la invitación (A4 no llegó a correr)", r.repescar.length === 0);
+r = cruzar([{ ...cancelada, fecha: hace(5) }], []);
+chequear("  ni la que canceló y ya no está adentro", r.repescar.length === 0);
+
+// Cobro rechazado: no se saca de una, se mira.
+r = cruzar([{ ...activa, estado: "cobro_rechazado" }], [{ email: "caro@gmail.com" }]);
+chequear("Un cobro rechazado va a revisar, no a sacar", r.sacar.length === 0 && r.revisar.length === 1);
+
+// Varias filas de la misma persona: vale la última.
+r = cruzar(
+  [
+    { ...activa, fecha: hace(200), estado: "cancelado", estado_suscripcion: "cancelled" },
+    { ...activa, fecha: hace(10) },
+  ],
+  [{ email: "caro@gmail.com" }],
+);
+chequear("Volvió después de darse de baja: manda la venta más nueva", r.sacar.length === 0);
+
+// La pestaña de Skool sin actualizar.
+r = cruzar([{ ...activa, fecha: hace(10) }], []);
+chequear("Pestaña de Skool vacía → nadie se saca, todo cae en repescar", r.sacar.length === 0 && r.repescar.length === 1);
+
+// Filas basura.
+r = cruzar([activa, { fecha: hace(3), email: "", estado: "pagado" }], [{ email: "" }, { email: "caro@gmail.com" }]);
+chequear("Las filas sin email se ignoran de los dos lados", r.sacar.length === 0 && r.repescar.length === 0 && r.revisar.length === 0);
 
 // ---------------------------------------------------------------------------
 
