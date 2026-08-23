@@ -55,6 +55,7 @@ export async function POST(request: Request) {
       payerEmail: parsed.data.email,
       externalReference,
       backUrl: siteUrl(`/bienvenida?ref=${encodeURIComponent(externalReference)}`),
+      notificationUrl: siteUrl("/api/webhooks/mercadopago"),
     });
   } catch (error) {
     console.error("[checkout/suscripcion] MercadoPago rechazó el alta", error);

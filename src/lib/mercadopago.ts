@@ -29,6 +29,13 @@ export interface CreateSubscriptionInput {
   payerEmail: string;
   externalReference: string;
   backUrl: string;
+  /**
+   * A dónde avisa MercadoPago. Va acá y no en el panel a propósito: para
+   * Suscripciones, la configuración de webhooks de «Tus integraciones» NO
+   * aplica —MP sólo mira la `notification_url` que viaja en el alta—. Sin
+   * esto la clienta paga, MP no avisa nunca y la venta muere en silencio.
+   */
+  notificationUrl: string;
 }
 
 /**
@@ -41,23 +48,29 @@ export interface CreateSubscriptionInput {
  */
 export async function createSubscription(input: CreateSubscriptionInput) {
   const preapproval = new PreApproval(getMercadoPagoClient());
-  return preapproval.create({
-    body: {
-      reason: input.reason,
-      external_reference: input.externalReference,
-      payer_email: input.payerEmail,
-      back_url: input.backUrl,
-      /* `pending` es lo que hace que MP devuelva un init_point al que mandar
-         a la clienta. Con `authorized` esperaría un card_token_id nuestro. */
-      status: "pending",
-      auto_recurring: {
-        frequency: 1,
-        frequency_type: "months",
-        transaction_amount: input.amountARS,
-        currency_id: "ARS",
-      },
+
+  /* Va como variable y no como literal en la llamada porque el SDK todavía no
+     tipa `notification_url` en `PreApprovalRequest`. La API sí lo acepta, y es
+     obligatorio: para Suscripciones, el panel de «Tus integraciones» NO
+     configura webhooks. Si esto falta, la clienta paga y MP no avisa nunca. */
+  const body = {
+    reason: input.reason,
+    external_reference: input.externalReference,
+    payer_email: input.payerEmail,
+    back_url: input.backUrl,
+    notification_url: input.notificationUrl,
+    /* `pending` es lo que hace que MP devuelva un init_point al que mandar
+       a la clienta. Con `authorized` esperaría un card_token_id nuestro. */
+    status: "pending",
+    auto_recurring: {
+      frequency: 1,
+      frequency_type: "months",
+      transaction_amount: input.amountARS,
+      currency_id: "ARS",
     },
-  });
+  };
+
+  return preapproval.create({ body });
 }
 
 export async function getSubscription(id: string) {

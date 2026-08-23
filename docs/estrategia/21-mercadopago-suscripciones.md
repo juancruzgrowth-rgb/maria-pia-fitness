@@ -115,6 +115,23 @@ lo que parecía: con débito o con saldo de MP alcanza.
 | `subscription_authorized_payment` | Cada cobro mensual | Aprobado: suma una renovación. Rechazado: ver §5 |
 | `payment` | El pack de 3 niveles | Aprobado: dispara el onboarding con ventana de 6 meses |
 
+### Dónde se configura el webhook — y por qué casi se nos escapa
+
+**Para Suscripciones, el panel de «Tus integraciones» no configura nada.** La documentación
+de MP es explícita: ese método *"no está disponible para integraciones con Código QR ni
+Suscripciones"*. La `notification_url` viaja **en el POST que crea la suscripción**, y es la
+única forma.
+
+El `preference` del pack ya la mandaba. El `preapproval` de la suscripción **no**, y eso
+convertía al producto principal en una venta muda: la clienta pagaba, MercadoPago nunca
+avisaba, `ventas` quedaba en `pendiente` para siempre y A4 no se disparaba jamás. Corregido
+el 2026-08-23 en `createSubscription()`.
+
+Detalle para el que lo lea después: el SDK oficial **no tipa** `notification_url` en
+`PreApprovalRequest`. La API sí lo acepta. Por eso el cuerpo se arma como variable y no como
+literal en la llamada — si alguien lo "ordena" y lo vuelve a poner inline, TypeScript va a
+pedir borrar el campo, y ahí se rompe todo otra vez en silencio.
+
 ### La validación de firma
 
 Es obligatoria por las reglas del proyecto y no es opcional en la práctica: sin ella,
