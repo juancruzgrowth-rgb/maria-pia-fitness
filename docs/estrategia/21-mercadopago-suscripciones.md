@@ -66,6 +66,24 @@ Eso convierte la promesa del precio fundador en algo literalmente cierto, y "el 
 pagás hoy es el que vas a pagar siempre" vende bastante mejor que "aprovechá antes que
 suba".
 
+### `pending`, no `authorized`
+
+Dentro de "sin plan asociado" hay todavía dos sabores, y la diferencia no es de detalle.
+
+| `status` | Quién muestra el formulario de tarjeta | Qué necesita |
+|---|---|---|
+| **`pending`** | MercadoPago, en su dominio | nada nuestro |
+| `authorized` | **nosotros, en nuestro sitio** | un `card_token_id` que tokenizamos nosotros |
+
+**Vamos con `pending`.** MP devuelve un `init_point` y la clienta pone la tarjeta del lado
+de ellos. Con `authorized` el formulario sería nuestro, lo que nos mete adentro del alcance
+PCI y rompe la regla de no tocar datos de tarjeta nunca. Está escrito en el código, en
+`createSubscription()`, para que nadie lo "optimice" más adelante.
+
+**Al suscribirse, MercadoPago hace un cobro mínimo para validar la tarjeta y después lo
+devuelve.** Genera consultas: la clienta ve un cargo raro de unos pesos. Está contestado en
+las FAQ, y Pía tiene que saberlo para no asustarse cuando lo vea en su cuenta.
+
 ### Medios de pago
 
 La API acepta **dinero en cuenta de MercadoPago, tarjeta de crédito y tarjeta de débito**.
@@ -129,11 +147,30 @@ Media hora de trabajo contra el modo de falla más caro del sistema.
 **A27 se encoge a la mitad.** Ya no avisa el día 25 y el 28 pidiendo que renueven:
 MercadoPago cobra solo y reintenta si la tarjeta falla.
 
+### Cómo reintenta MercadoPago, exactamente
+
+Importa porque define cuándo se le escribe a la clienta, y el primer diseño de A27 lo tenía
+mal.
+
+- La primera cuota **se acredita hasta 1 hora después** de suscribirse. No la esperamos: el
+  onboarding se dispara cuando la suscripción queda `authorized`, no cuando entra la plata.
+  Si esperáramos, la clienta miraría una pantalla en blanco durante una hora.
+- Un cobro rechazado pasa a `recycling` y se reintenta **hasta 4 veces dentro de una ventana
+  de 10 días**. Agotados los reintentos, la cuota queda `processed` contra un pago rechazado.
+- **A las 3 cuotas con pagos rechazados, MercadoPago da de baja la suscripción solo** y le
+  avisa a la cuenta vendedora por email.
+
+Esa baja automática llega como `subscription_preapproval` con status `cancelled`, el webhook
+la escribe como `cancelado` en `ventas`, y A30 la levanta el lunes siguiente en la lista de
+"sacar de Skool". **El churn involuntario cierra de punta a punta sin que nadie mire nada.**
+
 Lo que queda de A27:
 
-- **Cobro rechazado en forma definitiva** → cortar el acceso y escribirle a la clienta para
-  que actualice el medio de pago. Este es el nuevo churn involuntario, y es real: tarjetas
-  vencidas, límites, cuentas sin saldo.
+- **Cobro rechazado** → escribirle a la clienta para que actualice el medio de pago.
+  **A las 48 h del primer rechazo, no al instante:** al instante le estaríamos escribiendo
+  por algo que los reintentos resuelven solos en dos días. Y tampoco esperar a los 10 días
+  de la ventana completa, porque ahí ya la perdimos. El corte del acceso lo hace MercadoPago
+  por su cuenta a la tercera cuota impaga; nosotros sólo intentamos recuperarla antes.
 - **El pack de 3 niveles**, que sí vence en una fecha y necesita el circuito completo de
   aviso y corte.
 

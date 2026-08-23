@@ -122,6 +122,16 @@ export const FAQS: FaqItem[] = [
       "Con MercadoPago, en la misma web. Es una suscripción con débito automático: elegís el medio de pago una vez y se cobra solo todos los meses. No hace falta que transfieras ni que me mandes ningún comprobante.",
   },
   {
+    question: "Me apareció un cargo chico que no reconozco. ¿Qué es?",
+    answer:
+      "Es de MercadoPago y se devuelve solo. Cuando te suscribís hacen un cobro mínimo para verificar que la tarjeta esté activa, y después te lo reintegran. No es un cobro mío y no tenés que hacer nada.",
+  },
+  {
+    question: "¿Y si un mes se me rechaza el cobro?",
+    answer:
+      "No pasa nada de entrada. MercadoPago lo reintenta solo varias veces durante los diez días siguientes, así que la mayoría de las veces se destraba sin que te enteres. Si después de un par de días sigue rechazado te escribo para que actualices el medio de pago, porque suele ser una tarjeta vencida o sin límite. Y si el cobro no entra durante tres meses seguidos, MercadoPago da de baja la suscripción por su cuenta.",
+  },
+  {
     question: "¿Se renueva solo? ¿Me van a debitar todos los meses?",
     answer:
       "Sí. Es una suscripción, así que MercadoPago debita el importe cada mes y tu acceso sigue activo sin que tengas que hacer nada. Cancelás cuando quieras desde tu cuenta de MercadoPago, sin llamar a nadie y sin dar explicaciones. Si entrás con el precio del grupo fundador, ese precio te queda congelado mientras no canceles.",
