@@ -70,19 +70,21 @@ quién hay que avisarle que se le vence.
 | `nombre` | | n8n |
 | `email` | | n8n |
 | `whatsapp` | | n8n |
-| `plan` | `nivel-mensual` o `pack-3-niveles` | n8n |
+| `plan` | `nivel-mensual` o `trimestral` | n8n |
 | `monto` | | n8n |
 | `moneda` | `ARS` | n8n |
 | `metodo_pago` | `mercadopago` | n8n |
 | `pago_id` | El `id` del pago en MercadoPago | n8n |
 | `suscripcion_id` | El `preapproval_id`. Vacío en el pack | n8n |
-| `estado` | `pendiente` · `confirmado` · `rechazado` · `devuelto` | n8n |
+| `estado` | `pendiente` · `pagado` · `cobro_rechazado` · `cancelado` | La web y el webhook |
 | `estado_suscripcion` | `authorized` · `paused` · `cancelled`. Vacío en el pack | n8n |
 | `proximo_cobro` | La fecha que informa MercadoPago | n8n |
 | `acceso_skool` | `no` · `invitada` · `sí` | n8n |
 | `acceso_vence` | **Sólo para el pack.** En el mensual, el acceso vale mientras la suscripción esté `authorized` | n8n |
 | `renovaciones` | Cuántas veces renovó. Arranca en 0 | n8n |
 | `notas` | | **manual** |
+| `external_reference` | **La clave que une todo.** La web, el webhook y n8n cruzan por acá | La web |
+| `avisos` | Qué emails se le mandaron ya. Es el candado de A27 | A27 |
 
 > **El esquema cambió otra vez el 2026-08-18 (sesión 12), al pasar a MercadoPago como
 > pasarela única.** Salieron `codigo` y `comprobante_url`: no hay comprobante que recibir ni
@@ -194,12 +196,17 @@ email lo aclara al pie—.
 1. Entrá a Google Drive **con la cuenta del proyecto**, no con la personal. Esta planilla va
    a tener datos personales de las clientas y no puede vivir en la cuenta de nadie.
 2. Nueva hoja de cálculo. Nombre: **`MP CEP — Base de datos`**.
-3. Creá las pestañas con estos nombres exactos, **en minúscula y sin acentos**:
-   `leads` · `ventas` · `comunidad` · `contenido` · `bajas` · `skool_miembros`
-4. En [`../setup/sheets/`](../setup/sheets/) hay un CSV por pestaña con los encabezados ya
-   escritos. Abrí cada uno y **copiá la fila de encabezados a la fila 1** de su pestaña.
-   Alternativamente: **Archivo → Importar → Subir**, y elegí *Reemplazar hoja actual*.
-5. Pasame el **ID de la planilla**: es el pedazo largo de la URL entre `/d/` y `/edit`.
+3. **No hace falta armar las pestañas a mano.** En
+   [`../setup/sheets/Pia-Moretto-Base-de-datos.xlsx`](../setup/sheets/Pia-Moretto-Base-de-datos.xlsx)
+   está la planilla entera: las seis pestañas con los nombres exactos, los encabezados en la
+   fila 1 y una hoja `_leyenda` que explica cada una. Se sube a Drive y se abre con
+   **Archivo → Guardar como hoja de cálculo de Google**.
+4. Si algún día cambia una columna: se edita el CSV correspondiente de
+   [`../setup/sheets/`](../setup/sheets/), que es la fuente de verdad, y se vuelve a correr
+   `python3 docs/setup/sheets/generar-planilla.py`. Los CSV siguen sirviendo para importar
+   una pestaña suelta (**Archivo → Importar → Subir**, *Reemplazar hoja actual*).
+5. **No renombres las pestañas ni las columnas.** Los flujos de n8n las buscan por nombre.
+6. Pasame el **ID de la planilla**: es el pedazo largo de la URL entre `/d/` y `/edit`.
 
 ### Paso 2 — El robot que va a escribir (service account)
 
