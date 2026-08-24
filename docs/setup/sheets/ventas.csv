@@ -1,1 +1,1 @@
-fecha,nombre,email,whatsapp,plan,monto,moneda,metodo_pago,pago_id,suscripcion_id,estado,estado_suscripcion,proximo_cobro,acceso_skool,acceso_vence,renovaciones,notas,external_reference
+fecha,nombre,email,whatsapp,plan,monto,moneda,metodo_pago,pago_id,suscripcion_id,estado,estado_suscripcion,proximo_cobro,acceso_skool,acceso_vence,renovaciones,notas,external_reference,avisos

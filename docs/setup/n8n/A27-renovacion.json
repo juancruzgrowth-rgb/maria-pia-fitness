@@ -1,0 +1,390 @@
+{
+  "name": "A27 · Renovación y vencimientos",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## A27 · Renovación y vencimientos\n\nCorre **todos los días a las 9**.\n\nHace dos cosas, y sólo dos:\n\n1. **Cobro rechazado** → a las 48 h le escribe a la clienta para que actualice la tarjeta. No al instante: MercadoPago reintenta solo y la mayoría se destraba en dos días.\n2. **Plan trimestral** → avisa 7 días antes de que venza, y otra vez el día que venció.\n\n**Lo que NO hace: sacar a nadie de Skool.** Eso sale en el informe de los lunes (A30), que es donde va todo lo que necesita una mano humana.",
+        "height": 420,
+        "width": 460,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -180
+      ],
+      "id": "sticky-Qué hace y qué no",
+      "name": "Qué hace y qué no"
+    },
+    {
+      "parameters": {
+        "content": "## El candado\n\nLa columna **`avisos`** de la pestaña `ventas` guarda, separado por comas, qué se le mandó ya a cada clienta.\n\nSin eso este flujo corre todos los días y manda el mismo email todos los días.\n\nSi el cobro se destraba, las marcas de rechazo se borran solas: el próximo rechazo arranca de cero.",
+        "height": 260,
+        "width": 460,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        260
+      ],
+      "id": "sticky-El candado",
+      "name": "El candado"
+    },
+    {
+      "parameters": {
+        "content": "## Antes de activarlo\n\n1. Sumar la columna **`avisos`** al final de la pestaña `ventas`\n2. Cargar el **ID de la planilla** en Configuración\n3. Credenciales de **Google Sheets** y **Brevo**\n4. Probarlo con **Execute Workflow** antes de activar el schedule: con la planilla vacía no manda nada",
+        "height": 260,
+        "width": 420,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        100,
+        260
+      ],
+      "id": "sticky-Antes de activarlo",
+      "name": "Antes de activarlo"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "triggerAtHour": 9,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        0
+      ],
+      "id": "trigger-diario",
+      "name": "Todos los días a las 9"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c1",
+              "name": "sheetId",
+              "value": "REEMPLAZAR_ID_DE_LA_PLANILLA",
+              "type": "string"
+            },
+            {
+              "id": "c2",
+              "name": "remitenteEmail",
+              "value": "hola@piamoretto.com",
+              "type": "string"
+            },
+            {
+              "id": "c3",
+              "name": "remitenteNombre",
+              "value": "Pía Moretto",
+              "type": "string"
+            },
+            {
+              "id": "c4",
+              "name": "horasParaEscribir",
+              "value": 48,
+              "type": "number"
+            },
+            {
+              "id": "c5",
+              "name": "diasDelPack",
+              "value": 90,
+              "type": "number"
+            },
+            {
+              "id": "c6",
+              "name": "diasDeAvisoPrevio",
+              "value": 7,
+              "type": "number"
+            },
+            {
+              "id": "c7",
+              "name": "urlComprar",
+              "value": "https://piamoretto.com/comprar",
+              "type": "string"
+            },
+            {
+              "id": "c8",
+              "name": "urlSuscripciones",
+              "value": "https://www.mercadopago.com.ar/subscriptions",
+              "type": "string"
+            }
+          ],
+          "includeOtherFields": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        0
+      ],
+      "id": "config",
+      "name": "Configuración"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "ventas",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        540,
+        0
+      ],
+      "id": "leer-ventas",
+      "name": "Leer las ventas"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Decide a quién se le escribe HOY. Nada más que hoy.\n *\n * A27 quedó reducido a la mitad cuando entró el débito automático: MercadoPago\n * cobra y reintenta solo, así que ya no hay que perseguir a nadie para que\n * renueve. Quedan dos huecos que la pasarela no cubre, y son estos:\n *\n *   1. El cobro rechazado. MercadoPago reintenta hasta 4 veces en 10 días y a\n *      la tercera cuota impaga da de baja la suscripción por su cuenta. Si le\n *      escribimos al instante, la molestamos por algo que se resuelve solo en\n *      dos días; si esperamos los 10, ya la perdimos. Le escribimos a las 48 h.\n *\n *   2. El plan trimestral. Es el único que vence en una fecha: se paga una vez\n *      y da 90 días. Sin aviso, se cae sin que nadie se entere.\n *\n * Lo que este flujo NO hace: sacar a nadie de Skool. Eso sale en el informe de\n * los lunes (A30), que es donde vive todo lo que necesita una mano humana.\n *\n * EL CANDADO. La columna `avisos` de `ventas` guarda qué se le mandó ya a cada\n * una, separado por comas. Sin eso, este flujo corre todos los días y le manda\n * el mismo email todos los días. Es la misma guarda que tiene A4.\n */\nconst cfg = $('Configuración').first().json;\n\nconst MS_DIA = 86400000;\nconst HOY = new Date();\nconst HOY_ISO = HOY.toISOString().slice(0, 10);\n\nconst TAG_VISTO = 'rechazo-visto';\nconst TAG_AVISADO = 'rechazo-avisado';\nconst TAG_PACK_PREVIO = 'pack-previo';\nconst TAG_PACK_VENCIDO = 'pack-vencido';\n\n/** Fechas de la planilla: vienen como YYYY-MM-DD. Cualquier cosa rara es null. */\nfunction comoFecha(valor) {\n  if (!valor) return null;\n  const d = new Date(String(valor).slice(0, 10) + 'T00:00:00Z');\n  return Number.isNaN(d.getTime()) ? null : d;\n}\n\nfunction diasEntre(desde, hasta) {\n  return Math.round((hasta.getTime() - desde.getTime()) / MS_DIA);\n}\n\nfunction primerNombre(valor) {\n  const limpio = String(valor ?? '').trim();\n  return limpio ? limpio.split(/\\s+/)[0] : '';\n}\n\nconst salidas = [];\n\nfor (const item of $input.all()) {\n  const fila = item.json ?? {};\n  const email = String(fila.email ?? '').trim();\n  const referencia = String(fila.external_reference ?? '').trim();\n\n  // Sin email no hay a quién escribirle; sin referencia no hay dónde anotarlo.\n  if (!email || !referencia) continue;\n\n  const estado = String(fila.estado ?? '').toLowerCase();\n  const plan = String(fila.plan ?? '').toLowerCase();\n  const nombre = primerNombre(fila.nombre);\n  const hola = nombre ? `Hola ${nombre},` : 'Hola,';\n\n  let avisos = String(fila.avisos ?? '')\n    .split(',')\n    .map((t) => t.trim())\n    .filter(Boolean);\n\n  const tiene = (tag) => avisos.some((t) => t === tag || t.startsWith(tag + ':'));\n  const valorDe = (tag) => {\n    const encontrado = avisos.find((t) => t.startsWith(tag + ':'));\n    return encontrado ? encontrado.slice(tag.length + 1) : null;\n  };\n\n  let asunto = null;\n  let cuerpo = null;\n\n  // ------------------------------------------------------------------\n  // 1. Cobro rechazado\n  // ------------------------------------------------------------------\n  if (estado === 'cobro_rechazado') {\n    // La primera vez que lo vemos sólo dejamos la marca con la fecha. El reloj\n    // de las 48 h arranca acá y no en la planilla, porque el webhook no estampa\n    // cuándo se rechazó: escribe el estado y nada más.\n    const visto = comoFecha(valorDe(TAG_VISTO));\n\n    if (!visto) {\n      avisos.push(`${TAG_VISTO}:${HOY_ISO}`);\n    } else if (!tiene(TAG_AVISADO) && diasEntre(visto, HOY) * 24 >= Number(cfg.horasParaEscribir)) {\n      avisos.push(TAG_AVISADO);\n      asunto = 'Se rechazó el cobro de tu suscripción';\n      cuerpo = `\n        <p>${hola}</p>\n        <p>MercadoPago no pudo cobrar tu suscripción al Reto. Suele ser una tarjeta\n        vencida o sin límite disponible, y se resuelve en dos minutos.</p>\n        <p>Entrá a tu cuenta de MercadoPago, buscá la suscripción y actualizá el medio\n        de pago: <a href=\"${cfg.urlSuscripciones}\">${cfg.urlSuscripciones}</a></p>\n        <p>Mientras tanto tu acceso sigue abierto. MercadoPago vuelve a intentarlo solo\n        durante los próximos días, así que con la tarjeta al día se destraba sin que\n        tengas que hacer nada más.</p>\n        <p>Si te quedó alguna duda, respondeme este mail.</p>\n        <p>Pía</p>\n      `;\n    }\n  } else if (estado === 'pagado' && (tiene(TAG_VISTO) || tiene(TAG_AVISADO))) {\n    // El reintento entró. Se limpian las marcas para que el próximo rechazo\n    // empiece de cero y no quede tapado por el candado del anterior.\n    avisos = avisos.filter((t) => !t.startsWith(TAG_VISTO) && t !== TAG_AVISADO);\n  }\n\n  // ------------------------------------------------------------------\n  // 2. Vencimiento del plan trimestral\n  // ------------------------------------------------------------------\n  if (!asunto && plan === 'trimestral' && estado === 'pagado') {\n    // acceso_vence es la fuente buena. Si está vacía se deriva de la fecha de\n    // la venta: es preferible avisar con un día de corrimiento que no avisar.\n    const inicio = comoFecha(fila.fecha);\n    let vence = comoFecha(fila.acceso_vence);\n    if (!vence && inicio) {\n      vence = new Date(inicio.getTime() + Number(cfg.diasDelPack) * MS_DIA);\n    }\n\n    if (vence) {\n      const restan = diasEntre(HOY, vence);\n      const venceTexto = vence.toISOString().slice(0, 10).split('-').reverse().join('/');\n\n      if (restan > 0 && restan <= Number(cfg.diasDeAvisoPrevio) && !tiene(TAG_PACK_PREVIO)) {\n        avisos.push(TAG_PACK_PREVIO);\n        asunto = `Te quedan ${restan} días de acceso al Reto`;\n        cuerpo = `\n          <p>${hola}</p>\n          <p>Tu plan trimestral vence el ${venceTexto}. Te aviso ahora para que no te\n          agarre de sorpresa y puedas decidir con tiempo.</p>\n          <p>Si querés seguir, lo renovás desde acá:\n          <a href=\"${cfg.urlComprar}\">${cfg.urlComprar}</a></p>\n          <p>Y si preferís pasarte a la suscripción mensual, en esa misma página la\n          elegís: se cobra sola todos los meses y la cancelás cuando quieras.</p>\n          <p>Pía</p>\n        `;\n      } else if (restan <= 0 && !tiene(TAG_PACK_VENCIDO)) {\n        avisos.push(TAG_PACK_VENCIDO);\n        asunto = 'Se te venció el acceso al Reto';\n        cuerpo = `\n          <p>${hola}</p>\n          <p>Tu plan trimestral venció el ${venceTexto}. En los próximos días voy a dar\n          de baja tu acceso a la comunidad.</p>\n          <p>Si querés seguir entrenando, lo renovás acá y no perdés nada de lo que\n          avanzaste: <a href=\"${cfg.urlComprar}\">${cfg.urlComprar}</a></p>\n          <p>Y si esta etapa se cierra acá, gracias por estos tres meses. Escribime\n          cuando quieras volver.</p>\n          <p>Pía</p>\n        `;\n      }\n    }\n  }\n\n  const avisosNuevo = avisos.join(',');\n  const cambio = avisosNuevo !== String(fila.avisos ?? '');\n\n  // Si no hay email para mandar ni marca para mover, la fila no genera trabajo.\n  if (!asunto && !cambio) continue;\n\n  salidas.push({\n    json: {\n      external_reference: referencia,\n      avisos: avisosNuevo,\n      email,\n      nombre: String(fila.nombre ?? '').trim(),\n      // mandar=false son las filas que sólo mueven la marca: el rechazo que\n      // recién vemos hoy y las limpiezas. No se les escribe.\n      mandar: Boolean(asunto),\n      asunto: asunto ?? '',\n      cuerpo: cuerpo ?? '',\n    },\n  });\n}\n\nreturn salidas;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        760,
+        0
+      ],
+      "id": "decidir",
+      "name": "Decidir a quién le escribimos hoy"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-mandar",
+              "leftValue": "={{ $json.mandar }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        980,
+        0
+      ],
+      "id": "hay-que-escribir",
+      "name": "¿Hay que escribirle?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.brevo.com/v3/smtp/email",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "sendInBlueApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  sender: {\n    email: $('Configuración').first().json.remitenteEmail,\n    name: $('Configuración').first().json.remitenteNombre\n  },\n  to: [{ email: $json.email, name: $json.nombre }],\n  subject: $json.asunto,\n  htmlContent: $json.cuerpo\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        -100
+      ],
+      "id": "mandar-aviso",
+      "name": "Mandarle el aviso"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        120
+      ],
+      "id": "solo-marca",
+      "name": "Sólo mover la marca"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * Deja pasar sólo las dos columnas que se escriben.\n *\n * El nodo de Google Sheets mapea automáticamente lo que le llega, así que si le\n * pasáramos el item entero aparecerían columnas nuevas en `ventas` llamadas\n * `asunto`, `cuerpo` y `mandar`. Mismo recorte que hace A4 antes de escribir.\n */\nreturn $input.all().map((item) => ({\n  json: {\n    external_reference: item.json.external_reference,\n    avisos: item.json.avisos,\n  },\n}));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        0
+      ],
+      "id": "armar-marca",
+      "name": "Armar la marca"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Configuración').first().json.sheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "ventas",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": [
+            "external_reference"
+          ],
+          "value": {},
+          "schema": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1640,
+        0
+      ],
+      "id": "anotar",
+      "name": "Anotar que ya se avisó"
+    }
+  ],
+  "connections": {
+    "Todos los días a las 9": {
+      "main": [
+        [
+          {
+            "node": "Configuración",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuración": {
+      "main": [
+        [
+          {
+            "node": "Leer las ventas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer las ventas": {
+      "main": [
+        [
+          {
+            "node": "Decidir a quién le escribimos hoy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decidir a quién le escribimos hoy": {
+      "main": [
+        [
+          {
+            "node": "¿Hay que escribirle?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Hay que escribirle?": {
+      "main": [
+        [
+          {
+            "node": "Mandarle el aviso",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sólo mover la marca",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mandarle el aviso": {
+      "main": [
+        [
+          {
+            "node": "Armar la marca",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sólo mover la marca": {
+      "main": [
+        [
+          {
+            "node": "Armar la marca",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar la marca": {
+      "main": [
+        [
+          {
+            "node": "Anotar que ya se avisó",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all"
+  },
+  "pinData": {}
+}

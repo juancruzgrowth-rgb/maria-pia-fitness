@@ -194,6 +194,11 @@ Lo que queda de A27:
 La tabla de días 25 / 28 / 30 de [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md)
 §5 sigue valiendo **sólo para el pack**.
 
+> **Construido el 2026-08-24.** `docs/setup/n8n/A27-renovacion.json`. Los plazos quedaron
+> en 48 h para el rechazo y 7 días / día 0 para el trimestral, que es la tabla del doc 20
+> escalada de 28 a 90 días. El detalle está en
+> [`19-flujos-n8n-construidos.md`](19-flujos-n8n-construidos.md) § 10.
+
 ---
 
 ## 6. La obligación legal que aparece con el débito automático

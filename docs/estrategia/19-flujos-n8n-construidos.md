@@ -355,7 +355,6 @@ vigilar.
 
 | Flujo | Qué hace | Depende de |
 |---|---|---|
-| **A27** | Renovación mensual: avisa el 25 y el 28, corta el 31 | Nada. Se puede construir ya |
 | **A6** | Detección de abandono | Que exista la comunidad en Skool |
 | **A2** | CRM de leads y clientas | Nada. Se puede construir ya |
 | **A28** | Triage de WhatsApp entrante | A0 |
@@ -363,9 +362,9 @@ vigilar.
 | **A23** | Circuito de devolución del art. 34 | — |
 | **A29** | Captura de testimonios y upsell | Que haya clientas en el día 28 |
 
-**A27 es el siguiente.** Sin él, cobrar $55.000 por mes es cobrar $55.000 una vez: nadie
-avisa que se vence, nadie cobra de nuevo y nadie corta el acceso. Y no depende de ningún
-bloqueante — la fecha contra la que cuenta ya la escribe A3-bis en `acceso_vence`.
+**A27 ya está construido** (sesión 15), con la mitad del alcance original: MercadoPago
+cobra y reintenta solo, así que no hace falta perseguir a nadie para que renueve. Ver
+§ 10.
 
 **A5, A25, A26 y A24 se cancelaron** el 2026-08-18: los cuatro dependían de las cohortes y
 de la Semana 0. Ver [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
@@ -378,3 +377,68 @@ de la Semana 0. Ver [`20-reto-siempre-abierto.md`](20-reto-siempre-abierto.md).
 - [`13-base-de-datos-sheet.md`](13-base-de-datos-sheet.md) — las cuatro pestañas, columna por columna
 - [`12-whatsapp-cloud-api.md`](12-whatsapp-cloud-api.md) — el trámite de Meta paso a paso
 - [`07-circuito-compra-y-garantia.md`](07-circuito-compra-y-garantia.md) — el circuito como decisión de negocio
+
+---
+
+## 10. A27 · Renovación y vencimientos
+
+**Archivo:** `docs/setup/n8n/A27-renovacion.json` · **Verificador:** `node docs/setup/n8n/verificar-a27.mjs`
+
+Corre **todos los días a las 9**. Lee `ventas` entera y decide, fila por fila, si hoy
+corresponde escribirle a alguien.
+
+### Por qué es la mitad de lo que era
+
+El diseño original avisaba el día 25, avisaba el 28 y cortaba el 30. Eso existía porque el
+cobro era por transferencia y la renovación dependía de que la clienta decidiera pagar otra
+vez. Con débito automático **MercadoPago cobra solo y reintenta solo**, así que esa mitad se
+cae. Quedan los dos huecos que la pasarela no cubre.
+
+### Hueco 1 · El cobro rechazado
+
+Un cobro rechazado pasa a `recycling` y MercadoPago lo reintenta hasta 4 veces en 10 días. A
+las 3 cuotas impagas da de baja la suscripción por su cuenta.
+
+**Le escribimos a las 48 h del primer rechazo.** Al instante la estaríamos molestando por
+algo que los reintentos resuelven solos en dos días; a los 10 días ya la perdimos.
+
+El reloj de las 48 h lo lleva el propio flujo: la primera vez que ve una fila en
+`cobro_rechazado` deja la marca `rechazo-visto:AAAA-MM-DD` y no manda nada. Cuando esa marca
+cumple 48 h y la fila sigue rechazada, manda el email. **El webhook no estampa cuándo se
+rechazó** —escribe el estado y nada más—, así que la fecha tiene que nacer acá.
+
+Si el reintento entra, la fila vuelve a `pagado` y las marcas de rechazo se borran solas: el
+próximo rechazo arranca de cero y no queda tapado por el candado del anterior.
+
+### Hueco 2 · El plan trimestral
+
+Es el único producto que vence en una fecha: se paga una vez y da 90 días. Dos avisos:
+
+| Cuándo | Qué dice |
+|---|---|
+| 7 días antes | Te vence el DD/MM. Si querés seguir, renovás acá |
+| El día que venció | Venció. En los próximos días doy de baja el acceso |
+
+La fecha sale de `acceso_vence` si está cargada, y si no se deriva de `fecha` + 90 días. Es
+preferible avisar con un día de corrimiento que no avisar.
+
+### Lo que A27 NO hace
+
+**No saca a nadie de Skool.** Skool se opera a mano, así que las bajas salen en el informe
+de los lunes (A30), que es donde va todo lo que necesita una persona. A27 sólo escribe.
+
+### El candado
+
+La columna nueva **`avisos`** de `ventas` guarda, separado por comas, qué se le mandó ya a
+cada clienta: `rechazo-visto:FECHA`, `rechazo-avisado`, `pack-previo`, `pack-vencido`.
+
+Sin eso este flujo corre todos los días y manda el mismo email todos los días. Es la misma
+guarda que tiene A4, y por la misma razón.
+
+### Antes de activarlo
+
+1. Sumar la columna **`avisos`** al final de la pestaña `ventas`
+2. Cargar el ID de la planilla en el nodo **Configuración**
+3. Credenciales de Google Sheets y de Brevo
+4. `node docs/setup/n8n/verificar-a27.mjs` — corre la lógica del nodo contra 13 filas de
+   mentira sin tocar la planilla real. Correrlo cada vez que se cambie un plazo

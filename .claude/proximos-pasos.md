@@ -650,7 +650,7 @@ referencia, pero **no se importan a n8n**:
 - [ ] **Rehacer los encabezados de `ventas` y `comunidad`** — el esquema cambió en la sesión 11 y otra vez en la 12
 
 **Lo que falta construir, por orden:**
-- [ ] **A27** · Renovación — **alcance reducido a la mitad.** MercadoPago cobra y reintenta solo. Queda: (a) manejar el rechazo definitivo → cortar acceso y pedir que actualice el medio de pago; (b) el circuito completo de aviso y corte **para el pack**, que sí vence en fecha
+- [x] **A27** · Renovación — **construido (sesión 15).** `docs/setup/n8n/A27-renovacion.json`. Corre todos los días a las 9: aviso de cobro rechazado a las 48 h + los dos avisos de vencimiento del trimestral. No corta accesos: eso sale en el informe de A30. **Necesita la columna `avisos` al final de `ventas`**
 - [ ] **A2** · CRM de leads y clientas: seguimientos, recordatorios, consultas, encuestas. *Sin bloqueantes*
 - [ ] **A6** · Detección de abandono — cuenta desde `comunidad.fecha_inicio`, avisa por email. *Necesita la comunidad en Skool*
 - [ ] **A1** · Captura de lead desde Instagram — *necesita ManyChat*
