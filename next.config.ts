@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ["@phosphor-icons/react", "framer-motion"],
+    optimizePackageImports: ["@phosphor-icons/react"],
   },
 };
 
