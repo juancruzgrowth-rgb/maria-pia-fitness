@@ -60,18 +60,18 @@ export const WHAT_YOU_GET = [
 export const HOW_IT_WORKS = [
   {
     step: "01",
-    title: "Te suscribís con MercadoPago",
-    body: "Débito automático, en un par de clics. Sin transferencias, sin comprobantes y sin esperar a que alguien te confirme nada.",
+    title: "Transferís y me mandás el comprobante",
+    body: "Los datos de la cuenta están en la página de compra. Me pasás el comprobante por WhatsApp con tu nombre y tu email, y te contesto yo.",
   },
   {
     step: "02",
-    title: "Entrás a Skool y mirás los videos de arranque",
-    body: "Te explico el método y cómo usar la comunidad. Veinte minutos y ya sabés exactamente qué hacer.",
+    title: "Te doy el acceso a Skool",
+    body: "Te mando la invitación a la comunidad y te explico por dónde arrancar. Ahí están las rutinas, los videos de cada ejercicio y el grupo.",
   },
   {
     step: "03",
     title: "Entrenás ese mismo día",
-    body: "La sesión 1 está esperándote. Tres por semana, y cualquier duda la preguntás y te la respondo.",
+    body: "Mirás los videos de arranque y abrís la sesión 1. Tres por semana, y cualquier duda la preguntás y te la respondo.",
   },
 ] as const;
 
@@ -89,7 +89,7 @@ export const FAQS: FaqItem[] = [
   {
     question: "Nunca entrené o hace años que no lo hago. ¿Puedo hacerlo igual?",
     answer:
-      "Sí, y el B1 está hecho exactamente para eso. Es el nivel de arranque: alterna ejercicios que hacés en casa sin equipamiento con otros de gimnasio, y cada uno tiene su video explicado. Los videos de arranque te explican cómo elegir la carga. La mayoría de las que entran al reto hace años que no entrenan de forma estructurada, así que estás en buena compañía.",
+      "Sí, y el B1 está hecho exactamente para eso. Es el nivel de arranque: alterna ejercicios que hacés en casa sin equipamiento con otros de gimnasio, y cada uno tiene su video explicado. Los videos de arranque te explican cómo elegir la carga. La mayoría de las que entran al Flex Program hace años que no entrenan de forma estructurada, así que estás en buena compañía.",
   },
   {
     question: "¿Necesito gimnasio o equipamiento?",
@@ -97,14 +97,14 @@ export const FAQS: FaqItem[] = [
       "Depende del nivel, y prefiero ser clara. El B1, que es donde arrancás, va alternando: hay días que resolvés en casa sin equipamiento y otros que son de gimnasio. Del B2 en adelante la mayoría de los ejercicios necesitan mancuernas, barra o máquinas para que la progresión tenga sentido, así que ahí sí vas a necesitar un gimnasio o equipamiento en casa. Si no tenés forma de acceder a ninguna de las dos cosas, te lo digo antes de que pagues: vas a poder hacer el B1 a medias y después te vas a trabar.",
   },
   {
-    question: "Si me suscribo hoy, ¿cuándo empiezo?",
+    question: "Si transfiero hoy, ¿cuándo empiezo?",
     answer:
-      "Hoy. No hay fechas de inicio ni grupos que esperar: cuando se confirma el pago te llega el acceso a Skool y podés entrenar esa misma tarde. Lo primero que vas a ver son los videos donde te explico cómo funciona todo, y de ahí directo a la sesión 1.",
+      "Prácticamente en el día. No hay fechas de inicio ni grupos que esperar: apenas veo tu comprobante te mando el acceso a Skool —tardo menos de 24 horas y casi siempre mucho menos— y arrancás. Lo primero que vas a ver son los videos donde te explico cómo funciona todo, y de ahí directo a la sesión 1.",
   },
   {
     question: "¿Hay clases en vivo o llamadas conmigo?",
     answer:
-      "No, y prefiero decírtelo de entrada. El reto es 100% grabado, y eso es a propósito: entrenás cuando vos podés, no cuando puedo yo. Los videos son cortos —te muestran el ejercicio, no te acompañan en tiempo real—. Lo que sí tenés es contacto conmigo por WhatsApp y por la comunidad de Skool, y ahí te respondo consultas y te corrijo la técnica de los videos que subas. Si lo que buscás es trabajo en vivo y atención uno a uno, eso es la asesoría 1:1.",
+      "No, y prefiero decírtelo de entrada. El Flex Program es 100% grabado, y eso es a propósito: entrenás cuando vos podés, no cuando puedo yo. Los videos son cortos —te muestran el ejercicio, no te acompañan en tiempo real—. Lo que sí tenés es contacto conmigo por WhatsApp y por la comunidad de Skool, y ahí te respondo consultas y te corrijo la técnica de los videos que subas. Si lo que buscás es trabajo en vivo y atención uno a uno, eso es la asesoría 1:1.",
   },
   {
     question: "¿Cómo hago si un ejercicio no me sale?",
@@ -114,27 +114,27 @@ export const FAQS: FaqItem[] = [
   {
     question: "¿Es un plan personalizado para mí?",
     answer:
-      "No. El plan de entrenamiento es el mismo para todas las que hacen el reto. Lo que sí es tuyo es la devolución sobre tu técnica y las respuestas a lo que preguntes. Si buscás un plan armado desde cero para tu caso, con más días de entrenamiento, objetivos puntuales y contacto directo conmigo, eso es la asesoría 1:1: son pocos lugares y lo hablamos por WhatsApp.",
+      "No. El plan de entrenamiento es el mismo para todas las que hacen el Flex Program. Lo que sí es tuyo es la devolución sobre tu técnica y las respuestas a lo que preguntes. Si buscás un plan armado desde cero para tu caso, con más días de entrenamiento, objetivos puntuales y contacto directo conmigo, eso es la asesoría 1:1: son pocos lugares y lo hablamos por WhatsApp.",
   },
   {
     question: "¿Cómo pago?",
     answer:
-      "Con MercadoPago, en la misma web. Es una suscripción con débito automático: elegís el medio de pago una vez y se cobra solo todos los meses. No hace falta que transfieras ni que me mandes ningún comprobante.",
-  },
-  {
-    question: "Me apareció un cargo chico que no reconozco. ¿Qué es?",
-    answer:
-      "Es de MercadoPago y se devuelve solo. Cuando te suscribís hacen un cobro mínimo para verificar que la tarjeta esté activa, y después te lo reintegran. No es un cobro mío y no tenés que hacer nada.",
-  },
-  {
-    question: "¿Y si un mes se me rechaza el cobro?",
-    answer:
-      "No pasa nada de entrada. MercadoPago lo reintenta solo varias veces durante los diez días siguientes, así que la mayoría de las veces se destraba sin que te enteres. Si después de un par de días sigue rechazado te escribo para que actualices el medio de pago, porque suele ser una tarjeta vencida o sin límite. Y si el cobro no entra durante tres meses seguidos, MercadoPago da de baja la suscripción por su cuenta.",
+      "Por transferencia. En la página de compra están el alias y el CVU de mi cuenta de Mercado Pago: transferís el monto del plan que elegiste y me mandás el comprobante por WhatsApp con tu nombre y tu email. Con eso te doy el acceso yo misma. No hay tarjetas ni débito automático: por ahora prefiero hacerlo así, hablando con cada una.",
   },
   {
     question: "¿Se renueva solo? ¿Me van a debitar todos los meses?",
     answer:
-      "Sí. Es una suscripción, así que MercadoPago debita el importe cada mes y tu acceso sigue activo sin que tengas que hacer nada. Cancelás cuando quieras desde tu cuenta de MercadoPago, sin llamar a nadie y sin dar explicaciones. Si entrás con el precio del grupo fundador, ese precio te queda congelado mientras no canceles.",
+      "No, y es a propósito. No hay débito automático ni tarjeta guardada en ningún lado: cuando se acerca el vencimiento te escribo, y si querés seguir hacés la transferencia del mes siguiente. Si no querés seguir, no hacés nada y listo. Si entrás con el precio de lanzamiento, ese precio te lo respeto mientras no cortes.",
+  },
+  {
+    question: "¿Cuánto tardás en darme el acceso?",
+    answer:
+      "Menos de 24 horas, y en general mucho menos. El único caso en el que puede demorar un poco más es si transferís de madrugada o un domingo: te contesto igual, apenas veo el mensaje.",
+  },
+  {
+    question: "¿Y si quiero dar de baja?",
+    answer:
+      "No tenés que cancelar nada: como no hay débito automático, si no transferís el mes siguiente simplemente se termina. Si querés avisarme, escribime por WhatsApp y listo, sin explicaciones y sin que te intente convencer de lo contrario.",
   },
   {
     question: "¿Cómo está armado el plan y cómo avanzo de nivel?",
@@ -144,7 +144,7 @@ export const FAQS: FaqItem[] = [
   {
     question: "¿Cómo es el plan trimestral?",
     answer:
-      "Pagás tres meses de una vez, a un precio menor que mes a mes, y entrenás a tu ritmo durante ese tiempo. No son tres niveles cerrados: los niveles se te van desbloqueando según cómo vayas avanzando, así que si necesitás más tiempo en el B1 no perdés nada, y si volás pasás antes al siguiente.",
+      "Transferís tres meses de una vez, a un precio menor que mes a mes, y entrenás a tu ritmo durante ese tiempo. No son tres niveles cerrados: los niveles se te van desbloqueando según cómo vayas avanzando, así que si necesitás más tiempo en el B1 no perdés nada, y si volás pasás antes al siguiente.",
   },
   {
     question: "¿Y si me voy de viaje o tengo una semana imposible?",

@@ -2,7 +2,6 @@ import { FAQS } from "@/content/offer";
 import {
   CHALLENGE,
   ENROLLMENT_OPEN,
-  FOUNDING,
   formatARS,
 } from "@/lib/products";
 import { publicEnv } from "@/lib/env";
@@ -18,9 +17,11 @@ export function organizationJsonLd() {
     alternateName: SITE.shortBrand,
     url: BASE_URL,
     email: SITE.email,
+    taxID: SITE.cuit,
     founder: { "@type": "Person", name: SITE.ownerName },
     address: {
       "@type": "PostalAddress",
+      ...(SITE.fiscalAddress ? { streetAddress: SITE.fiscalAddress } : {}),
       addressLocality: "Rosario",
       addressRegion: "Santa Fe",
       addressCountry: "AR",
@@ -70,6 +71,6 @@ export function faqJsonLd() {
 export function homeDescription(): string {
   const price = formatARS(CHALLENGE.priceARS);
   return ENROLLMENT_OPEN
-    ? `Entrenamiento online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, con el seguimiento de Pía. Empezás el día que entrás. ${price} por mes para las primeras ${FOUNDING.spotsTotal} del grupo fundador.`
+    ? `Entrenamiento online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, con el seguimiento de Pía. Empezás el día que entrás. ${price} por mes, precio de lanzamiento.`
     : `Entrenamiento online para mujeres que trabajan 8 horas o más. Tres sesiones por semana, con el seguimiento de Pía. Inscripción cerrada por ahora — anotate y te aviso.`;
 }

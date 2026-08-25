@@ -7,11 +7,8 @@ import {
   Users,
   WhatsappLogo,
 } from "@phosphor-icons/react/dist/ssr";
+import { CopyField } from "@/components/ui/CopyField";
 import { CONTACT } from "@/lib/site";
-import {
-  CheckoutForm,
-  type CheckoutPlanOption,
-} from "@/components/checkout/CheckoutForm";
 import {
   CHALLENGE,
   ENROLLMENT_OPEN,
@@ -19,16 +16,24 @@ import {
   FOUNDING,
   FOUNDING_SPOTS_LEFT,
   QUARTERLY_DISCOUNT_PCT,
-  SUBSCRIPTION,
+  RENEWAL,
+  TRANSFER,
   VISIBLE_PLANS,
+  formatARS,
 } from "@/lib/products";
 
 export const metadata: Metadata = {
-  title: `Suscribite ${CHALLENGE.shortName}`,
-  description: `Cómo suscribirte ${CHALLENGE.shortName} con débito automático por ${SUBSCRIPTION.provider} y recibir el acceso.`,
+  title: `Entrá ${CHALLENGE.shortName}`,
+  description: `Cómo pagar ${CHALLENGE.shortName} por transferencia bancaria y recibir el acceso en ${TRANSFER.responseWindow}.`,
   robots: { index: false, follow: true },
 };
 
+/**
+ * Página de compra. Cobro por transferencia y alta manual: no hay pasarela,
+ * no hay redirección de vuelta y no hay página de gracias. El circuito
+ * termina en WhatsApp, que es donde Pía confirma el comprobante y da el
+ * acceso a Skool. Ver TRANSFER en @/lib/products.
+ */
 export default function ComprarPage() {
   if (!ENROLLMENT_OPEN) {
     return (
@@ -53,29 +58,6 @@ export default function ComprarPage() {
     );
   }
 
-  /* El endpoint sale de acá, no del cliente: el importe de cada plan lo pone
-     el servidor desde products.ts. Si el plan viniera del formulario, alguien
-     podría suscribirse al trimestral pagando el mensual. */
-  const CHECKOUT_ENDPOINTS: Record<string, string> = {
-    "nivel-mensual": "/api/checkout/suscripcion",
-    trimestral: "/api/checkout/pack",
-  };
-
-  const planOptions: CheckoutPlanOption[] = VISIBLE_PLANS.filter(
-    (plan) => plan.id in CHECKOUT_ENDPOINTS,
-  ).map((plan) => ({
-    id: plan.id,
-    name: plan.name,
-    priceARS: plan.priceARS,
-    frequencyLabel: plan.frequencyLabel,
-    summary: plan.summary,
-    endpoint: CHECKOUT_ENDPOINTS[plan.id],
-    note:
-      plan.id === "trimestral"
-        ? `${QUARTERLY_DISCOUNT_PCT}% menos que pagando mes a mes`
-        : "",
-  }));
-
   return (
     <section className="container-page section-pad max-w-2xl">
       <Link
@@ -91,16 +73,45 @@ export default function ComprarPage() {
       </h1>
 
       <p className="mt-4 text-base leading-relaxed text-mp-carbon/80">
-        Empezás el día que entrás: el acceso te llega apenas se confirma el
-        pago, sin esperar a que arranque ningún grupo.
+        Transferís, me mandás el comprobante por WhatsApp y te doy el acceso en{" "}
+        {TRANSFER.responseWindow}. Sin esperar a que arranque ningún grupo.
         {FOUNDING.active && FOUNDING_SPOTS_LEFT > 0
-          ? ` Este es el precio del grupo fundador: son ${FOUNDING.spotsTotal} lugares, quedan ${FOUNDING_SPOTS_LEFT}, y el precio te queda congelado mientras sigas suscripta.`
-          : ""}
+          ? ` Este es el precio del grupo fundador: son ${FOUNDING.spotsTotal} lugares, quedan ${FOUNDING_SPOTS_LEFT}, y te lo respeto mientras sigas renovando.`
+          : " Es el precio de lanzamiento, y te lo respeto mientras sigas renovando."}
       </p>
 
-      <div className="mt-8">
-        <CheckoutForm plans={planOptions} />
-      </div>
+      <h2 className="mt-10 font-display text-lg font-bold text-mp-ink md:text-xl">
+        Elegí cómo entrar
+      </h2>
+
+      <ul className="mt-4 flex flex-col gap-4">
+        {VISIBLE_PLANS.map((plan) => (
+          <li
+            key={plan.id}
+            className="flex flex-col gap-3 rounded-[var(--radius-card)] border border-mp-line p-6"
+          >
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="font-display text-sm font-semibold text-mp-ink">
+                {plan.name}
+              </span>
+              <span className="font-display text-2xl font-extrabold text-mp-ink md:text-3xl">
+                {formatARS(plan.priceARS)}
+                <span className="ml-1 text-sm font-semibold text-mp-carbon/70">
+                  {plan.frequencyLabel}
+                </span>
+              </span>
+            </div>
+            <p className="text-sm leading-relaxed text-mp-carbon/80">
+              {plan.summary}
+            </p>
+            {plan.id === "trimestral" && (
+              <p className="font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-ember">
+                {QUARTERLY_DISCOUNT_PCT}% menos que pagando mes a mes
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
 
       <ol className="mt-12 flex flex-col gap-8">
         <li className="flex flex-col gap-4">
@@ -109,13 +120,16 @@ export default function ComprarPage() {
               1
             </span>
             <h2 className="font-display text-lg font-bold text-mp-ink md:text-xl">
-              Te suscribís con {SUBSCRIPTION.provider}
+              Transferí el monto de tu plan
             </h2>
           </div>
-          <p className="text-sm leading-relaxed text-mp-carbon/80">
-            Elegís tu medio de pago una sola vez y queda configurado el débito
-            automático. Sin transferencias y sin mandarme ningún comprobante.
-          </p>
+
+          <div className="rounded-[var(--radius-card)] border border-mp-line px-5">
+            <CopyField label="Alias" value={TRANSFER.alias} />
+            <CopyField label="CVU" value={TRANSFER.cvu} />
+            <CopyField label="Titular" value={TRANSFER.holder} />
+            <CopyField label="Banco o billetera" value={TRANSFER.bank} />
+          </div>
         </li>
 
         <li className="flex flex-col gap-4">
@@ -124,13 +138,24 @@ export default function ComprarPage() {
               2
             </span>
             <h2 className="font-display text-lg font-bold text-mp-ink md:text-xl">
-              Recibís el acceso a Skool
+              Mandame el comprobante
             </h2>
           </div>
           <p className="text-sm leading-relaxed text-mp-carbon/80">
-            Ahí están las rutinas, los videos de cada ejercicio y la comunidad
-            donde subís tus videos de técnica y preguntás lo que necesites.
+            El botón abre WhatsApp con el mensaje ya escrito. Adjuntá el
+            comprobante y completá tu nombre, tu email y qué plan elegiste: los
+            necesito para darte el acceso. Usá el email con el que vas a crear
+            tu cuenta de Skool.
           </p>
+          <a
+            href={CONTACT.receiptUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-mp-ink px-6 py-4 font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-canvas transition-transform hover:scale-[0.99] active:scale-[0.98]"
+          >
+            <WhatsappLogo weight="fill" className="h-5 w-5" aria-hidden="true" />
+            Ya transferí — enviar comprobante
+          </a>
         </li>
 
         <li className="flex flex-col gap-4">
@@ -139,12 +164,13 @@ export default function ComprarPage() {
               3
             </span>
             <h2 className="font-display text-lg font-bold text-mp-ink md:text-xl">
-              Entrenás ese mismo día
+              Te doy el acceso y entrenás ese mismo día
             </h2>
           </div>
           <p className="text-sm leading-relaxed text-mp-carbon/80">
-            Mirás los videos de arranque, abrís la sesión 1 y empezás. Tres
-            sesiones por semana, de 30 a 60 minutos cada una.
+            Te mando la invitación a Skool por WhatsApp, mirás los videos de
+            arranque y abrís la sesión 1. Tres sesiones por semana, de 30 a 60
+            minutos cada una.
           </p>
         </li>
       </ol>
@@ -158,9 +184,11 @@ export default function ComprarPage() {
           />
           <p className="text-sm leading-relaxed text-mp-carbon">
             <span className="font-display font-semibold text-mp-ink">
-              Se renueva solo todos los meses.
+              No se renueva solo.
             </span>{" "}
-            {SUBSCRIPTION.cancelNote}
+            No hay débito automático ni tarjeta guardada: tenés{" "}
+            {RENEWAL.accessDays} días de acceso por cada mes que transferís.
+            Antes de que se venza te escribo, y seguís sólo si querés.
           </p>
         </div>
 
@@ -190,15 +218,15 @@ export default function ComprarPage() {
                 {FOUNDING.label}: quedan {FOUNDING_SPOTS_LEFT} de{" "}
                 {FOUNDING.spotsTotal} lugares.
               </span>{" "}
-              Cuando se completa el cupo el precio sube, pero el tuyo no: te
-              queda congelado mientras no canceles.
+              Cuando se completa el cupo el precio sube, pero el tuyo no: te lo
+              respeto mientras sigas renovando.
             </p>
           </div>
         )}
       </div>
 
       <p className="mt-8 text-xs leading-relaxed text-mp-carbon/70">
-        Al suscribirte aceptás los{" "}
+        Al contratar aceptás los{" "}
         <Link href="/terminos-condiciones" className="underline underline-offset-2">
           Términos y Condiciones
         </Link>{" "}

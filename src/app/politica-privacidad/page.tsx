@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage, LegalSection } from "@/components/legal/LegalPage";
-import { SITE } from "@/lib/site";
+import { LEGAL_ADDRESS, SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Política de Privacidad",
@@ -12,22 +12,22 @@ export default function PoliticaPrivacidadPage() {
   return (
     <LegalPage
       title="Política de Privacidad"
-      updatedAt="4 de agosto de 2026"
+      updatedAt="25 de agosto de 2026"
       intro="Esta política explica qué datos personales recolectamos, para qué los usamos, con quién los compartimos y cómo podés ejercer tus derechos. Se rige por la Ley 25.326 de Protección de los Datos Personales de la República Argentina."
     >
       <LegalSection heading="1. Responsable del tratamiento">
         <p>
-          {SITE.ownerName} ({SITE.fiscalName}), con domicilio en {SITE.city},{" "}
-          {SITE.country}. Correo electrónico de contacto: {SITE.email}.
+          {SITE.fiscalName}, CUIT {SITE.cuit}, con domicilio en{" "}
+          {LEGAL_ADDRESS}. Correo electrónico de contacto: {SITE.email}.
         </p>
       </LegalSection>
 
       <LegalSection heading="2. Qué datos recolectamos">
         <p>
           <strong>Datos de contacto y contratación:</strong> nombre y apellido,
-          correo electrónico, número de teléfono o WhatsApp, y los datos de tu
-          suscripción que nos informa MercadoPago (estado del pago, fecha y
-          monto debitado).
+          correo electrónico, número de teléfono o WhatsApp, y los datos del
+          pago que nos enviás al contratar (comprobante de la transferencia,
+          fecha, monto y plan elegido).
         </p>
         <p>
           <strong>Datos de salud y actividad física:</strong> si durante la
@@ -43,10 +43,12 @@ export default function PoliticaPrivacidadPage() {
           efímeros y no se almacena de forma persistente.
         </p>
         <p>
-          <strong>No recolectamos datos de tarjetas ni bancarios.</strong> El
-          pago y el débito automático los procesa íntegramente MercadoPago en
-          su propia plataforma: nosotras no vemos ni almacenamos el número de
-          tu tarjeta ni tus credenciales bancarias.
+          <strong>No recolectamos datos de tarjetas ni credenciales
+          bancarias.</strong> El pago se hace por transferencia desde tu propio
+          banco o billetera virtual: no hay ningún formulario de pago en este
+          sitio, no vemos tus claves y no guardamos ningún medio de pago tuyo.
+          Del comprobante que nos mandás sólo conservamos el dato de que la
+          transferencia se acreditó.
         </p>
       </LegalSection>
 

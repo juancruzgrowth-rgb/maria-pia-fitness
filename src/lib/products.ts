@@ -13,12 +13,13 @@ const PRICE_ARS = 55000;
 /**
  * El método. Naming aprobado el 2026-08-17 (propuesta de Daiana).
  *
- * Arquitectura de marca: el método está POR ENCIMA de la oferta. "El Reto"
- * es lo que se compra; "Mi Método 4F" es el sistema, y sobrevive a que el reto
- * cambie de formato. Ver docs/estrategia/11-metodo-4f.md.
+ * Arquitectura de marca: el método está POR ENCIMA de la oferta. El "Flex
+ * Program" es lo que se compra; "Mi Método 4F" es el sistema, y sobrevive a
+ * que el programa cambie de nombre o de formato —ya pasó dos veces—.
+ * Ver docs/estrategia/11-metodo-4f.md.
  *
  * El "Mi" es la firma de Pía: funciona cuando habla ella, no en un botón
- * de compra. Los CTA siguen hablando del reto.
+ * de compra. Los CTA siguen hablando del programa.
  */
 export const METHOD = {
   name: "Mi Método 4F",
@@ -63,16 +64,19 @@ export interface Challenge {
 }
 
 /**
- * Naming actualizado el 2026-08-21 por pedido de Pía: se cae "28 días" de todo
- * el copy público. El plan sigue estructurado por bloques mensuales, pero la
- * duración deja de ser la promesa: lo que se compra es un proceso que sigue
- * mientras la clienta avanza de nivel, no un programa que termina.
- * Nombre elegido: "El Reto", a secas.
+ * Naming actualizado el 2026-08-25 por pedido de Pía: "El Reto" pasa a
+ * llamarse "Flex Program". El producto no cambia —tres sesiones por semana y
+ * niveles que se desbloquean por avance—: cambia el nombre con el que se
+ * vende. "Reto" prometía un esfuerzo con fecha de fin; "Flex" habla de lo
+ * único que la clienta no tiene, que es tiempo.
+ *
+ * Antes de 2026-08-21 el nombre incluía "28 días". Se cayó por lo mismo: la
+ * duración no es la promesa.
  */
 export const CHALLENGE: Challenge = {
-  id: "el-reto",
-  name: "El Reto",
-  shortName: "el Reto",
+  id: "flex-program",
+  name: "Flex Program",
+  shortName: "el Flex Program",
   promise:
     "Volver a entrenar y sostenerlo con tres sesiones por semana, sin renunciar a tu trabajo ni a tu vida.",
   forWhom:
@@ -146,20 +150,47 @@ export const EQUIPMENT = {
 } as const;
 
 /**
- * Suscripción con débito automático por MercadoPago. Confirmado el 2026-08-21.
+ * Cobro por transferencia bancaria. Decisión de Pía del 2026-08-25.
  *
- * Reemplaza al cobro por transferencia: se cobra solo todos los meses y la
- * clienta cancela cuando quiere desde MercadoPago. Eso es lo que hace que el
- * producto pueda leerse como un proceso largo en vez de como un programa
- * con fecha de vencimiento.
+ * Vuelve a ser el único medio de pago y reemplaza a la suscripción con débito
+ * automático de MercadoPago, que quedó construida y se borró del código: está
+ * en el historial de git (commit fc8b826) para cuando haga falta escalar.
+ *
+ * El primer grupo se atiende a mano y a propósito: la clienta transfiere, le
+ * manda el comprobante por WhatsApp y Pía le da el acceso a Skool ella misma.
+ * El trato personalizado es parte de la oferta mientras el grupo sea chico.
+ *
+ * Datos de cobro confirmados el 2026-08-25 contra la constancia de CVU que
+ * pasó Pía. Cualquier cambio acá se verifica contra el documento original: un
+ * dígito mal manda la plata de una clienta a la cuenta de otra persona.
  */
-export const SUBSCRIPTION = {
-  provider: "MercadoPago",
-  /** Cada cuánto se debita. */
+export const TRANSFER = {
+  alias: "cepmoretto.mp",
+  /**
+   * Es un CVU, no un CBU: la cuenta es de Mercado Pago, no de un banco. Se
+   * etiqueta como CVU en /comprar porque es lo que va a buscar la clienta en
+   * la pantalla de transferencia de su app.
+   */
+  cvu: "0000003100019693666879",
+  holder: "María Pía Moretto",
+  bank: "Mercado Pago",
+  /** Cuánto tarda Pía en confirmar el comprobante y dar el acceso. */
+  responseWindow: "menos de 24 horas",
+} as const;
+
+/**
+ * Renovación. Sin débito automático no se renueva sola: cada período la
+ * clienta vuelve a transferir, y el aviso lo manda Pía por WhatsApp.
+ *
+ * `accessDays` es la duración del acceso del plan mensual. El trimestral dura
+ * tres veces eso. Los días de aviso son los que Pía usa para escribir antes
+ * de que se venza, no una automatización: hoy no hay ninguna corriendo.
+ */
+export const RENEWAL = {
+  manual: true,
+  accessDays: 30,
+  reminderDays: [25, 28],
   frequencyLabel: "por mes",
-  autoRenews: true,
-  cancelNote:
-    "Cancelás cuando quieras desde MercadoPago, sin llamar a nadie ni dar explicaciones.",
 } as const;
 
 export interface Plan {
@@ -177,11 +208,10 @@ export interface Plan {
  * Precio del plan trimestral: 3 meses de entrenamiento al ritmo de cada una,
  * NO un pack de 3 niveles. Los niveles se desbloquean por avance real.
  *
- * TODO(B21): PRECIO SIN CONFIRMAR. Se reusa el importe que Pía había aprobado
- * el 2026-08-18 para el pack de 3 niveles. Contra 3 x $55.000 = $165.000 el
- * descuento es real y por eso se puede anunciar sin violar el art. 8 de la
- * Ley 24.240. Confirmar con Pía antes de publicar, y nunca fijarlo por encima
- * de PRICE_ARS * 3.
+ * Confirmado por Pía el 2026-08-25. Contra 3 x $55.000 = $165.000 el descuento
+ * es real y por eso se puede anunciar sin violar el art. 8 de la Ley 24.240.
+ * Nunca fijarlo por encima de PRICE_ARS * 3: ahí el "21% menos" pasa a ser
+ * falso y el cartel se vuelve publicidad engañosa.
  */
 const QUARTERLY_PRICE_ARS = 130000;
 
@@ -191,21 +221,22 @@ export const QUARTERLY_DISCOUNT_PCT = Math.round(
 );
 
 /**
- * Formas de comprar el reto. La asesoría 1:1 no entra acá: se vende aparte.
+ * Formas de comprar el programa. La asesoría 1:1 no entra acá: se vende
+ * aparte.
  *
- * Los `id` los usa la automatización de cobro para calcular el monto de cada
- * venta (ver docs/setup/n8n/). No renombrarlos sin actualizar los flujos.
+ * Los `id` los heredan los flujos de n8n, que hoy están apagados. Se
+ * conservan igual: si alguna vez se retoman, renombrarlos obliga a tocarlos.
  */
 export const PLANS: Plan[] = [
   {
     /* El id lo consumen los flujos de n8n: no renombrar sin tocarlos. */
     id: "nivel-mensual",
-    name: "Suscripción mensual",
+    name: "Plan mensual",
     priceARS: PRICE_ARS,
     frequencyLabel: "por mes",
     visible: true,
     summary:
-      "Débito automático por MercadoPago. Entrenás, avanzás de nivel y seguís mientras te sirva. Cancelás cuando quieras.",
+      "Un mes de entrenamiento. Transferís, me mandás el comprobante y te doy el acceso. Si querés seguir, al mes siguiente volvés a transferir.",
   },
   {
     id: "trimestral",
@@ -214,7 +245,7 @@ export const PLANS: Plan[] = [
     frequencyLabel: "cada 3 meses",
     visible: true,
     summary:
-      "Tres meses por adelantado, a un precio menor que mes a mes. Entrenás a tu ritmo y vas desbloqueando los niveles a medida que avanzás.",
+      "Tres meses por adelantado, en una sola transferencia y a un precio menor que mes a mes. Entrenás a tu ritmo y vas desbloqueando los niveles a medida que avanzás.",
   },
 ];
 
@@ -225,20 +256,20 @@ export const VISIBLE_PLANS = PLANS.filter((plan) => plan.visible);
  *
  * Decisión comercial (2026-08-13): NO se publica el precio en la web. A este
  * ticket la venta necesita conversación, y mostrar $280.000 al lado de $55.000
- * convierte al reto en "la opción barata" en vez de "la opción correcta".
+ * convierte al programa en "la opción barata" en vez de "la opción correcta".
  * Los precios viven acá igual porque este archivo es el single source of truth,
  * pero ningún componente los renderiza.
  *
- * Lo que separa la asesoría del reto (2026-08-18): acá el plan se arma para tu
- * caso y Pía te atiende por WhatsApp de forma directa. En el reto el plan es
- * el mismo para todas y la consulta va a Skool. Si esa línea se borra, la
- * asesoría deja de justificar su precio.
+ * Lo que separa la asesoría del programa (2026-08-18): acá el plan se arma
+ * para tu caso y Pía te atiende por WhatsApp de forma directa. En el Flex
+ * Program el plan es el mismo para todas y la consulta va a Skool. Si esa
+ * línea se borra, la asesoría deja de justificar su precio.
  */
 export const ADVISORY = {
   name: "Asesoría 1:1",
   priceARS: 280000,
   priceWithNutritionARS: 350000,
-  /** Mensual, como el reto. Arranca en 5 lugares para medir la carga real. */
+  /** Mensual, como el programa. Arranca en 5 lugares para medir la carga real. */
   spotsTotal: 5,
   showPrice: false,
   includes: [
@@ -252,22 +283,20 @@ export const ADVISORY = {
 } as const;
 
 /**
- * Grupo fundador. Confirmado por Pía el 2026-08-21.
+ * Grupo fundador. APAGADO por decisión de Pía el 2026-08-25.
  *
- * La escasez es el cupo, no una fecha: 20 lugares al precio fundador, y ese
- * precio queda CONGELADO para las fundadoras mientras no cancelen la
- * suscripción. Cuando se llenan los 20, el precio sube para las que entren
- * después.
+ * El contador de lugares se cae de toda la web. El motivo es operativo, no
+ * comercial: `spotsTaken` se actualiza a mano y nadie iba a acordarse de
+ * hacerlo, y un cartel que dice "quedan 20" para siempre es un cupo inventado
+ * —publicidad engañosa, art. 8 de la Ley 24.240—.
  *
- * `spotsTaken` se actualiza a mano a medida que entran clientas. Es un dato
- * público: si dice 14 tienen que ser 14 de verdad, porque un cupo inventado es
- * publicidad engañosa (art. 8, Ley 24.240).
- *
- * El lanzamiento en redes es el 30/08, pero la web ya vende: quien llegue
- * antes entra igual y ocupa lugar.
+ * El mecanismo queda entero por si vuelve: poner `active: true` y mantener
+ * `spotsTaken` al día alcanza para que reaparezca en el hero, en el bloque de
+ * precio, en la barra de compra y en /comprar. Con `active: false` no se
+ * renderiza en ningún lado.
  */
 export const FOUNDING = {
-  active: true,
+  active: false,
   label: "Grupo fundador",
   spotsTotal: 20,
   spotsTaken: 0,
@@ -314,5 +343,5 @@ export function formatARS(amount: number): string {
 }
 
 export const CTA_LABEL = ENROLLMENT_OPEN
-  ? "Quiero entrar al reto"
+  ? "Quiero entrar al Flex Program"
   : "Anotarme para la próxima";

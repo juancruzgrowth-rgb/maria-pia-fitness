@@ -6,11 +6,12 @@ import { CHALLENGE, CTA_LABEL, ENROLLMENT_OPEN } from "@/lib/products";
  *
  * En el trato hablamos de "Pía" a secas, no de "María Pía": es más cercano y
  * más corto, y es como firma. "Pía Moretto" queda para la marca — la firma
- * completa, el pie de página y los datos legales.
+ * completa y el pie de página.
  *
- * TODO(legal): `fiscalName` tiene que ser el nombre que figura en la
- * constancia de AFIP, no el nombre comercial. Confirmar con ella antes de
- * publicar las páginas legales.
+ * `fiscalName` es el nombre de la titular de la cuenta donde cobra, tomado de
+ * la constancia de CVU (2026-08-25). Es el que va en las páginas legales y el
+ * que la clienta ve al transferir: si los dos no coinciden, la transferencia
+ * parece ir a un desconocido.
  */
 export const SITE = {
   brand: "Pía Moretto",
@@ -22,12 +23,33 @@ export const SITE = {
   fullName: "Pía Moretto",
   city: "Rosario, Santa Fe",
   country: "Argentina",
-  email: "hola@piamoretto.com",
-  fiscalName: "Pía Moretto",
+  email: "comunidad.piamoretto@gmail.com",
+  fiscalName: "María Pía Moretto",
+  /**
+   * CUIT de la constancia de CVU. Publicado en las páginas legales por
+   * decisión del 2026-08-25: identifica a la responsable del tratamiento
+   * (Ley 25.326) y a la prestadora del servicio (Ley 24.240).
+   */
+  cuit: "27-34820345-8",
+  /**
+   * Domicilio del centro de entrenamiento, que es el domicilio comercial que
+   * se declara en las páginas legales. Calle y número: `city` sola no alcanza
+   * para un domicilio legal.
+   *
+   * TODO(B29): FALTA LA DIRECCIÓN EXACTA. Con la cadena vacía las páginas caen
+   * a "Rosario, Santa Fe" y siguen siendo válidas, así que esto no rompe nada
+   * — pero completarlo antes de la revisión del abogado.
+   */
+  fiscalAddress: "",
 } as const;
 
+/** Domicilio para las páginas legales. Calle y número si lo tenemos; si no, la ciudad. */
+export const LEGAL_ADDRESS = SITE.fiscalAddress
+  ? `${SITE.fiscalAddress}, ${SITE.city}, ${SITE.country}`
+  : `${SITE.city}, ${SITE.country}`;
+
 export const NAV_SECTIONS = [
-  { id: "el-reto", label: "El reto" },
+  { id: "flex-program", label: "El programa" },
   { id: "que-recibis", label: "Qué recibís" },
   { id: "sobre-mi", label: "Sobre mí" },
   { id: "faq", label: "Preguntas" },
@@ -44,11 +66,26 @@ function waLink(message: string): string {
 const ASK_MESSAGE = `Hola Pía! Vi la web del ${CHALLENGE.name} y tengo una consulta antes de entrar.`;
 
 /**
- * Mensaje precargado para pedir ayuda con el pago.
+ * Mensaje del comprobante. Es EL camino de compra: la clienta transfiere y
+ * manda el comprobante por acá, y Pía le da el acceso a mano.
  *
- * Con la suscripción de MercadoPago el alta es automática y este mensaje deja
- * de ser el camino normal de compra: queda para cuando el débito falla o la
- * clienta no puede pagar con MercadoPago.
+ * Los campos van escritos como líneas a completar porque son exactamente los
+ * datos que Pía necesita para dar el alta: sin el email no puede invitarla a
+ * Skool, y sin el plan no sabe hasta cuándo le corresponde el acceso.
+ */
+const RECEIPT_MESSAGE = [
+  `Hola Pía! Ya hice la transferencia del ${CHALLENGE.name}. Te paso mis datos:`,
+  "",
+  "Mi nombre:",
+  "Mi email:",
+  "Plan que elegí:",
+  "",
+  "(Acá te adjunto el comprobante)",
+].join("\n");
+
+/**
+ * Mensaje para cuando algo del pago no sale. Queda aparte del comprobante
+ * para que Pía distinga de una la venta cerrada del problema a resolver.
  */
 const PAYMENT_HELP_MESSAGE = [
   `Hola Pía! Quiero entrar al ${CHALLENGE.name} y tuve un problema con el pago.`,
@@ -56,6 +93,14 @@ const PAYMENT_HELP_MESSAGE = [
   "Mi nombre:",
   "Mi email:",
   "Qué me pasó:",
+].join("\n");
+
+/** Pedido de baja. Ver /cancelar: la baja también se procesa a mano. */
+const CANCEL_MESSAGE = [
+  `Hola Pía! Quiero dar de baja mi acceso al ${CHALLENGE.name}.`,
+  "",
+  "Mi nombre:",
+  "Mi email:",
 ].join("\n");
 
 /**
@@ -73,12 +118,15 @@ const ADVISORY_MESSAGE = `Hola Pía! Me interesa la asesoría 1:1 y quiero saber
 export const CONTACT = {
   whatsappNumber: cleanedNumber,
   askUrl: waLink(ASK_MESSAGE),
+  receiptUrl: waLink(RECEIPT_MESSAGE),
   paymentHelpUrl: waLink(PAYMENT_HELP_MESSAGE),
+  cancelUrl: waLink(CANCEL_MESSAGE),
   waitlistUrl: waLink(WAITLIST_MESSAGE),
   advisoryUrl: waLink(ADVISORY_MESSAGE),
   /* La comunidad. El link es publico y estable, asi que va con fallback en
-     codigo: si nadie carga la variable en Vercel, /bienvenida sigue mostrando
-     el acceso en pantalla en vez de mandarla a esperar un mail. */
+     codigo. Hoy el acceso lo manda Pia a mano por WhatsApp; esto queda para
+     que cualquier pantalla que necesite el link no dependa de una variable
+     que nadie cargo en Vercel. */
   skoolUrl:
     publicEnv.skoolInviteUrl ||
     "https://www.skool.com/mi-metodo-4f-6827/about",

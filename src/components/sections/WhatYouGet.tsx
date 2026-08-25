@@ -5,7 +5,7 @@ import {
   CHALLENGE,
   FOUNDING,
   FOUNDING_SPOTS_LEFT,
-  SUBSCRIPTION,
+  RENEWAL,
   formatARS,
 } from "@/lib/products";
 
@@ -13,7 +13,7 @@ export function WhatYouGet() {
   return (
     <section
       id="que-recibis"
-      aria-label="Qué incluye el reto"
+      aria-label="Qué incluye el Flex Program"
       className="section-pad border-t border-mp-line"
     >
       <div className="container-page">
@@ -60,15 +60,14 @@ export function WhatYouGet() {
         >
           <div className="flex flex-col gap-2">
             <span className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-mp-carbon/70">
-              {CHALLENGE.name} · {SUBSCRIPTION.frequencyLabel}
+              {CHALLENGE.name} · {RENEWAL.frequencyLabel}
             </span>
             <p className="font-display text-4xl font-extrabold leading-none tracking-tight text-mp-ink md:text-5xl">
               {formatARS(CHALLENGE.priceARS)}
             </p>
             <p className="text-sm text-mp-carbon/80">
-              Suscripción con débito automático por {SUBSCRIPTION.provider}.
-              {" "}
-              {SUBSCRIPTION.cancelNote}
+              Se paga por transferencia. Sin débito automático: cuando se
+              vencen tus {RENEWAL.accessDays} días seguís sólo si querés.
             </p>
           </div>
 

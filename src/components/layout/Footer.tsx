@@ -3,8 +3,8 @@ import { InstagramLogo, TiktokLogo, YoutubeLogo } from "@phosphor-icons/react/di
 import { Logo } from "@/components/ui/Logo";
 import { CONTACT, SITE, NAV_SECTIONS } from "@/lib/site";
 
-/* El botón de arrepentimiento es obligatorio en la home desde que se cobra con
-   débito automático (Res. 424/2020). Va primero para que se vea sin buscarlo. */
+/* El botón de arrepentimiento es obligatorio en la home en toda venta online
+   (Res. 424/2020). Va primero para que se vea sin buscarlo. */
 const LEGAL_LINKS = [
   { href: "/cancelar", label: "Botón de arrepentimiento" },
   { href: "/terminos-condiciones", label: "Términos y Condiciones" },
@@ -50,7 +50,7 @@ export function Footer() {
 
         <nav aria-label="Navegación del sitio" className="flex flex-col gap-4 md:col-span-3">
           <h2 className="text-[11px] uppercase tracking-[0.18em] text-mp-carbon/70">
-            El reto
+            El programa
           </h2>
           <ul className="flex flex-col gap-3">
             {NAV_SECTIONS.map((section) => (

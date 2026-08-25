@@ -1,9 +1,9 @@
 export const HERO = {
-  eyebrow: "EL RETO · 100% ONLINE",
+  eyebrow: "FLEX PROGRAM · 100% ONLINE",
   headlineLead: "No te falta voluntad.",
   headlineAccent: "Te falta un plan que entre en tu semana.",
   description:
-    "El Reto es entrenamiento online para mujeres que no tienen tiempo de sobra, pero sí ganas de sentirse bien. Tres sesiones por semana, con el seguimiento de Pía, y un nivel nuevo cuando completás el anterior.",
+    "El Flex Program es un entrenamiento online para mujeres que buscan optimizar su tiempo diario. Tres sesiones semanales, con seguimiento y acompañamiento profesional. Obtenés un nuevo nivel cuando completás al que estás suscripta.",
   videoBadge: "Te lo explico en 2 minutos",
   videoPosterUrl: "/images/miniatura-presentacion.jpg",
   /** Art direction: en mobile va otra foto de Pía. Ver Hero.tsx. */
