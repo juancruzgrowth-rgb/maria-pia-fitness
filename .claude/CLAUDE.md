@@ -1,29 +1,38 @@
-# MP CEP — Constitución del Proyecto
+# Pía Moretto — Constitución del Proyecto
 
 ## North Star
-Convertir tráfico web y de redes en clientas high-ticket de Maria Pia (MP — Centro de Entrenamiento Personalizado), vendiendo paquetes de entrenamiento/nutrición y agendando llamadas 1:1 vía Calendly.
+Convertir tráfico web y de redes en clientas del **Flex Program** de Pía
+Moretto: entrenamiento online por suscripción para mujeres con poco tiempo,
+más una asesoría 1:1 de ticket alto que se vende conversando por WhatsApp.
 
 ## Tipo
-Web (landing + e-commerce). Fase 2 futura: Automatizaciones de marketing y ventas.
+Web (landing + página de compra). Fase 2 futura: automatizaciones de marketing
+y ventas, cuando Pía pida escalar.
+
+## Cómo se vende hoy (2026-08-25 — decisión de Pía)
+**Todo manual y a propósito.** El primer grupo lo atiende ella misma:
+
+1. La clienta transfiere a la cuenta que muestra `/comprar`.
+2. Manda el comprobante por WhatsApp con nombre, email y plan.
+3. Pía verifica, le manda la invitación a Skool y anota el contacto a mano.
+4. Antes del vencimiento le escribe para renovar. No hay renovación automática.
+
+No hay pasarela de pago, ni webhooks, ni onboarding automatizado, ni CRM. El
+checkout de MercadoPago llegó a estar construido y se borró del código: vive en
+el historial de git (commit `fc8b826`) para cuando haga falta escalar.
 
 ## Stack
-- Next.js 14+ (App Router), TypeScript strict
-- Tailwind CSS con tokens MP
+- Next.js 16 (App Router), TypeScript strict
+- Tailwind CSS v4 con tokens de marca
 - Fraunces (titulares) + Newsreader (texto) + Montserrat (etiquetas/CTAs) — `next/font/google`
-- MercadoPago Checkout Pro (ARS) + Stripe Checkout (USD)
-- Brevo (newsletter, doble opt-in)
-- Google Sheets API (leads + ventas + contactos)
-- Calendly (embed)
-- Phosphor Icons, Embla Carousel, Framer Motion, Zustand, react-hook-form, zod
+- Phosphor Icons, zod
+- Sin pasarela de pago, sin base de datos, sin dependencias de terceros en runtime
 
 ## Integraciones
-- MercadoPago — pagos ARS
-- Stripe — pagos USD
-- Brevo — newsletter
-- Google Sheets — base de datos de leads/ventas
-- Calendly — agenda 1:1
-- WhatsApp — botón flotante (`wa.me`)
-- Instagram — handle `@mp.cep`, embed de reels (oEmbed)
+- WhatsApp — es el canal de venta, de alta y de soporte (`wa.me`)
+- Skool — donde vive el programa; el acceso lo manda Pía a mano
+- Instagram — handle `@mp.cep`
+- Brevo — newsletter (código presente en `src/lib/brevo.ts`, sin usar todavía)
 
 ## Branding (oficial — guía recibida)
 - Lienzo: Blanco Suave `#F5F5F2`
@@ -40,8 +49,8 @@ Web (landing + e-commerce). Fase 2 futura: Automatizaciones de marketing y venta
 - PII de leads/clientas (nombre, email, teléfono) tratada como datos sensibles bajo Ley 25.326
 - Mobile-first obligatorio (audiencia ≈ 80% mobile)
 - Las páginas legales son DRAFTS — requieren revisión por abogado antes de publicar
-- No hardcodear precios fuera de `src/lib/products.ts` (single source of truth)
-- Webhooks (MP / Stripe) DEBEN validar firma antes de escribir a Sheets
+- No hardcodear precios ni datos bancarios fuera de `src/lib/products.ts` (single source of truth)
+- El alias y el CBU de `TRANSFER` son plata real: verificarlos con Pía antes de cada deploy
 
 ## Comandos clave
 ```bash
@@ -52,17 +61,21 @@ npm run lint
 ```
 
 ## Datos identitarios
-- Coach: Maria Pia
+- Coach: Pía Moretto
 - Ubicación: Rosario, Santa Fe, Argentina
-- WhatsApp: +34 625 443 926 (provisorio — confirmar si querés número AR)
+- WhatsApp: el de `NEXT_PUBLIC_WHATSAPP_NUMBER` (número AR de Pía, confirmado)
 - Instagram: https://www.instagram.com/mp.cep
 - TikTok / YouTube: pendientes
-- Calendly: pendiente → configurar en `NEXT_PUBLIC_CALENDLY_URL`
+- Calendly: fuera de alcance — la asesoría 1:1 se agenda por WhatsApp
 
 ## Estado del contenido
-- Logo: tipográfico provisional "MP" hasta recibir SVG oficial
-- Fotos: stock de Pexels — Maria Pia las reemplazará
-- VSL hero: placeholder — pendiente subir video real
-- Reels: provisorios — embeber reales cuando estén disponibles
-- Copy: invención inicial alineada al tono de marca — Maria Pia revisa y ajusta
-- Productos: 4 paquetes inventados editables en `src/lib/products.ts`
+- Logo: monograma `P│M` oficial, ya implementado
+- Fotos y video de presentación: propios de Pía, ya subidos
+- Copy: escrito y revisado con Pía; el naming del producto es **Flex Program** desde 2026-08-25
+- Producto: 2 planes (mensual y trimestral) en `src/lib/products.ts`
+
+## Pendientes bloqueantes para publicar
+- `TRANSFER.alias` y `TRANSFER.cbu` en `src/lib/products.ts` son placeholders.
+  Sin los datos reales de Pía la web no se deploya.
+- Precio del plan trimestral sin confirmar (TODO B21 en `products.ts`).
+- Páginas legales: siguen siendo drafts sin revisión de abogado.

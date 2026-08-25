@@ -7,7 +7,7 @@ import {
   ENROLLMENT_OPEN,
   FOUNDING,
   FOUNDING_SPOTS_LEFT,
-  SUBSCRIPTION,
+  RENEWAL,
   formatARS,
 } from "@/lib/products";
 import { PRIMARY_CTA } from "@/lib/site";
@@ -24,7 +24,7 @@ export function BuyBar() {
       <span className="flex flex-col text-left leading-tight">
         <span className="font-display font-extrabold text-base sm:text-lg">
           {ENROLLMENT_OPEN
-            ? `${formatARS(CHALLENGE.priceARS)} ${SUBSCRIPTION.frequencyLabel}`
+            ? `${formatARS(CHALLENGE.priceARS)} ${RENEWAL.frequencyLabel}`
             : "Lista de espera"}
         </span>
         {/* La urgencia va ACÁ dentro y no debajo de la barra: afuera flota sobre

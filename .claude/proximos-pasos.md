@@ -1,14 +1,51 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-21 (sesión 14)**
-> **Estado del proyecto:** **MercadoPago pasa a ser la única pasarela y WhatsApp deja de estar automatizado** (2026-08-18, sesión 12). El plan completo está en [`docs/estrategia/21-mercadopago-suscripciones.md`](../docs/estrategia/21-mercadopago-suscripciones.md). Antes, en la sesión 11, el producto ya había cambiado de forma: precios nuevos, sin garantía en el marketing, sin cohortes y sin llamadas → [`docs/estrategia/20-reto-siempre-abierto.md`](../docs/estrategia/20-reto-siempre-abierto.md).
+> Última actualización: **2026-08-25 (sesión 15)**
+> **Estado del proyecto:** **lanzamiento casero y manual.** Pía decidió el 2026-08-25 volver al **cobro por transferencia** con alta a mano, y renombrar el producto a **Flex Program**. No hay pasarela, ni webhooks, ni onboarding automatizado, ni CRM: ella atiende el primer grupo por WhatsApp uno a uno, a propósito.
 > **🚀 FECHA DE LANZAMIENTO: 31 de agosto de 2026.**
-> **El checkout de MercadoPago está construido (sesión 14). Lo que falta para publicar son las credenciales (B20) y una compra de prueba en sandbox.**
+> **Sin bloqueantes técnicos: los datos de cobro ya están cargados (2026-08-25).** Falta cargar `NEXT_PUBLIC_WHATSAPP_NUMBER` en Vercel y deployar.
 
 ---
 
-## 🆕 Sesión 14 — el checkout existe
+## 🆕 Sesión 15 — vuelta a lo manual, y el producto cambia de nombre
+
+**Dos decisiones de Pía, tomadas el 2026-08-25:**
+
+1. **Se vuelve al cobro por transferencia.** No tiene tiempo para configurar
+   MercadoPago, y prefiere manejar el primer grupo a mano: que le escriban por
+   WhatsApp, responder ella, mandar el acceso a Skool ella y anotarse el
+   contacto. El trato personalizado es parte de la oferta mientras el grupo
+   sea chico.
+2. **"El Reto" pasa a llamarse "Flex Program"** en todo el copy.
+
+**Qué se construyó:**
+
+| Pieza | Nota |
+|---|---|
+| `/comprar` | Reescrita: los tres planes, alias/CBU/titular con botón de copiar, y el botón que abre WhatsApp con el comprobante. Sin formulario y sin backend |
+| `/cancelar` | Reescrita. Sigue existiendo por Res. 424/2020, pero ahora explica que no hay nada que cancelar —sin débito automático, no renovar alcanza— y ofrece WhatsApp y mail |
+| Copy | Hero, cómo funciona, qué recibís, FAQ, T&C y Política de Privacidad reescritos para transferencia + alta manual |
+| Naming | `CHALLENGE` pasa a `Flex Program`; la sección `#el-reto` pasa a `#flex-program`; el CTA dice "Quiero entrar al Flex Program" |
+| `TRANSFER` y `RENEWAL` | Vuelven a `products.ts`. `SUBSCRIPTION` se fue |
+| Grupo fundador | **Apagado** (`FOUNDING.active: false`). El contador de lugares se cae de toda la web: se actualizaba a mano y nadie iba a acordarse, y "quedan 20" para siempre es un cupo inventado. El mecanismo queda entero por si vuelve |
+
+**Qué se borró** (todo recuperable — está en el commit `fc8b826`):
+`src/app/api/checkout/**`, `src/app/api/webhooks/**`, `src/app/api/cancelar`,
+`/bienvenida`, `CheckoutForm`, `CancelForm`, `src/lib/mercadopago.ts`,
+`src/lib/checkout.ts`, `src/lib/sheets.ts`, las dependencias `mercadopago` y
+`googleapis`, y las variables de entorno de MercadoPago, n8n y Google.
+
+**El sitio ya no tiene backend:** las 8 rutas son estáticas. `typecheck`,
+`lint` y `build` en verde.
+
+**Lo que queda apagado, no borrado:** los flujos de n8n (`docs/setup/n8n/`), la
+planilla de Google Sheets y los documentos de estrategia 19, 21 y 24. Siguen
+siendo el plan para cuando Pía pida escalar.
+
+---
+
+## Sesión 14 — el checkout de MercadoPago (SUPERADA por la sesión 15)
 
 Construido y verificado con `typecheck`, `lint` y `build` en verde:
 
@@ -75,21 +112,21 @@ Construido y verificado con `typecheck`, `lint` y `build` en verde:
 
 | Tema | Decisión |
 |---|---|
-| Producto | **Reto 28 Días**, no personalizado. Programa 90 días → upsell |
+| **Nombre del producto** | **Flex Program** (2026-08-25). Antes: "El Reto", y antes "Reto 28 Días" ✅ |
 | Nicho | Mujeres que trabajan 8+ h/día |
-| Formato | Se vende como **reto** |
+| Formato | Entrenamiento online por niveles, no personalizado |
 | Métrica principal | **Tasa de finalización** |
-| **Cobro** | ~~Transferencia + comprobante por WhatsApp~~ → **MercadoPago, y sólo MercadoPago (2026-08-18)** ✅ |
-| **Modelo de cobro** | **Suscripción con débito automático** (`preapproval`) para el nivel mensual · **pago único** (`preference`) para el pack de 3 ✅ |
-| **Plan de suscripción** | **Sin plan asociado.** Cada suscripción lleva su propio monto, así que **quien entró a $55.000 se queda en $55.000 para siempre** sin migraciones ✅ |
-| **Activación del onboarding** | ~~Pía responde `OK 1234` por WhatsApp~~ → **el webhook de MercadoPago. Pía sale del circuito** ✅ |
+| **Cobro** | Transferencia → MercadoPago (2026-08-18) → **transferencia + comprobante por WhatsApp otra vez (2026-08-25)**. Pía prefiere manejar el primer grupo a mano ✅ |
+| **Modelo de cobro** | **Sin débito automático.** Se transfiere por período (30 días o 3 meses) y se renueva sólo si la clienta vuelve a transferir ✅ |
+| **Onboarding** | **Manual (2026-08-25).** Pía verifica el comprobante, manda el link de Skool, explica cómo entrar y anota el contacto. Sin automatización ✅ |
+| **Activación del onboarding** | ~~El webhook de MercadoPago~~ → **Pía otra vez, a mano (2026-08-25)** ✅ |
 | **WhatsApp** | **Sólo comunidad, operado a mano. No se automatiza.** Se cae toda la infraestructura de Meta ✅ |
 | **ManyChat** | **Se queda, con alcance acotado:** lead magnets en Instagram y derivación al link de pago. El resto lo responde Pía ✅ |
 | **Garantía** | ~~10 días como argumento de venta~~ → **fuera del marketing (2026-08-18).** El derecho del art. 34 sigue vigente y vive en los T&C ✅ |
 | **Grupos** | ~~Cada 14 días + Semana 0~~ → **SIN COHORTES (2026-08-18).** Cada clienta arranca el día que compra ✅ |
-| **Urgencia** | **Precio fundador con fecha: $55.000 hasta el 30/09**, después sube. Reemplaza a los cupos ✅ |
-| **Renovación** | ~~Aviso el día 25 y el 28, corte el 30~~ → **automática: la cobra MercadoPago.** El circuito de avisos queda **sólo para el pack**, que sí vence en fecha ✅ |
-| **Cancelación** | **Autoservicio obligatorio.** Con débito automático, dar de baja tiene que ser tan fácil como suscribirse, y la Resolución 424/2020 exige botón de arrepentimiento en la home ✅ |
+| **Urgencia** | **Precio fundador por cupo: $55.000 para los primeros 20 lugares**, después sube. `FOUNDING.spotsTaken` se actualiza a mano y tiene que ser verdad (art. 8, Ley 24.240) ✅ |
+| **Renovación** | **Manual (2026-08-25).** 30 días de acceso por mes pagado; Pía avisa antes del vencimiento y la clienta transfiere si quiere seguir ✅ |
+| **Cancelación** | **No hay nada que cancelar:** sin débito automático, no renovar alcanza. `/cancelar` se queda igual — la Res. 424/2020 exige el botón de arrepentimiento en la home en toda venta online ✅ |
 | **Modalidad** | **100% grabado y asincrónico.** Sin llamada de bienvenida, sin sesión grupal ✅ |
 | **Correcciones** | **En Skool, no en el grupo de WhatsApp.** Un lote por semana en día fijo. En WhatsApp se hunden en el scroll y exponen más, y las que no se animan no mandan nada ✅ |
 | **Segmentación de grupos** | **Por nivel (1/2/3), no por plan.** Separar trimestrales crea dos castas; separar por nivel es útil de verdad. Dividir recién a las 40-50 ✅ |
@@ -109,7 +146,7 @@ Construido y verificado con `typecheck`, `lint` y `build` en verde:
 | **Guía de nutrición** | **Estándar, no personalizada.** Explicitado en FAQ y Términos ✅ |
 | **Asesoría 1:1** | **$280.000/mes · $350.000 con nutrición · 5 cupos · sin precio público.** Es el único producto con WhatsApp directo y llamadas — esa es la línea que la separa del reto ✅ |
 | **Acceso a los niveles** | **Ventana de 6 meses · desbloqueo al 80% · una pausa de 30 días** ✅ |
-| **Nombre del método** | **"Mi Método 4F" (Fuerza, Función, Flexibilidad, Foco).** Convive con "Reto 28 Días": el método es el sistema, el reto es la oferta ✅ |
+| **Nombre del método** | **"Mi Método 4F" (Fuerza, Función, Flexibilidad, Foco).** Convive con "Flex Program": el método es el sistema, el programa es la oferta ✅ |
 | **Proveedor de WhatsApp** | **Meta Cloud API (oficial).** Evolution descartado por riesgo de baneo ✅ |
 | **Número de WhatsApp** | **Línea nueva dedicada.** El personal de MP queda intacto — un número en la API deja de funcionar en la app ✅ |
 | **Publicidad paga en el lanzamiento 1** | **No. 100% orgánico.** Sin testimonios no hay con qué anunciar, y son 15 lugares ✅ |
@@ -126,13 +163,16 @@ Construido y verificado con `typecheck`, `lint` y `build` en verde:
 Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
 - [x] ~~**B1 · Precio.**~~ **RESUELTO y actualizado el 2026-08-18:** $55.000 por nivel. Ya cargado en `PRICE_ARS`
-- [x] ~~**B2 · Datos bancarios.**~~ **YA NO APLICA (sesión 12).** No se cobra por transferencia. `TRANSFER` se elimina de `products.ts`
+- [x] ~~**B25 · Datos bancarios de Pía.**~~ **RESUELTO 2026-08-25.** Cuenta de **Mercado Pago** (es un CVU, no un CBU): alias `cepmoretto.mp`, CVU `0000003100019693666879`, titular **María Pía Moretto**. Cargados en `TRANSFER` y verificados contra la constancia. `SITE.fiscalName` pasó a "María Pía Moretto" para que coincida con lo que ve la clienta al transferir
 - [x] ~~**B3 · WhatsApp AR.**~~ **RESUELTO 2026-08-21:** `+54 9 3416 13-4367`. Cargado en `.env.example` y en `.env.local`. **Falta cargarlo en Vercel** (`NEXT_PUBLIC_WHATSAPP_NUMBER=5493416134367`) y redeployar: hasta entonces producción sigue mandando al +34
 - [x] ~~**B4 · Nombre del producto.**~~ **RESUELTO 2026-08-17.** "Reto 28 Días" se queda como nombre de la oferta. Se suma **"Mi Método 4F"** como nombre del método, por encima. Ver `11-metodo-4f.md`
 - [x] ~~**B5 · Fechas del grupo fundador.**~~ **YA NO APLICA (2026-08-18).** Se eliminaron las cohortes: cada clienta arranca el día que compra. Esto desbloqueó de un saque A5, A25 y A26 — que en realidad se cancelaron, porque existían para sostener los grupos
 
-- [ ] **B20 · Credenciales de MercadoPago.** Access token de **test y de producción**, public key, y el **secret del webhook** que se genera en "Tus integraciones". Van directo a Vercel y a n8n — nunca al chat. **Es el bloqueante nuevo para publicar:** sin esto no hay forma de cobrar
-- [ ] **B21 · Condición fiscal de Pía en el panel de MercadoPago.** Es un campo, y separa que le retengan ~3% de que le retengan 20%+. Verificar además IIBB de Santa Fe: el monotributo es nacional y la provincia cobra Ingresos Brutos aparte. Y mirar el tope de la categoría — MercadoPago informa todo a ARCA automáticamente
+- [x] ~~**B20 · Credenciales de MercadoPago.**~~ **YA NO APLICA (sesión 15).** No hay pasarela. Vuelve a hacer falta el día que se escale
+- [ ] **B21 · Situación fiscal de Pía.** Sigue en pie aunque cobre por transferencia: las transferencias entrantes también las ve ARCA. Verificar el tope de la categoría de monotributo y el IIBB de Santa Fe, que se cobra aparte
+- [x] ~~**B26 · Precio del plan trimestral.**~~ **CONFIRMADO 2026-08-25:** $130.000, −21% real contra 3 x $55.000
+- [ ] ⚠️ **B27 · Cómo registra Pía las ventas.** **Queda del lado de Pía, por decisión del 2026-08-25.** Sin planilla automática, alguien tiene que anotar quién pagó, cuándo vence y a quién escribirle. **Riesgo asumido:** si no lo hace, al mes nadie sabe a quién le toca renovar y las renovaciones se pierden en silencio. Es lo primero que se rompe de este modelo
+- [ ] **B28 · Analítica.** El sitio no mide nada: no hay forma de saber cuánta gente llega a `/comprar` y no transfiere, que es justo el número que dice si el paso manual cuesta ventas. Pendiente asumido para después del lanzamiento
 
 - [ ] **B19 · ¿A cuánto sube el precio el 1 de octubre?** **Propuesto: $69.000 el nivel y $165.000 el pack** — +25% sobre el fundador, debajo de la barrera de los $70.000, y mantiene el descuento del pack en 20% exacto, así que el copy no cambia. **Falta que Pía lo apruebe.** No hace falta publicarlo, pero la suba tiene que ocurrir: una promo que no vence nunca es publicidad engañosa (art. 8, Ley 24.240) y quema la próxima fecha que anunciemos
 
@@ -157,8 +197,9 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
 - [x] ~~**B14 · ¿Claro u oscuro?**~~ **RESUELTO 2026-08-17.** Claro, y con el naranja de la paleta original. La piel `pia` combina eso con la tipografía del logotipo. Las dos monocromas quedan sólo como comparación
 - [ ] **B15 · SVG oficial del logotipo.** Exportarlo desde Canva. Hoy el monograma está reconstruido con tipografía web; integrar el oficial son 10 minutos
-- [ ] **B16 · Nombre fiscal real.** `SITE.fiscalName` dice "Pía Moretto", pero las páginas legales necesitan el nombre de la constancia de AFIP
-- [ ] **B17 · Dominio.** El código ya dice `hola@piamoretto.com` y ese dominio **no existe todavía**. Registrarlo o cambiar el mail antes de publicar
+- [x] ~~**B16 · Nombre fiscal real.**~~ **RESUELTO 2026-08-25:** **María Pía Moretto**, CUIT `27-34820345-8` (de la constancia de CVU). **El CUIT SE PUBLICA** en Términos y Política de Privacidad, por decisión del 2026-08-25, y va también como `taxID` en el JSON-LD
+- [ ] **B29 · Dirección exacta del centro de entrenamiento.** Se decidió publicar el domicilio comercial en las páginas legales, pero falta **calle y número**. `SITE.fiscalAddress` está en `""` y las páginas caen a "Rosario, Santa Fe", que es válido pero incompleto. Completar antes de la revisión del abogado
+- [x] ~~**B17 · Mail de contacto.**~~ **RESUELTO 2026-08-25:** `comunidad.piamoretto@gmail.com`. Es el canal de ARCO (Ley 25.326) y de arrepentimiento (Res. 424/2020), así que **Pía tiene que leerlo de verdad**. El dominio propio queda como mejora futura, no bloquea
 - [ ] **B18 · ¿Se licencia Quiche para la web?** Hoy se usa Fraunces como sustituta. Las piezas de Canva seguirían con Quiche. Decisión de marca, no urgente
 
 ### Pendientes de contenido (no bloquean el deploy, sí la venta)

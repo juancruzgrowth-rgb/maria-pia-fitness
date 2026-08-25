@@ -71,22 +71,24 @@ export function Hero() {
               {HERO.description}
             </p>
 
-            {ENROLLMENT_OPEN && FOUNDING.active && (
+            {ENROLLMENT_OPEN && (
               <div className="flex flex-col gap-1.5 rounded-md border border-mp-line p-4">
                 <span className="inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-[0.14em] text-mp-ember">
                   <span
                     aria-hidden="true"
                     className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
                   />
-                  {FOUNDING.label}
+                  {FOUNDING.active ? FOUNDING.label : "Empezás hoy"}
                 </span>
                 <p className="text-sm leading-relaxed text-mp-carbon">
-                  Empezás el día que entrás, no cuando arranque un grupo. Hay{" "}
-                  {FOUNDING.spotsTotal} lugares al precio de lanzamiento
-                  {FOUNDING_SPOTS_LEFT > 0
-                    ? ` —quedan ${FOUNDING_SPOTS_LEFT}—`
-                    : ""}
-                  , y ese precio te queda congelado mientras sigas entrenando.
+                  Empezás el día que entrás, no cuando arranque un grupo.
+                  {FOUNDING.active
+                    ? ` Hay ${FOUNDING.spotsTotal} lugares al precio de lanzamiento${
+                        FOUNDING_SPOTS_LEFT > 0
+                          ? ` —quedan ${FOUNDING_SPOTS_LEFT}—`
+                          : ""
+                      }, y ese precio te queda congelado mientras sigas entrenando.`
+                    : " Entrás al precio de lanzamiento, y te queda congelado mientras sigas entrenando."}
                 </p>
               </div>
             )}
@@ -126,7 +128,7 @@ export function Hero() {
                   playsInline
                   preload="metadata"
                   className="h-full w-full object-contain"
-                  title="Pía explica el método del Reto"
+                  title="Pía explica el método del Flex Program"
                 />
                 <button
                   type="button"

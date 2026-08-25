@@ -23,7 +23,7 @@ export function Method() {
           <p className="text-base leading-relaxed text-mp-carbon/80">
             Cuatro principios que sostienen cada rutina. No son etiquetas: son la
             razón por la que el plan funciona cuando tenés poco tiempo y mucha
-            semana encima. {CHALLENGE.name} es la puerta de entrada.
+            semana encima. El {CHALLENGE.name} es la puerta de entrada.
           </p>
         </RevealOnScroll>
 

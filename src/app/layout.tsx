@@ -91,7 +91,7 @@ export const metadata: Metadata = {
     "entrenar con poco tiempo",
     "rutina de gimnasio para mujeres",
     "entrenar 3 veces por semana",
-    "reto fitness online",
+    "programa fitness online",
     "entrenamiento online Argentina",
     "Pía Moretto entrenadora",
   ],

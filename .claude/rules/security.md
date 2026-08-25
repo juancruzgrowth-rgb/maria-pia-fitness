@@ -1,30 +1,19 @@
-# Seguridad — MP CEP
+# Seguridad — Pía Moretto
 
 ## Variables de Entorno Requeridas
 
 ```bash
 # .env.example
 NEXT_PUBLIC_SITE_URL=
-NEXT_PUBLIC_CALENDLY_URL=
+NEXT_PUBLIC_THEME=
 
-# MercadoPago (ARS)
-MERCADOPAGO_ACCESS_TOKEN=
-NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY=
-MERCADOPAGO_WEBHOOK_SECRET=
+# Acceso a la comunidad (respaldo — hoy lo manda Pía a mano por WhatsApp)
+NEXT_PUBLIC_SKOOL_INVITE_URL=
+NEXT_PUBLIC_WHATSAPP_GROUP_URL=
 
-# Stripe (USD)
-STRIPE_SECRET_KEY=
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-STRIPE_WEBHOOK_SECRET=
-
-# Brevo (newsletter)
+# Brevo (newsletter) — sin usar todavía
 BREVO_API_KEY=
 BREVO_LIST_ID=
-
-# Google Sheets (leads + ventas)
-GOOGLE_SHEETS_SHEET_ID=
-GOOGLE_SERVICE_ACCOUNT_EMAIL=
-GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY=
 
 # Públicas (contacto)
 NEXT_PUBLIC_WHATSAPP_NUMBER=
@@ -33,20 +22,39 @@ NEXT_PUBLIC_TIKTOK_URL=
 NEXT_PUBLIC_YOUTUBE_URL=
 ```
 
+No hay credenciales de pasarela de pago ni service account de Google: desde el
+2026-08-25 el cobro es por transferencia y el alta la hace Pía a mano. Si algún
+día vuelven, están en el historial de git (commit `fc8b826`).
+
+## Datos bancarios
+El alias, el CBU y el titular viven en `TRANSFER`, en `src/lib/products.ts`.
+**No son secretos** —se muestran en `/comprar`— pero sí son críticos: un CBU
+equivocado manda la plata de una clienta a la cuenta de otra persona.
+Verificarlos con Pía antes de cada deploy que los toque.
+
 ## Áreas con Datos Sensibles (PII)
-- Email, nombre y teléfono recolectados por el form de newsletter y de checkout
-- Datos de pago — NUNCA tocamos los datos de tarjeta directamente. Tanto MercadoPago como Stripe manejan el formulario en su dominio (Checkout Pro / Checkout)
-- Dirección IP de los visitantes — solo en logs efímeros, no persistir
+- Nombre, email y teléfono llegan por WhatsApp, no por un formulario web. El
+  sitio **no recolecta ni almacena PII**: no hay base de datos ni endpoints.
+- Datos de pago — nunca tocamos tarjetas. La transferencia se hace desde el
+  banco o la billetera de la clienta, fuera de este sitio.
+- Dirección IP de los visitantes — solo en logs efímeros, no persistir.
 
 ## Reglas
-1. NUNCA loguear `MERCADOPAGO_ACCESS_TOKEN`, `STRIPE_SECRET_KEY`, `BREVO_API_KEY` ni `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` (ni siquiera el primer/último carácter).
-2. Toda escritura a Google Sheets va con datos sanitizados (sin HTML/markdown peligroso).
-3. Los webhooks DEBEN validar firma antes de cualquier escritura. Sin firma válida, devolver `401` sin escribir nada.
-4. Tokens públicos (`NEXT_PUBLIC_*`) están bien expuestos al cliente — NO incluir secretos ahí.
-5. El service account de Google Sheets tiene permiso solo a 1 spreadsheet específico, nunca acceso a Drive completo.
+1. NUNCA loguear datos de clientas: son PII bajo la Ley 25.326.
+2. Ningún secreto en código. Todo lo que sea `NEXT_PUBLIC_*` es público por
+   definición: no meter nada sensible ahí.
+3. Si se vuelve a construir un endpoint de pago, los webhooks DEBEN validar
+   firma antes de cualquier escritura. Sin firma válida, `401` y nada más.
+4. Toda escritura futura a Google Sheets va con datos sanitizados contra
+   inyección de fórmulas (`=`, `+`, `-`, `@` al inicio de celda).
 
 ## Bajo Ley 25.326 (Argentina)
-- Identificar a Maria Pia como responsable del tratamiento (nombre + datos de contacto en Política de Privacidad)
-- Permitir que cualquier titular ejerza derechos ARCO (Acceso, Rectificación, Cancelación, Oposición) — vía email
+- Identificar a Pía como responsable del tratamiento (nombre + contacto en la
+  Política de Privacidad)
+- Permitir derechos ARCO (Acceso, Rectificación, Cancelación, Oposición) por email
 - Conservar PII solo el tiempo necesario para la finalidad declarada
-- Reportar al usuario cómo se usan sus datos antes de recolectarlos (consentimiento informado en cada formulario)
+- Consentimiento informado antes de recolectar cualquier dato
+
+## Res. 424/2020 — Botón de arrepentimiento
+`/cancelar` es obligatorio y tiene que estar enlazado desde la home. No
+borrarlo ni esconderlo aunque el cobro sea manual.

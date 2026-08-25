@@ -5,8 +5,8 @@ import { FOR_WHOM } from "@/content/offer";
 export function ForWhom() {
   return (
     <section
-      id="el-reto"
-      aria-label="Para quién es el reto"
+      id="flex-program"
+      aria-label="Para quién es el Flex Program"
       className="section-pad border-t border-mp-line"
     >
       <div className="container-page">
@@ -19,7 +19,7 @@ export function ForWhom() {
             Antes de seguir
           </span>
           <h2 className="font-display text-3xl font-extrabold leading-[1.08] tracking-tight md:text-4xl lg:text-5xl">
-            Este reto no es para todo el mundo.
+            Este programa no es para todo el mundo.
           </h2>
           <p className="text-base leading-relaxed text-mp-carbon/80">
             Prefiero que lo sepas ahora y no cuando ya pagaste. Leé las dos

@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage, LegalSection } from "@/components/legal/LegalPage";
-import { SITE } from "@/lib/site";
+import { LEGAL_ADDRESS, SITE } from "@/lib/site";
 import {
   CHALLENGE,
   EQUIPMENT,
-  FOUNDING,
-  SUBSCRIPTION,
+  RENEWAL,
   TRAINING,
   WITHDRAWAL_RIGHT,
   VISIBLE_PLANS,
@@ -22,25 +21,25 @@ export default function TerminosCondicionesPage() {
   return (
     <LegalPage
       title="Términos y Condiciones"
-      updatedAt="21 de agosto de 2026"
+      updatedAt="25 de agosto de 2026"
       intro={`Estos términos regulan la contratación del ${CHALLENGE.name} ofrecido por ${SITE.fiscalName}. Al contratar el servicio declarás haberlos leído y aceptado.`}
     >
       <LegalSection heading="1. Identificación del prestador">
         <p>
-          El servicio es prestado por {SITE.ownerName} ({SITE.fiscalName}), con
-          domicilio en {SITE.city}, {SITE.country}. Correo electrónico de
-          contacto: {SITE.email}.
+          El servicio es prestado por {SITE.fiscalName}, CUIT {SITE.cuit}, con
+          domicilio en {LEGAL_ADDRESS}. Correo electrónico de contacto:{" "}
+          {SITE.email}.
         </p>
       </LegalSection>
 
       <LegalSection heading="2. Objeto del servicio">
         <p>
           El {CHALLENGE.name} es un programa de entrenamiento físico prestado
-          de forma íntegramente online, contratado bajo la modalidad de
-          suscripción mensual. Incluye acceso a contenidos audiovisuales
-          grabados, material descargable, corrección asincrónica de técnica y
-          participación en una comunidad privada mientras la suscripción se
-          encuentre vigente.
+          de forma íntegramente online, contratado por períodos de{" "}
+          {RENEWAL.accessDays} días o múltiplos de ese plazo, según el plan
+          elegido. Incluye acceso a contenidos audiovisuales grabados, material
+          descargable, corrección asincrónica de técnica y participación en una
+          comunidad privada mientras el período abonado se encuentre vigente.
         </p>
         <p>
           <strong>El plan de entrenamiento no es personalizado.</strong> Es el
@@ -67,29 +66,30 @@ export default function TerminosCondicionesPage() {
         <p>
           Los precios vigentes, con impuestos incluidos, son:{" "}
           {VISIBLE_PLANS.map((plan) => `${plan.name}, ${formatARS(plan.priceARS)}`).join("; ")}.
-          Estos importes corresponden al precio promocional de lanzamiento,
-          disponible para las primeras {FOUNDING.spotsTotal} participantes y
-          hasta agotar ese cupo. Quienes contraten a ese precio lo conservan sin
-          aumentos mientras mantengan la suscripción activa y sin interrupciones.
+          Estos importes corresponden al precio promocional de lanzamiento
+          vigente al momento de la contratación. Quienes contraten a ese precio
+          lo conservan sin aumentos mientras renueven sin interrupciones. La
+          prestadora puede modificar los precios para nuevas contrataciones,
+          informándolo en el sitio.
         </p>
         <p>
-          La contratación es una <strong>suscripción con débito automático</strong>{" "}
-          gestionada a través de {SUBSCRIPTION.provider}. El importe se debita
-          del medio de pago informado por la participante una vez por mes, de
-          forma automática, y el acceso al programa se mantiene vigente mientras
-          los débitos se acrediten.
+          El pago se realiza por <strong>transferencia bancaria</strong> a la
+          cuenta informada en el sitio, por adelantado y por el período
+          completo. <strong>No hay débito automático, adhesión ni renovación
+          automática:</strong> la prestadora no conserva ningún medio de pago de
+          la participante y ningún importe se cobra sin una transferencia hecha
+          por ella.
         </p>
         <p>
-          La participante puede dar de baja la suscripción en cualquier momento
-          y sin expresar causa, desde su cuenta de {SUBSCRIPTION.provider} o
-          comunicándolo a {SITE.email}. La baja surte efecto al finalizar el
-          período mensual ya abonado, sin generar cargos posteriores. Los
-          importes correspondientes a períodos ya transcurridos no se
+          El acceso se otorga una vez verificada la acreditación de la
+          transferencia, dentro de las 24 horas de recibido el comprobante. Al
+          finalizar el período abonado el acceso se interrumpe, salvo que la
+          participante abone un período nuevo. No hace falta cancelar nada para
+          dejar de participar: alcanza con no renovar.
+        </p>
+        <p>
+          Los importes correspondientes a períodos ya transcurridos no se
           reintegran, sin perjuicio del derecho de revocación del punto 5.
-        </p>
-        <p>
-          Ante el rechazo o la falta de acreditación de un débito, la prestadora
-          podrá suspender el acceso hasta su regularización.
         </p>
       </LegalSection>
 
@@ -122,9 +122,9 @@ export default function TerminosCondicionesPage() {
         <p>
           Para ejercer este derecho alcanza con comunicarlo por WhatsApp o por
           correo electrónico a {SITE.email}. La devolución del importe se
-          realizará por el mismo medio de pago utilizado en la contratación,
-          dentro de los cinco (5) días hábiles siguientes, y la suscripción se
-          da de baja sin cargos posteriores.
+          realizará por transferencia bancaria a la cuenta que indiques,
+          dentro de los cinco (5) días hábiles siguientes, y el acceso se da de
+          baja sin cargos posteriores.
         </p>
         <p>
           Este derecho es irrenunciable y prevalece sobre cualquier otra
