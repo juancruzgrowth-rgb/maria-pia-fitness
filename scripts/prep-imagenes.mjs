@@ -7,8 +7,10 @@
  * los archivos servidos en `public/images/`.
  *
  * 1. Retrato de "Sobre mí": recorte 4:5 desde la foto de sesión.
- * 1b. Miniatura del video: la pieza de marca a 1920x1080, que es lo que el
- *    <video> espera. Ver POSTER_WIDTH en `Hero.tsx`.
+ * 1b. Miniaturas del video: las dos piezas de marca a 1920x1080, que es lo que
+ *    el <video> espera. Ver POSTER_WIDTH en `Hero.tsx`. Son dos por art
+ *    direction: la de mobile trae el lockup más grande porque ahí la
+ *    miniatura se ve a un tercio del tamaño.
  * 2. Testimonios: cada captura de WhatsApp queda centrada en un lienzo
  *    cuadrado del color de marca. Las capturas originales tienen proporciones
  *    muy distintas —desde 2,8:1 hasta 0,68:1—: el lienzo común es lo único
@@ -75,13 +77,15 @@ async function retrato() {
   console.log("retrato ->", destino);
 }
 
-async function miniaturaVideo() {
-  const destino = path.join(PUBLICOS, "miniatura-presentacion.jpg");
-  await sharp(path.join(ORIGINALES, "miniatura-presentacion.png"))
-    .resize({ width: 1920, height: 1080, fit: "cover" })
-    .jpeg({ quality: 82, mozjpeg: true })
-    .toFile(destino);
-  console.log("miniatura ->", destino);
+async function miniaturasVideo() {
+  for (const nombre of ["miniatura-presentacion", "miniatura-presentacion-mobile"]) {
+    const destino = path.join(PUBLICOS, `${nombre}.jpg`);
+    await sharp(path.join(ORIGINALES, `${nombre}.png`))
+      .resize({ width: 1920, height: 1080, fit: "cover" })
+      .jpeg({ quality: 82, mozjpeg: true })
+      .toFile(destino);
+    console.log("miniatura ->", destino);
+  }
 }
 
 async function testimonios() {
@@ -107,5 +111,5 @@ async function testimonios() {
 }
 
 await retrato();
-await miniaturaVideo();
+await miniaturasVideo();
 await testimonios();
