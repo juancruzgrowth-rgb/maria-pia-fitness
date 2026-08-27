@@ -8,6 +8,11 @@ import { TESTIMONIALS } from "@/content/testimonials";
  * hizo fue centrarlas en un lienzo cuadrado del color del sitio para que en la
  * fila se vean todas del mismo tamaño (ver `src/content/testimonials.ts`).
  *
+ * Va arriba, justo después de "para quién es": la prueba social es lo primero
+ * que busca alguien que no conoce a Pía, y acá llega enseguida después de que
+ * la visitante se reconoce en el problema y antes de que le expliquemos el
+ * método.
+ *
  * La fila scrollea en horizontal en todos los tamaños, y no hay flechas ni
  * autoplay: así la sección es un Server Component y no carga un solo KB de
  * JavaScript. En mobile —el 80% del tráfico— el gesto ya es el natural.
@@ -16,7 +21,7 @@ export function Testimonials() {
   return (
     <section
       id="testimonios"
-      aria-label="Testimonios de clientas"
+      aria-label="Testimonios de personas que entrenan con Pía"
       className="section-pad border-t border-mp-line"
     >
       <div className="container-page flex flex-col gap-4">
@@ -32,8 +37,8 @@ export function Testimonials() {
             No lo digo yo.
           </h2>
           <p className="max-w-2xl text-base leading-relaxed text-mp-carbon/80 md:text-lg">
-            Mensajes de mujeres que entrenan conmigo, tal como llegaron a mi
-            WhatsApp. Ninguno está escrito por mí.
+            Mensajes de personas que entrenan conmigo y que acompaño en su
+            proceso aplicando mi método.
           </p>
         </RevealOnScroll>
       </div>
@@ -41,7 +46,7 @@ export function Testimonials() {
       <div className="container-page mt-10">
         <ul
           className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 md:gap-6"
-          aria-label="Capturas de mensajes de clientas"
+          aria-label="Capturas de mensajes recibidos"
         >
           {TESTIMONIALS.map((testimonial, index) => (
             <RevealOnScroll
@@ -57,7 +62,7 @@ export function Testimonials() {
                     className="h-4 w-4 shrink-0 text-mp-orange"
                     aria-hidden="true"
                   />
-                  Mensaje de una clienta
+                  Mensaje recibido
                 </figcaption>
                 <Image
                   src={`/images/testimonios/${testimonial.slug}.jpg`}
@@ -74,7 +79,7 @@ export function Testimonials() {
 
         <div className="flex flex-col gap-3 border-t border-mp-line pt-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-mp-carbon/70">
-            Deslizá para ver los {TESTIMONIALS.length}
+            Deslizá para ver más
             <ArrowRight weight="bold" className="h-3.5 w-3.5" aria-hidden="true" />
           </p>
           {/* Los resultados de una clienta no son una promesa para la próxima:

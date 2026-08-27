@@ -18,12 +18,12 @@ export default function Home() {
       <Hero />
       <PulseDivider className="container-page py-2" />
       <ForWhom />
+      <Testimonials />
       <Method />
       <WhatYouGet />
       <HowItWorks />
       <About />
       <Gym />
-      <Testimonials />
       <FAQ />
       <FinalCta />
       <JsonLd data={challengeJsonLd()} />

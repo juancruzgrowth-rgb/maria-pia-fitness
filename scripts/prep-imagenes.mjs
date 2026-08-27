@@ -13,6 +13,10 @@
  *    que hace que en la fila de la home se vean todas iguales. No se recorta
  *    nada, así que no se corta ni una línea de texto.
  *
+ * Quedan afuera a propósito las capturas de "antes y después" en ropa interior
+ * y las fotos sin mensaje: son imágenes identificables de clientas y piden un
+ * consentimiento distinto del de un mensaje de texto.
+ *
  * Para sumar un testimonio nuevo: dejar la captura en
  * `images/testimonios-originales/`, agregarla a TESTIMONIOS con su slug,
  * correr el script y sumar la transcripción en `src/content/testimonials.ts`.
@@ -48,6 +52,16 @@ const TESTIMONIOS = [
   ["IMG_9816.PNG", "catorce-kilos"],
   ["IMG_9861.PNG", "de-84-a-71"],
   ["6681B9D7-2B6D-4D9E-8A1E-D1FFB4698E75.jpg", "estoy-feliz"],
+  ["IMG_9841.PNG", "amo-el-plan"],
+  ["IMG_9845.PNG", "comia-sin-hambre"],
+  ["IMG_9813.PNG", "mas-que-el-fisico"],
+  ["B631F581-9C3F-4069-BF19-B9F9FE68D125.jpg", "kilo-y-medio-en-nueve-dias"],
+  ["703B3E9C-5467-48E3-B78F-FC4EED771C1E.jpg", "nunca-baje-tan-rapido"],
+  ["C2A6E5EB-C306-4F99-A6DA-F90C03E2D9A4.jpg", "comida-organizada"],
+  ["9C926E04-0AB1-45E4-82CE-C83360AD30FB.jpg", "tres-kilos-en-mes-y-medio"],
+  ["IMG_9842.PNG", "el-pantalon-de-montar"],
+  ["IMG_9844.PNG", "la-clave-es-comer-bien"],
+  ["IMG_9855.PNG", "lo-que-buscaba-en-rosario"],
 ];
 
 async function retrato() {
