@@ -33,19 +33,25 @@ export const SITE = {
   cuit: "27-34820345-8",
   /**
    * Domicilio del centro de entrenamiento, que es el domicilio comercial que
-   * se declara en las páginas legales. Calle y número: `city` sola no alcanza
-   * para un domicilio legal.
+   * se declara en las páginas legales (confirmado 2026-08-25, cierra B29).
    *
-   * TODO(B29): FALTA LA DIRECCIÓN EXACTA. Con la cadena vacía las páginas caen
-   * a "Rosario, Santa Fe" y siguen siendo válidas, así que esto no rompe nada
-   * — pero completarlo antes de la revisión del abogado.
+   * Sólo calle y número. El código postal va aparte porque el `streetAddress`
+   * de schema.org no lo admite: ahí tiene su propia propiedad.
    */
-  fiscalAddress: "",
+  fiscalAddress: "Av. Carlos Colombres 1450",
+  /** Código postal argentino del domicilio de arriba. */
+  postalCode: "S2005",
 } as const;
 
-/** Domicilio para las páginas legales. Calle y número si lo tenemos; si no, la ciudad. */
+/**
+ * Domicilio para las páginas legales. Si falta la calle, cae a la ciudad y el
+ * texto sigue siendo válido.
+ *
+ * El CP va pegado a la ciudad y no separado por coma: es como se escribe una
+ * dirección en Argentina.
+ */
 export const LEGAL_ADDRESS = SITE.fiscalAddress
-  ? `${SITE.fiscalAddress}, ${SITE.city}, ${SITE.country}`
+  ? `${SITE.fiscalAddress}, ${SITE.postalCode} ${SITE.city}, ${SITE.country}`
   : `${SITE.city}, ${SITE.country}`;
 
 export const NAV_SECTIONS = [

@@ -22,6 +22,7 @@ export function organizationJsonLd() {
     address: {
       "@type": "PostalAddress",
       ...(SITE.fiscalAddress ? { streetAddress: SITE.fiscalAddress } : {}),
+      postalCode: SITE.postalCode,
       addressLocality: "Rosario",
       addressRegion: "Santa Fe",
       addressCountry: "AR",
