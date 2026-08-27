@@ -22,26 +22,31 @@ export function BuyBar() {
   const content = (
     <>
       <span className="flex flex-col text-left leading-tight">
-        <span className="font-display font-extrabold text-base sm:text-lg">
-          {ENROLLMENT_OPEN
-            ? `${formatARS(CHALLENGE.priceARS)} ${RENEWAL.frequencyLabel}`
-            : "Lista de espera"}
+        {/* El precio y la frecuencia van en renglones separados. Juntos en uno
+            solo, en el ancho que le queda a la barra al lado del botón, "por
+            mes" se partía al medio y quedaba "$ 55.000 por / mes". */}
+        <span className="whitespace-nowrap font-display text-base font-extrabold sm:text-lg">
+          {ENROLLMENT_OPEN ? formatARS(CHALLENGE.priceARS) : "Lista de espera"}
         </span>
         {/* La urgencia va ACÁ dentro y no debajo de la barra: afuera flota sobre
             lo que haya detrás —la foto del hero, una sección oscura— y se vuelve
-            ilegible en la mitad del scroll. Sobre el fondo tinta siempre se lee. */}
-        <span className="text-[11px] font-medium text-mp-canvas/75">
+            ilegible en la mitad del scroll. Sobre el fondo tinta siempre se lee.
+            Cuando no hay urgencia que mostrar, el renglón lo ocupa la frecuencia. */}
+        <span className="whitespace-nowrap text-[11px] font-medium text-mp-canvas/75">
           {!ENROLLMENT_OPEN
             ? "Te aviso cuando abra"
             : FOUNDING.active && FOUNDING_SPOTS_LEFT > 0
               ? `${FOUNDING.label}: quedan ${FOUNDING_SPOTS_LEFT} lugares`
-              : CHALLENGE.name}
+              : RENEWAL.frequencyLabel}
         </span>
       </span>
 
-      <span className="inline-flex items-center gap-2 rounded-md bg-mp-orange px-4 py-3 font-display font-semibold uppercase tracking-[0.08em] text-[11px] sm:text-xs text-mp-ink transition-transform duration-200 group-hover:scale-[0.98] group-active:scale-[0.96]">
-        {PRIMARY_CTA.label}
-        <ArrowRight weight="bold" className="h-4 w-4" aria-hidden="true" />
+      <span className="inline-flex min-w-0 shrink items-center gap-2 rounded-md bg-mp-orange px-3 py-3 font-display font-semibold uppercase tracking-[0.08em] text-[11px] sm:text-xs text-mp-ink transition-transform duration-200 group-hover:scale-[0.98] group-active:scale-[0.96]">
+        {/* `min-w-0` en el botón y `shrink-0` en la flecha: sin eso el botón
+            no puede achicarse abajo de su ancho de contenido y a 390px se
+            desbordaba de la barra, cortando la etiqueta al medio. */}
+        <span className="min-w-0">{PRIMARY_CTA.label}</span>
+        <ArrowRight weight="bold" className="h-4 w-4 shrink-0" aria-hidden="true" />
       </span>
     </>
   );
