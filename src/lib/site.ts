@@ -58,6 +58,7 @@ export const NAV_SECTIONS = [
   { id: "flex-program", label: "El programa" },
   { id: "que-recibis", label: "Qué recibís" },
   { id: "sobre-mi", label: "Sobre mí" },
+  { id: "testimonios", label: "Testimonios" },
   { id: "faq", label: "Preguntas" },
 ] as const;
 

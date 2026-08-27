@@ -48,7 +48,7 @@ el historial de git (commit `fc8b826`) para cuando haga falta escalar.
 - NUNCA commitear `.env`, credenciales MercadoPago, Stripe, Brevo o service account de Google
 - PII de leads/clientas (nombre, email, teléfono) tratada como datos sensibles bajo Ley 25.326
 - Mobile-first obligatorio (audiencia ≈ 80% mobile)
-- Las páginas legales son DRAFTS — requieren revisión por abogado antes de publicar
+- Las páginas legales fueron revisadas y aprobadas (2026-08-27). Cualquier cambio de fondo vuelve a pedir revisión
 - No hardcodear precios ni datos bancarios fuera de `src/lib/products.ts` (single source of truth)
 - El alias y el CBU de `TRANSFER` son plata real: verificarlos con Pía antes de cada deploy
 
@@ -78,4 +78,4 @@ npm run lint
 - `TRANSFER.alias` y `TRANSFER.cbu` en `src/lib/products.ts` son placeholders.
   Sin los datos reales de Pía la web no se deploya.
 - Precio del plan trimestral sin confirmar (TODO B21 en `products.ts`).
-- Páginas legales: siguen siendo drafts sin revisión de abogado.
+- Páginas legales: revisión cerrada el 2026-08-27.

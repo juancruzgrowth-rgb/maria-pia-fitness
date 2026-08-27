@@ -28,9 +28,8 @@ export function Footer() {
         <div className="flex flex-col gap-5 md:col-span-5">
           <Logo withTagline />
           <p className="max-w-sm text-sm leading-relaxed text-mp-carbon/80">
-            Entrenamiento online para mujeres con jornadas largas y poco
-            tiempo libre. Desde {SITE.city}, {SITE.country}, para donde
-            estés.
+            Entrenamiento online para mujeres con poco tiempo libre. Desde{" "}
+            {SITE.city}, {SITE.country}, para donde estés.
           </p>
           <div className="flex items-center gap-2">
             {SOCIALS.filter((social) => social.url).map(({ url, label, Icon }) => (

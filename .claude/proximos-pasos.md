@@ -1,10 +1,37 @@
 # Próximos Pasos — MP CEP
 
 > Actualizar este archivo al final de cada sesión de trabajo.
-> Última actualización: **2026-08-25 (sesión 15)**
+> Última actualización: **2026-08-27 (sesión 16)**
 > **Estado del proyecto:** **lanzamiento casero y manual.** Pía decidió el 2026-08-25 volver al **cobro por transferencia** con alta a mano, y renombrar el producto a **Flex Program**. No hay pasarela, ni webhooks, ni onboarding automatizado, ni CRM: ella atiende el primer grupo por WhatsApp uno a uno, a propósito.
 > **🚀 FECHA DE LANZAMIENTO: 31 de agosto de 2026.**
-> **Sin bloqueantes técnicos: los datos de cobro ya están cargados (2026-08-25).** Falta cargar `NEXT_PUBLIC_WHATSAPP_NUMBER` en Vercel y deployar.
+> **Sin bloqueantes técnicos.** Datos de cobro cargados (2026-08-25); `NEXT_PUBLIC_WHATSAPP_NUMBER` y `NEXT_PUBLIC_SITE_URL` cargadas y verificadas en producción (2026-08-27); revisión legal dada por cerrada (2026-08-27).
+
+---
+
+## 🆕 Sesión 16 — vuelven los testimonios (2026-08-27)
+
+| Pieza | Nota |
+|---|---|
+| `Testimonials.tsx` + `src/content/testimonials.ts` | Sección nueva entre el centro de entrenamiento y las Preguntas. 10 capturas de WhatsApp en una fila que scrollea en horizontal. Server Component: cero JavaScript |
+| `scripts/prep-imagenes.mjs` | Normaliza las capturas: cada una queda centrada en un lienzo cuadrado de 1080×1080 en `mp.canvas`. Los originales van de 2,8:1 a 0,68:1 y así se ven todas iguales sin recortar una sola línea de texto |
+| `public/images/testimonios/` | Las 10 imágenes servidas (~80 KB cada una) |
+| `images/testimonios-originales/` | Las 47 capturas originales. Va dentro de `/images/`, que está en .gitignore: son mensajes de clientas, no material del repo |
+| Retrato de "Sobre mí" | Cambiado a `Pia More-73.jpg` (estocada con kettlebell). Mismo path `public/images/sobre-mi.jpg` |
+| Copy del footer | "mujeres con jornadas largas y poco tiempo libre" → "mujeres con poco tiempo libre" |
+| Navegación | Se suma "Testimonios" a `NAV_SECTIONS` (navbar y footer leen de ahí) |
+
+**Qué se dejó afuera a propósito:** las ~20 capturas de "antes y después" en ropa
+interior. Son fotos identificables de clientas en paños menores; publicarlas
+necesita un consentimiento escrito distinto del de un mensaje de texto, y no
+encajan con el tono de la marca. Siguen en `images/testimonios-originales/`.
+
+**Bloqueante nuevo:** ver B30 más abajo — el permiso de las clientas.
+
+**Cerrado en la misma sesión:** B21 (monotributista), B3 (WhatsApp y dominio ya
+en Vercel, verificados en producción) y la revisión legal. B27 sigue a mano por
+decisión de Pía y B18 se pospone.
+
+`typecheck`, `lint` y `build` en verde.
 
 ---
 
@@ -164,14 +191,15 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 
 - [x] ~~**B1 · Precio.**~~ **RESUELTO y actualizado el 2026-08-18:** $55.000 por nivel. Ya cargado en `PRICE_ARS`
 - [x] ~~**B25 · Datos bancarios de Pía.**~~ **RESUELTO 2026-08-25.** Cuenta de **Mercado Pago** (es un CVU, no un CBU): alias `cepmoretto.mp`, CVU `0000003100019693666879`, titular **María Pía Moretto**. Cargados en `TRANSFER` y verificados contra la constancia. `SITE.fiscalName` pasó a "María Pía Moretto" para que coincida con lo que ve la clienta al transferir
-- [x] ~~**B3 · WhatsApp AR.**~~ **RESUELTO 2026-08-21:** `+54 9 3416 13-4367`. Cargado en `.env.example` y en `.env.local`. **Falta cargarlo en Vercel** (`NEXT_PUBLIC_WHATSAPP_NUMBER=5493416134367`) y redeployar: hasta entonces producción sigue mandando al +34
+- [x] ~~**B3 · WhatsApp AR.**~~ **RESUELTO 2026-08-21:** `+54 9 3416 13-4367`. Cargado en `.env.example` y en `.env.local`. **Cargado en Vercel y verificado en producción el 2026-08-27:** el botón de compra abre el WhatsApp de Pía con el mensaje precargado. `NEXT_PUBLIC_SITE_URL` también está con el dominio real
 - [x] ~~**B4 · Nombre del producto.**~~ **RESUELTO 2026-08-17.** "Reto 28 Días" se queda como nombre de la oferta. Se suma **"Mi Método 4F"** como nombre del método, por encima. Ver `11-metodo-4f.md`
 - [x] ~~**B5 · Fechas del grupo fundador.**~~ **YA NO APLICA (2026-08-18).** Se eliminaron las cohortes: cada clienta arranca el día que compra. Esto desbloqueó de un saque A5, A25 y A26 — que en realidad se cancelaron, porque existían para sostener los grupos
 
 - [x] ~~**B20 · Credenciales de MercadoPago.**~~ **YA NO APLICA (sesión 15).** No hay pasarela. Vuelve a hacer falta el día que se escale
-- [ ] **B21 · Situación fiscal de Pía.** Sigue en pie aunque cobre por transferencia: las transferencias entrantes también las ve ARCA. Verificar el tope de la categoría de monotributo y el IIBB de Santa Fe, que se cobra aparte
+- [x] ~~**B21 · Situación fiscal de Pía.**~~ **RESUELTO 2026-08-27: monotributista.** Queda como tarea de ella, no del proyecto: vigilar el tope de facturación de su categoría y el IIBB de Santa Fe, que se cobra aparte. Las transferencias entrantes también las ve ARCA
 - [x] ~~**B26 · Precio del plan trimestral.**~~ **CONFIRMADO 2026-08-25:** $130.000, −21% real contra 3 x $55.000
-- [ ] ⚠️ **B27 · Cómo registra Pía las ventas.** **Queda del lado de Pía, por decisión del 2026-08-25.** Sin planilla automática, alguien tiene que anotar quién pagó, cuándo vence y a quién escribirle. **Riesgo asumido:** si no lo hace, al mes nadie sabe a quién le toca renovar y las renovaciones se pierden en silencio. Es lo primero que se rompe de este modelo
+- [ ] ⚠️ **B27 · Cómo registra Pía las ventas.** **Queda del lado de Pía, a mano, reconfirmado el 2026-08-27 ("después se verá").** Sin planilla automática, alguien tiene que anotar quién pagó, cuándo vence y a quién escribirle. **Riesgo asumido:** si no lo hace, al mes nadie sabe a quién le toca renovar y las renovaciones se pierden en silencio. Es lo primero que se rompe de este modelo
+- [ ] 🚨 **B30 · Permiso de las clientas para publicar sus mensajes.** Los 10 testimonios de la home son capturas de WhatsApp reales. No tienen nombre ni foto ni número —sólo el texto y la hora—, así que el riesgo es bajo, pero **Pía tiene que pedirle el OK a cada una antes de deployar**: es correspondencia privada (art. 18 CN y Ley 25.326). El pie de la sección ya dice "publicados con permiso": hasta que ese permiso exista, esa línea no es verdad
 - [ ] **B28 · Analítica.** El sitio no mide nada: no hay forma de saber cuánta gente llega a `/comprar` y no transfiere, que es justo el número que dice si el paso manual cuesta ventas. Pendiente asumido para después del lanzamiento
 
 - [ ] **B19 · ¿A cuánto sube el precio el 1 de octubre?** **Propuesto: $69.000 el nivel y $165.000 el pack** — +25% sobre el fundador, debajo de la barrera de los $70.000, y mantiene el descuento del pack en 20% exacto, así que el copy no cambia. **Falta que Pía lo apruebe.** No hace falta publicarlo, pero la suba tiene que ocurrir: una promo que no vence nunca es publicidad engañosa (art. 8, Ley 24.240) y quema la próxima fecha que anunciemos
@@ -200,7 +228,7 @@ Todos viven en [`src/lib/products.ts`](../src/lib/products.ts).
 - [x] ~~**B16 · Nombre fiscal real.**~~ **RESUELTO 2026-08-25:** **María Pía Moretto**, CUIT `27-34820345-8` (de la constancia de CVU). **El CUIT SE PUBLICA** en Términos y Política de Privacidad, por decisión del 2026-08-25, y va también como `taxID` en el JSON-LD
 - [ ] **B29 · Dirección exacta del centro de entrenamiento.** Se decidió publicar el domicilio comercial en las páginas legales, pero falta **calle y número**. `SITE.fiscalAddress` está en `""` y las páginas caen a "Rosario, Santa Fe", que es válido pero incompleto. Completar antes de la revisión del abogado
 - [x] ~~**B17 · Mail de contacto.**~~ **RESUELTO 2026-08-25:** `comunidad.piamoretto@gmail.com`. Es el canal de ARCO (Ley 25.326) y de arrepentimiento (Res. 424/2020), así que **Pía tiene que leerlo de verdad**. El dominio propio queda como mejora futura, no bloquea
-- [ ] **B18 · ¿Se licencia Quiche para la web?** Hoy se usa Fraunces como sustituta. Las piezas de Canva seguirían con Quiche. Decisión de marca, no urgente
+- [ ] **B18 · ¿Se licencia Quiche para la web?** *(Pospuesto: se confirma más adelante — 2026-08-27.)* Hoy se usa Fraunces como sustituta. Las piezas de Canva seguirían con Quiche. Decisión de marca, no urgente
 
 ### Pendientes de contenido (no bloquean el deploy, sí la venta)
 - [ ] **Grabar los videos explicativos del método y de cómo usar todo.** Nuevo el 2026-08-18: reemplazan a la llamada 1:1 de bienvenida y son lo primero que ve la clienta al entrar. Sin esto el onboarding queda mudo
