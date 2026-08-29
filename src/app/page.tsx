@@ -6,7 +6,6 @@ import { Method } from "@/components/sections/Method";
 import { Pricing } from "@/components/sections/Pricing";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCta } from "@/components/sections/FinalCta";
-import { PulseDivider } from "@/components/ui/PulseDivider";
 import { JsonLd } from "@/components/JsonLd";
 import { challengeJsonLd, faqJsonLd } from "@/lib/seo";
 
@@ -25,12 +24,12 @@ import { challengeJsonLd, faqJsonLd } from "@/lib/seo";
  * Secciones eliminadas: el centro de entrenamiento —absorbido por "Soy Pía"—,
  * "Todo lo que tenés que saber" (sus niveles B1/B2 se mudaron a "Por qué mi
  * método") y "Cómo empezás", cuyos tres pasos ahora viven dentro del precio.
+ * También se sacó el trazo de pulso animado que separaba el hero: distraía.
  */
 export default function Home() {
   return (
     <>
       <Hero />
-      <PulseDivider className="container-page py-2" />
       <ForWhom />
       <Testimonials />
       <About />
