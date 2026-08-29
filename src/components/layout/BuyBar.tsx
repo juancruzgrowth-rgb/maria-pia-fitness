@@ -7,14 +7,17 @@ import {
   ENROLLMENT_OPEN,
   FOUNDING,
   FOUNDING_SPOTS_LEFT,
-  RENEWAL,
-  formatARS,
 } from "@/lib/products";
 import { PRIMARY_CTA } from "@/lib/site";
 
 /**
  * Único CTA flotante del sitio. Fijo y visible en todas las secciones.
  * En mobile ocupa el ancho completo, al alcance del pulgar.
+ *
+ * La barra NO muestra precio (decisión del 2026-08-29). Hay dos planes —mensual
+ * y trimestral— y un solo número flotando obligaba a elegir cuál mostrar: el
+ * mensual parecía el precio único y el trimestral no aparecía nunca. El precio
+ * vive en la sección de precio y en /comprar, que es donde se elige.
  */
 export function BuyBar() {
   const isExternal = PRIMARY_CTA.href.startsWith("http");
@@ -22,22 +25,19 @@ export function BuyBar() {
   const content = (
     <>
       <span className="flex flex-col text-left leading-tight">
-        {/* El precio y la frecuencia van en renglones separados. Juntos en uno
-            solo, en el ancho que le queda a la barra al lado del botón, "por
-            mes" se partía al medio y quedaba "$ 55.000 por / mes". */}
         <span className="whitespace-nowrap font-display text-base font-extrabold sm:text-lg">
-          {ENROLLMENT_OPEN ? formatARS(CHALLENGE.priceARS) : "Lista de espera"}
+          {ENROLLMENT_OPEN ? CHALLENGE.name : "Lista de espera"}
         </span>
-        {/* La urgencia va ACÁ dentro y no debajo de la barra: afuera flota sobre
-            lo que haya detrás —la foto del hero, una sección oscura— y se vuelve
-            ilegible en la mitad del scroll. Sobre el fondo tinta siempre se lee.
-            Cuando no hay urgencia que mostrar, el renglón lo ocupa la frecuencia. */}
+        {/* La segunda línea va ACÁ dentro y no debajo de la barra: afuera flota
+            sobre lo que haya detrás —la foto del hero, una sección oscura— y se
+            vuelve ilegible en la mitad del scroll. Sobre el fondo tinta siempre
+            se lee. */}
         <span className="whitespace-nowrap text-[11px] font-medium text-mp-canvas/75">
           {!ENROLLMENT_OPEN
             ? "Te aviso cuando abra"
             : FOUNDING.active && FOUNDING_SPOTS_LEFT > 0
               ? `${FOUNDING.label}: quedan ${FOUNDING_SPOTS_LEFT} lugares`
-              : RENEWAL.frequencyLabel}
+              : "Mensual o trimestral"}
         </span>
       </span>
 
@@ -45,7 +45,9 @@ export function BuyBar() {
         {/* `min-w-0` en el botón y `shrink-0` en la flecha: sin eso el botón
             no puede achicarse abajo de su ancho de contenido y a 390px se
             desbordaba de la barra, cortando la etiqueta al medio. */}
-        <span className="min-w-0">{PRIMARY_CTA.label}</span>
+        <span className="min-w-0">
+          {ENROLLMENT_OPEN ? "Quiero entrar" : PRIMARY_CTA.label}
+        </span>
         <ArrowRight weight="bold" className="h-4 w-4 shrink-0" aria-hidden="true" />
       </span>
     </>

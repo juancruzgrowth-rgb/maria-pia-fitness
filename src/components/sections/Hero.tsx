@@ -67,12 +67,19 @@ export function Hero() {
               <span className="block text-mp-ember">{HERO.headlineAccent}</span>
             </h1>
 
-            <p className="max-w-xl text-base leading-relaxed text-mp-carbon/80 md:text-lg">
+            {/* En mobile el hero se queda con lo minimo —titulo, una linea y
+                el video— para que la miniatura entre en pantalla. El texto
+                largo, el cuadro de "empezas hoy", el CTA de dudas y los tres
+                datos de abajo aparecen recien en desktop. */}
+            <p className="max-w-xl text-base leading-relaxed text-mp-carbon/80 md:hidden">
+              {HERO.descriptionShort}
+            </p>
+            <p className="hidden max-w-xl text-base leading-relaxed text-mp-carbon/80 md:block md:text-lg">
               {HERO.description}
             </p>
 
             {ENROLLMENT_OPEN && (
-              <div className="flex flex-col gap-1.5 rounded-md border border-mp-line p-4">
+              <div className="hidden flex-col gap-1.5 rounded-md border border-mp-line p-4 md:flex">
                 <span className="inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-[0.14em] text-mp-ember">
                   <span
                     aria-hidden="true"
@@ -97,13 +104,13 @@ export function Hero() {
               href={CONTACT.askUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-mp-ink px-6 py-4 font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-ink transition-all duration-200 hover:bg-mp-ink hover:text-mp-canvas active:scale-[0.98] sm:w-auto"
+              className="hidden w-full items-center justify-center gap-2 rounded-md border border-mp-ink px-6 py-4 font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-ink transition-all duration-200 hover:bg-mp-ink hover:text-mp-canvas active:scale-[0.98] sm:w-auto md:inline-flex"
             >
               <WhatsappLogo weight="fill" className="h-4 w-4" aria-hidden="true" />
               Tengo una duda antes de entrar
             </a>
 
-            <dl className="mt-2 grid grid-cols-3 gap-4 border-t border-mp-line pt-6">
+            <dl className="mt-2 hidden grid-cols-3 gap-4 border-t border-mp-line pt-6 md:grid">
               {HERO.trustPoints.map((point) => (
                 <div key={point.label} className="flex flex-col">
                   <dt className="font-display text-lg font-extrabold text-mp-ink md:text-xl">

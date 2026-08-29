@@ -54,11 +54,15 @@ export const LEGAL_ADDRESS = SITE.fiscalAddress
   ? `${SITE.fiscalAddress}, ${SITE.postalCode} ${SITE.city}, ${SITE.country}`
   : `${SITE.city}, ${SITE.country}`;
 
+/**
+ * Menú del sitio. Sigue el orden real de la home: si acá aparece una sección
+ * antes que en la página, el link manda a la visitante para arriba.
+ */
 export const NAV_SECTIONS = [
   { id: "flex-program", label: "El programa" },
-  { id: "que-recibis", label: "Qué recibís" },
   { id: "sobre-mi", label: "Sobre mí" },
-  { id: "testimonios", label: "Testimonios" },
+  { id: "metodo", label: "El método" },
+  { id: "precios", label: "Precio" },
   { id: "faq", label: "Preguntas" },
 ] as const;
 

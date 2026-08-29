@@ -1,9 +1,8 @@
 import Image from "next/image";
-import { Barbell, HeartStraight, Path, ChatCircle } from "@phosphor-icons/react/dist/ssr";
+import { ArrowUpRight, MapPin } from "@phosphor-icons/react/dist/ssr";
 import { RevealOnScroll } from "@/components/effects/RevealOnScroll";
 import { ABOUT } from "@/content/about";
-
-const PILLAR_ICONS = [Barbell, HeartStraight, Path, ChatCircle] as const;
+import { CONTACT } from "@/lib/site";
 
 export function About() {
   return (
@@ -53,30 +52,28 @@ export function About() {
             </RevealOnScroll>
           ))}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-mp-line border border-mp-line rounded-[var(--radius-card)] overflow-hidden mt-6">
-            {ABOUT.pillars.map((pillar, index) => {
-              const Icon = PILLAR_ICONS[index] ?? Barbell;
-              return (
-                <RevealOnScroll
-                  key={pillar.title}
-                  delay={index * 90}
-                  className="bg-mp-canvas p-6 md:p-8 flex flex-col gap-3"
-                >
-                  <Icon
-                    weight="duotone"
-                    className="h-6 w-6 text-mp-orange"
-                    aria-hidden="true"
-                  />
-                  <h3 className="font-display font-bold text-lg text-mp-ink">
-                    {pillar.title}
-                  </h3>
-                  <p className="text-sm text-mp-carbon/80 leading-relaxed">
-                    {pillar.body}
-                  </p>
-                </RevealOnScroll>
-              );
-            })}
-          </div>
+          <RevealOnScroll delay={460} className="flex flex-col gap-4 mt-2">
+            <div className="rounded-md border border-mp-line p-4">
+              <p className="text-sm text-mp-carbon leading-relaxed">
+                {ABOUT.onlineNote}
+              </p>
+            </div>
+
+            <a
+              href={CONTACT.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-mp-carbon/80 transition-colors hover:text-mp-ink"
+            >
+              <MapPin
+                weight="duotone"
+                className="h-4 w-4 shrink-0 text-mp-orange"
+                aria-hidden="true"
+              />
+              {ABOUT.mapsLabel}
+              <ArrowUpRight weight="bold" className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
+          </RevealOnScroll>
         </div>
       </div>
     </section>

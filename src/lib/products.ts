@@ -24,31 +24,56 @@ const PRICE_ARS = 55000;
 export const METHOD = {
   name: "Mi Método 4F",
   /**
-   * TODO(B13): la presentación de naming afirma que los 4F son "los ejes reales
-   * de cada rutina". Hasta que Pía confirme que cada rutina mapea a los
-   * cuatro pilares, el copy los presenta como los principios que guían el
-   * método — no como los bloques de cada sesión.
+   * Los cuatro pilares, con la definición que escribió Pía a mano el
+   * 2026-08-29. Cierra el TODO(B13): quedó confirmado que los 4F son los
+   * principios que guían el método, no los bloques de cada sesión.
    */
+  lead:
+    "Un método de fuerza integral que se apoya en la calidad y no en la cantidad de horas. Nació de lo que me traía la gente: tiempos acotados, ganas de moverse sin tener elementos a mano y dolencias articulares que había que respetar.",
+  forWhom:
+    "Para mujeres que disponen de poco tiempo y quieren moverse a conciencia, sin que el entrenamiento se les coma el día.",
+  /**
+   * El camino del punto A al punto B. Son los tres tramos que Pía describe
+   * cuando explica el método, en orden: de dónde salís, qué pasa en el medio
+   * y en qué te convertís.
+   */
+  path: [
+    {
+      id: "punto-a",
+      label: "De dónde salís",
+      body: "Intentaste arrancar varias veces y nunca pudiste sostenerlo. No es falta de voluntad: es que ningún plan te entraba en la semana.",
+    },
+    {
+      id: "camino",
+      label: "Qué pasa en el medio",
+      body: "Tres sesiones por semana, con progresiones que se ajustan a lo que hoy podés. Vas subiendo de nivel cuando tu avance lo justifica, no cuando lo dice el calendario.",
+    },
+    {
+      id: "punto-b",
+      label: "A dónde llegás",
+      body: "Fuerza que se nota en tu día: cargar las bolsas, aguantar la jornada de pie, agacharte sin que aparezca la molestia. Y el hábito ya sostenido, que es lo que hace que los resultados lleguen solos.",
+    },
+  ],
   pillars: [
     {
       id: "fuerza",
       name: "Fuerza",
-      body: "Levantar más de lo que levantabas hoy. Músculo, densidad ósea y un cuerpo que aguanta.",
+      body: "Progresiones para que pases al siguiente nivel. No tiene que ver con los kilos, sino con el esfuerzo que vas incorporando en cada uno.",
     },
     {
       id: "funcion",
       name: "Función",
-      body: "Que el cuerpo sirva para tu vida real: cargar las bolsas, subir escaleras, agacharte sin crujir.",
+      body: "Movimientos que trasladás a lo cotidiano con el mínimo esfuerzo: levantar las bolsas del súper, permanecer de pie en jornadas largas o agacharte, sin que aparezca la dolencia.",
     },
     {
       id: "flexibilidad",
       name: "Flexibilidad",
-      body: "Movilidad y rango de movimiento. La parte que todo el mundo saltea y después extraña.",
+      body: "El programa se adapta a tu disponibilidad, a tus objetivos y a dónde entrenes, sea el gimnasio o tu casa.",
     },
     {
       id: "foco",
       name: "Foco",
-      body: "La cabeza. Sostener el hábito el día que el trabajo se puso en contra y no querés saber nada.",
+      body: "Herramientas para que permanezcas en el proceso, motivada, también las semanas en las que todo se pone en contra.",
     },
   ],
 } as const;
@@ -85,7 +110,8 @@ export const CHALLENGE: Challenge = {
   /**
    * Alcance actualizado el 2026-08-21. Salieron la guía de nutrición, la
    * biblioteca de ejercicios y el plan B: no están armados y no se prometen.
-   * El entrenamiento asume equipamiento del B2 en adelante —ver EQUIPMENT—
+   * El B1 se puede hacer con peso corporal y del B2 en adelante hace falta
+   * equipamiento —ver EQUIPMENT—
    * y todo el material
    * vive en Skool.
    */
@@ -119,12 +145,12 @@ export const TRAINING = {
     {
       id: "B1",
       name: "B1",
-      body: "El punto de partida, para las que recién arrancan. Alterna ejercicios que hacés en casa sin equipamiento con otros de gimnasio.",
+      body: "Para las que arrancan el proceso de moverse. Lo hacés con tu propio peso corporal, o sumando elementos simples de casa como una banda o unas mancuernas.",
     },
     {
       id: "B2",
       name: "B2",
-      body: "Bastante más exigente. Acá ya entrenás en el gimnasio, o en casa si tenés equipamiento.",
+      body: "Para las que ya tienen entrenamiento previo. Acá sí necesitás gimnasio y elementos: se entrena con peso.",
     },
     {
       id: "B3",
@@ -135,18 +161,21 @@ export const TRAINING = {
 } as const;
 
 /**
- * Qué hace falta para entrenar. Corregido el 2026-08-21.
+ * Qué hace falta para entrenar. Confirmado por Pía el 2026-08-29.
  *
- * ANTES el sitio prometía que cada rutina venía en versión gimnasio y versión
- * casa, y que no hacía falta equipamiento. Es falso de la mitad para arriba:
- * el B1 alterna casa y gimnasio, pero del B2 en adelante la mayoría de los
- * ejercicios necesitan peso. Decirlo de entrada evita la peor devolución
- * posible —alguien que paga y no puede entrenar—. No suavizar este texto.
+ * El corte está entre el B1 y el B2, y hay que decirlo con precisión en las
+ * dos direcciones. Para abajo: el B1 se puede hacer entero con peso corporal,
+ * así que exigir gimnasio de entrada espanta a gente que sí podría entrenar.
+ * Para arriba: del B2 en adelante hacen falta elementos de verdad, y alguien
+ * que pague sin saberlo se va a trabar. No suavizar ninguna de las dos mitades.
+ *
+ * La versión anterior decía que el B1 "alterna casa y gimnasio". Era el dato
+ * equivocado y se corrigió acá y en todo el copy que lo repetía.
  */
 export const EQUIPMENT = {
-  short: "Vas a necesitar gimnasio o equipamiento",
+  short: "El B1 lo hacés con o sin equipamiento",
   detail:
-    "El B1, que es donde arrancás, alterna ejercicios que hacés en casa sin nada con otros de gimnasio. Del B2 en adelante la mayoría necesita mancuernas, barra o máquinas: lo más simple es entrenar en un gimnasio, y si tenés equipamiento en casa también funciona.",
+    "El B1, que es donde arrancás, lo podés hacer sólo con tu propio peso corporal: vas a encontrar rutinas que se resuelven así, y otras donde sumás elementos simples que tengas en casa, como una banda o unas mancuernas. Del B2 en adelante sí necesitás gimnasio y elementos: la mayoría de los ejercicios van con mancuernas, barra o máquinas.",
 } as const;
 
 /**

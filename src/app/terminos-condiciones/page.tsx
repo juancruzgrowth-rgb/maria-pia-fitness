@@ -48,7 +48,10 @@ export default function TerminosCondicionesPage() {
           participante decida enviar, que se responde de forma asincrónica.
         </p>
         <p>
-          El entrenamiento está organizado en niveles ({TRAINING.levels.join(" y ")}),
+          {/* `TRAINING.levels` son objetos: unirlos directo imprimía
+              "[object Object] y [object Object]". Se listan los de
+              `available`, que además son los únicos que hoy se entregan. */}
+          El entrenamiento está organizado en niveles ({TRAINING.available.join(" y ")}),
           de {TRAINING.daysPerLevel} días cada uno y {TRAINING.setsPerDay} sets
           por día. {EQUIPMENT.detail}
         </p>
