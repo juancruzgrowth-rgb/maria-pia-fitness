@@ -6,11 +6,11 @@
  */
 
 /**
- * El filtro. Las razones son las de Pía. El bullet de equipamiento aparece de
- * los dos lados a propósito: el B1 se hace con peso corporal —eso va en `yes`,
- * porque no exigir gimnasio es lo que la deja entrar— y del B2 en adelante sí
- * hacen falta elementos, que va en `no` para que nadie pague sin saberlo.
- * Ver EQUIPMENT en @/lib/products.
+ * El filtro. Las razones son las de Pía. El equipamiento se nombra de un solo
+ * lado: en `no`, para que nadie pague sin saber que del B2 en adelante hacen
+ * falta elementos. Estuvo también en `yes` hasta el 2026-08-29 —"arrancá sin
+ * gastar en nada"—; se cayó por pedido de Pía: prometer costo cero al lado de
+ * una lista de precios sonaba a otra cosa. Ver EQUIPMENT en @/lib/products.
  */
 export const FOR_WHOM = {
   yes: {
@@ -18,7 +18,6 @@ export const FOR_WHOM = {
     items: [
       "Trabajás ocho horas o más y llegás a casa con poca energía.",
       "Ya probaste distintos métodos y nunca pudiste terminar ninguno.",
-      "Querés arrancar sin gastar en nada: el B1 lo hacés con tu propio peso corporal, y si tenés una banda o unas mancuernas en casa, mejor.",
       "Querés construir hábitos nuevos y sostenerlos, sin estar atada a conseguir resultados a los diez días: eso se da solo, como consecuencia de los cambios mínimos que vayas haciendo.",
     ],
   },
@@ -28,7 +27,7 @@ export const FOR_WHOM = {
       "Querés bajar equis cantidad de kilos en un mes.",
       "No estás dispuesta a reservarte tres momentos de 30 a 60 minutos por semana, sólo para vos.",
       "Necesitás clases en vivo o un profesor acompañándote durante tus sesiones.",
-      "No pensás sumar gimnasio ni elementos más adelante: el B1 lo resolvés con tu peso corporal, pero del B2 en adelante te vas a quedar sin poder hacer la mayoría de los ejercicios.",
+      "Pasados los primeros meses no vas a poder sumar elementos y/o gimnasio.",
     ],
   },
 } as const;
@@ -102,6 +101,6 @@ export const FAQS: FaqItem[] = [
   {
     question: "¿Es un plan personalizado para mí?",
     answer:
-      "No. El plan de entrenamiento es el mismo para todas las que hacen el Flex Program. Lo que sí es tuyo es la devolución sobre tu técnica y las respuestas a lo que preguntes. Si buscás un plan armado desde cero para tu caso, con más días de entrenamiento, objetivos puntuales y contacto directo conmigo, eso es la asesoría 1:1: son pocos lugares y lo hablamos por WhatsApp.",
+      "No. El plan de entrenamiento es el mismo para todas las que hacen el Flex Program. Lo que sí es tuyo es la devolución sobre tu técnica y las respuestas a lo que preguntes. Si buscás un plan armado desde cero para tu caso, con más días de entrenamiento, objetivos puntuales y contacto directo conmigo, eso es la asesoría 1:1, y lo hablamos por WhatsApp.",
   },
 ];

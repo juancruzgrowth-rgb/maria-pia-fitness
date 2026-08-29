@@ -121,10 +121,11 @@ const CANCEL_MESSAGE = [
 const WAITLIST_MESSAGE = `Hola Pía! Quiero anotarme para cuando vuelvan a abrir el ${CHALLENGE.name}.`;
 
 /**
- * Consulta por la asesoría 1:1. No se publica precio: la conversación
- * arranca por acá. Ver ADVISORY en @/lib/products.
+ * Consulta por la asesoría 1:1. Desde el 2026-08-29 el precio se publica en la
+ * web, así que el mensaje ya no lo pregunta: arranca en cómo funciona y en si
+ * hay lugar. Ver ADVISORY en @/lib/products.
  */
-const ADVISORY_MESSAGE = `Hola Pía! Me interesa la asesoría 1:1 y quiero saber cómo funciona y cuánto sale.`;
+const ADVISORY_MESSAGE = `Hola Pía! Me interesa la asesoría 1:1. Quiero saber cómo funciona y si tenés lugar.`;
 
 export const CONTACT = {
   whatsappNumber: cleanedNumber,

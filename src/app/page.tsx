@@ -4,6 +4,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { About } from "@/components/sections/About";
 import { Method } from "@/components/sections/Method";
 import { Pricing } from "@/components/sections/Pricing";
+import { Advisory } from "@/components/sections/Advisory";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { JsonLd } from "@/components/JsonLd";
@@ -25,6 +26,9 @@ import { challengeJsonLd, faqJsonLd } from "@/lib/seo";
  * "Todo lo que tenés que saber" (sus niveles B1/B2 se mudaron a "Por qué mi
  * método") y "Cómo empezás", cuyos tres pasos ahora viven dentro del precio.
  * También se sacó el trazo de pulso animado que separaba el hero: distraía.
+ *
+ * La asesoría 1:1 se sumó el 2026-08-29, pegada al precio y por debajo:
+ * es el otro camino, para quien ya descartó el programa. Ver Advisory.
  */
 export default function Home() {
   return (
@@ -35,6 +39,7 @@ export default function Home() {
       <About />
       <Method />
       <Pricing />
+      <Advisory />
       <FAQ />
       <FinalCta />
       <JsonLd data={challengeJsonLd()} />

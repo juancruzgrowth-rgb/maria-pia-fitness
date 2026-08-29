@@ -289,11 +289,15 @@ export const VISIBLE_PLANS = PLANS.filter((plan) => plan.visible);
 /**
  * Asesoría 1:1. Producto de ticket alto, mensual y personalizado.
  *
- * Decisión comercial (2026-08-13): NO se publica el precio en la web. A este
- * ticket la venta necesita conversación, y mostrar $280.000 al lado de $55.000
- * convierte al programa en "la opción barata" en vez de "la opción correcta".
- * Los precios viven acá igual porque este archivo es el single source of truth,
- * pero ningún componente los renderiza.
+ * El precio SÍ se publica desde el 2026-08-29, por decisión de Pía. Revierte
+ * la decisión del 2026-08-13, que lo mantenía oculto para que la venta pasara
+ * siempre por una conversación. Por eso la sección va debajo del precio del
+ * programa y no al lado: $350.000 en la misma fila que $55.000 convierte al
+ * Flex Program en "la opción barata" en vez de "la opción correcta".
+ *
+ * Los $350.000 son el precio único y ya incluyen la parte de nutrición. Antes
+ * había dos importes —$280.000 sin nutrición y $350.000 con— y se unificaron:
+ * hoy se vende una sola cosa.
  *
  * Lo que separa la asesoría del programa (2026-08-18): acá el plan se arma
  * para tu caso y Pía te atiende por WhatsApp de forma directa. En el Flex
@@ -302,18 +306,39 @@ export const VISIBLE_PLANS = PLANS.filter((plan) => plan.visible);
  */
 export const ADVISORY = {
   name: "Asesoría 1:1",
-  priceARS: 280000,
-  priceWithNutritionARS: 350000,
-  /** Mensual, como el programa. Arranca en 5 lugares para medir la carga real. */
-  spotsTotal: 5,
-  showPrice: false,
-  includes: [
-    "Plan de entrenamiento armado para tu caso, con más días por semana",
-    "Objetivos puntuales más allá de la recomposición corporal",
-    "Plan de nutrición personalizado (opcional)",
-    "Corrección de ejercicios por WhatsApp, directo conmigo",
-    "Consultas ilimitadas por WhatsApp",
-    "Llamada 1:1 a los 20 días de arrancar",
+  priceARS: 350000,
+  frequencyLabel: "por mes",
+  /**
+   * No hay cupo. Hubo un `spotsTotal: 5` hasta el 2026-08-29 y se borró por
+   * pedido de Pía: no existe tal límite, y un cupo que nadie actualiza es un
+   * cupo inventado —publicidad engañosa, art. 8 de la Ley 24.240—. Es el mismo
+   * motivo por el que se apagó FOUNDING. No volver a poner un número acá sin
+   * que alguien se comprometa a mantenerlo.
+   */
+  showPrice: true,
+  /**
+   * Las prestaciones, tal como las dictó Pía el 2026-08-29. Van agrupadas
+   * porque son dos servicios distintos dentro del mismo precio.
+   */
+  blocks: [
+    {
+      id: "entrenamiento",
+      title: "Entrenamiento",
+      items: [
+        "El plan se arma sobre tu disponibilidad de días, los elementos que tengas a mano y tus objetivos.",
+        "Contacto diario conmigo para despejar dudas.",
+        "Seguimiento individualizado.",
+        "Variaciones propuestas cuando un ejercicio no te cierra.",
+      ],
+    },
+    {
+      id: "nutricion",
+      title: "Nutrición",
+      items: [
+        "Se te arma un plan sobre la cantidad de ingestas diarias que puedas sostener.",
+        "En cada una se reparte la carga de macronutrientes que tu metabolismo necesita.",
+      ],
+    },
   ],
 } as const;
 
