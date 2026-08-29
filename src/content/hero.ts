@@ -3,7 +3,7 @@ export const HERO = {
   headlineLead: "No te falta voluntad.",
   headlineAccent: "Te falta un plan que entre en tu semana.",
   description:
-    "El Flex Program es un entrenamiento online para mujeres que buscan optimizar su tiempo diario. Tres sesiones semanales, con seguimiento y acompañamiento profesional. Obtenés un nuevo nivel cuando completás al que estás suscripta.",
+    "El Flex Program es un entrenamiento online para mujeres que disponen de poco tiempo. Empezás con tu peso corporal y algunos elementos básicos, y vas subiendo a niveles más avanzados a medida que tu cuerpo responde.",
   /**
    * Version corta para mobile. Ahi el hero se reduce a titulo, una linea y el
    * video: el texto largo empujaba la miniatura abajo del pliegue.

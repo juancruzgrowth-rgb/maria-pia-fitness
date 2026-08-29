@@ -5,11 +5,6 @@ import { getImageProps } from "next/image";
 import { Play, X, WhatsappLogo } from "@phosphor-icons/react";
 import { HERO } from "@/content/hero";
 import { CONTACT } from "@/lib/site";
-import {
-  ENROLLMENT_OPEN,
-  FOUNDING,
-  FOUNDING_SPOTS_LEFT,
-} from "@/lib/products";
 
 /** Ancho real de la miniatura. Las dos versiones son 16:9. */
 const POSTER_WIDTH = 1920;
@@ -69,36 +64,14 @@ export function Hero() {
 
             {/* En mobile el hero se queda con lo minimo —titulo, una linea y
                 el video— para que la miniatura entre en pantalla. El texto
-                largo, el cuadro de "empezas hoy", el CTA de dudas y los tres
-                datos de abajo aparecen recien en desktop. */}
+                largo, el CTA de dudas y los tres datos de abajo aparecen
+                recien en desktop. */}
             <p className="max-w-xl text-base leading-relaxed text-mp-carbon/80 md:hidden">
               {HERO.descriptionShort}
             </p>
             <p className="hidden max-w-xl text-base leading-relaxed text-mp-carbon/80 md:block md:text-lg">
               {HERO.description}
             </p>
-
-            {ENROLLMENT_OPEN && (
-              <div className="hidden flex-col gap-1.5 rounded-md border border-mp-line p-4 md:flex">
-                <span className="inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-[0.14em] text-mp-ember">
-                  <span
-                    aria-hidden="true"
-                    className="inline-block h-1.5 w-1.5 rounded-full bg-mp-orange"
-                  />
-                  {FOUNDING.active ? FOUNDING.label : "Empezás hoy"}
-                </span>
-                <p className="text-sm leading-relaxed text-mp-carbon">
-                  Empezás el día que entrás, no cuando arranque un grupo.
-                  {FOUNDING.active
-                    ? ` Hay ${FOUNDING.spotsTotal} lugares al precio de lanzamiento${
-                        FOUNDING_SPOTS_LEFT > 0
-                          ? ` —quedan ${FOUNDING_SPOTS_LEFT}—`
-                          : ""
-                      }, y ese precio te queda congelado mientras sigas entrenando.`
-                    : " Entrás al precio de lanzamiento, y te queda congelado mientras sigas entrenando."}
-                </p>
-              </div>
-            )}
 
             <a
               href={CONTACT.askUrl}
@@ -169,7 +142,7 @@ export function Hero() {
                 >
                   <Play weight="fill" className="h-6 w-6 translate-x-0.5 md:h-7 md:w-7" />
                 </span>
-                <span className="absolute left-3 right-3 top-3 inline-flex items-center gap-2 rounded-md bg-mp-ink/90 px-3 py-2 text-left font-display text-[11px] font-semibold uppercase tracking-[0.12em] text-mp-canvas backdrop-blur-sm sm:right-auto">
+                <span className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-md bg-mp-ink/90 px-3 py-2 text-left font-display text-[11px] font-semibold uppercase tracking-[0.12em] text-mp-canvas backdrop-blur-sm">
                   <span
                     aria-hidden="true"
                     className="h-1.5 w-1.5 shrink-0 rounded-full bg-mp-orange"
