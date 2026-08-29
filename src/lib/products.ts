@@ -328,7 +328,7 @@ export const ADVISORY = {
         "El plan se arma sobre tu disponibilidad de días, los elementos que tengas a mano y tus objetivos.",
         "Contacto diario conmigo para despejar dudas.",
         "Seguimiento individualizado.",
-        "Variaciones propuestas cuando un ejercicio no te cierra.",
+        "Variaciones propuestas para ejercicios.",
       ],
     },
     {
