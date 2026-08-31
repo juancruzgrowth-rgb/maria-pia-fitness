@@ -105,7 +105,9 @@ export const metadata: Metadata = {
     siteName: SITE.brand,
   },
   twitter: {
-    card: "summary_large_image",
+    // La pieza que se comparte es el monograma cuadrado: "summary" la muestra
+    // entera, "summary_large_image" la recortaria a 2:1.
+    card: "summary",
     title: `${CHALLENGE.name} · ${SITE.shortBrand}`,
     description: CHALLENGE.promise,
   },

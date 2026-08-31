@@ -104,12 +104,12 @@ export const CHALLENGE: Challenge = {
   shortName: "el Flex Program",
   /**
    * Es el texto que se ve al compartir el link (og:description y el JSON-LD).
-   * Cambiado el 2026-08-29: antes prometia un resultado —"volver a entrenar y
-   * sostenerlo"—; ahora cuenta el metodo, que es lo que distingue al programa
-   * de cualquier otro plan de entrenamiento online.
+   * Cambiado el 2026-08-31: se acorto a una linea. En WhatsApp la
+   * previsualizacion corta a las dos lineas, asi que el metodo y para quien es
+   * tienen que entrar ahi, sin la enumeracion de las cuatro efes.
    */
   promise:
-    "Mi Método 4F: fuerza, función, flexibilidad y foco. Tres sesiones por semana que se apoyan en la calidad del movimiento, no en las horas que le puedas dedicar.",
+    "Mi Método 4F: un método pensado para mujeres que no disponen de mucho tiempo libre.",
   forWhom:
     "Mujeres que trabajan ocho horas o más y quieren sostener hábitos sin que les coma el día.",
   priceARS: PRICE_ARS,
