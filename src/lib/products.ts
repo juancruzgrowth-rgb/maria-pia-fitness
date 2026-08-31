@@ -287,6 +287,44 @@ export const PLANS: Plan[] = [
 export const VISIBLE_PLANS = PLANS.filter((plan) => plan.visible);
 
 /**
+ * Guía nutricional. Complemento opcional del programa, agregado el 2026-08-31
+ * por pedido de Pía.
+ *
+ * NO entra en PLANS a propósito. PLANS son las formas de entrar al programa, y
+ * los Términos y Condiciones imprimen VISIBLE_PLANS literal como "los precios
+ * vigentes" de la suscripción, con la cláusula de renovación y de precio
+ * congelado alrededor. La guía es un pago único que no renueva y que no da
+ * acceso a ningún entrenamiento: metida ahí, ese párrafo legal afirmaría cosas
+ * falsas sobre ella.
+ *
+ * Por el mismo motivo en la home se muestra a lo ancho y etiquetada como
+ * opcional, y no como una tercera tarjeta igual a las otras dos: tres tarjetas
+ * simétricas invitan a elegir UNA, y alguien iba a transferir $30.000 creyendo
+ * que compró entrenamiento.
+ *
+ * Sólo se vende a quien ya entrena o entra ahora: no es una puerta de entrada.
+ */
+export const NUTRITION_GUIDE = {
+  id: "guia-nutricional",
+  name: "Guía nutricional",
+  priceARS: 30000,
+  /** Va donde los planes muestran la frecuencia. Acá no hay: se paga una vez. */
+  frequencyLabel: "pago único",
+  label: "Opcional",
+  visible: true,
+  summary:
+    "Un primer acercamiento a la nutrición, para acompañar lo que ya estás entrenando: hábitos simples de trasladar a tu día a día, sin dietas ni pesar comida. Se compra aparte y te la desbloqueo en Skool.",
+  /**
+   * Pía es entrenadora, no nutricionista. La guía es material educativo, no un
+   * plan alimentario personalizado. Esta línea es lo que separa la divulgación
+   * del ejercicio de una profesión reglada: no borrarla mientras la guía no
+   * esté firmada por una nutricionista matriculada.
+   */
+  disclaimer:
+    "Es material educativo: no es un plan alimentario personalizado ni reemplaza la consulta con un nutricionista.",
+} as const;
+
+/**
  * Asesoría 1:1. Producto de ticket alto, mensual y personalizado.
  *
  * El precio SÍ se publica desde el 2026-08-29, por decisión de Pía. Revierte

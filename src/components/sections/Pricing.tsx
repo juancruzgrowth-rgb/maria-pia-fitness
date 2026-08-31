@@ -5,6 +5,7 @@ import { HOW_IT_WORKS } from "@/content/offer";
 import { PRIMARY_CTA } from "@/lib/site";
 import {
   ENROLLMENT_OPEN,
+  NUTRITION_GUIDE,
   QUARTERLY_DISCOUNT_PCT,
   RENEWAL,
   TRANSFER,
@@ -84,6 +85,38 @@ export function Pricing() {
               </p>
             </RevealOnScroll>
           ))}
+
+          {/* La guia va en la misma grilla y a lo ancho de las dos columnas:
+              queda pegada a los planes, que es donde Pia la quiere, sin
+              leerse como una tercera forma de entrar al programa. */}
+          {NUTRITION_GUIDE.visible && (
+            <RevealOnScroll
+              as="li"
+              delay={200}
+              className="flex flex-col gap-3 bg-mp-canvas p-6 md:col-span-2 md:p-10"
+            >
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-mp-carbon/70">
+                  {NUTRITION_GUIDE.name}
+                </span>
+                <span className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-mp-ember">
+                  {NUTRITION_GUIDE.label}
+                </span>
+              </div>
+              <p className="font-display text-3xl font-extrabold leading-none tracking-tight text-mp-ink md:text-4xl">
+                {formatARS(NUTRITION_GUIDE.priceARS)}
+                <span className="ml-2 font-display text-sm font-semibold text-mp-carbon/70">
+                  {NUTRITION_GUIDE.frequencyLabel}
+                </span>
+              </p>
+              <p className="max-w-2xl text-sm leading-relaxed text-mp-carbon/80">
+                {NUTRITION_GUIDE.summary}
+              </p>
+              <p className="max-w-2xl text-xs leading-relaxed text-mp-carbon/70">
+                {NUTRITION_GUIDE.disclaimer}
+              </p>
+            </RevealOnScroll>
+          )}
         </ul>
 
         <RevealOnScroll delay={200} className="mt-8">

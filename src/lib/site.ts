@@ -1,5 +1,10 @@
 import { publicEnv } from "@/lib/env";
-import { CHALLENGE, CTA_LABEL, ENROLLMENT_OPEN } from "@/lib/products";
+import {
+  CHALLENGE,
+  CTA_LABEL,
+  ENROLLMENT_OPEN,
+  NUTRITION_GUIDE,
+} from "@/lib/products";
 
 /**
  * Identidad de marca. Actualizada el 2026-08-17 con el logotipo nuevo.
@@ -83,6 +88,10 @@ const ASK_MESSAGE = `Hola Pía! Vi la web del ${CHALLENGE.name} y tengo una cons
  * Los campos van escritos como líneas a completar porque son exactamente los
  * datos que Pía necesita para dar el alta: sin el email no puede invitarla a
  * Skool, y sin el plan no sabe hasta cuándo le corresponde el acceso.
+ *
+ * La línea de la guía nutricional se sumó el 2026-08-31, con el producto. Sin
+ * ella el monto transferido no coincide con ningún plan y Pía tiene que
+ * preguntar de qué es la diferencia. Ver NUTRITION_GUIDE en @/lib/products.
  */
 const RECEIPT_MESSAGE = [
   `Hola Pía! Ya hice la transferencia del ${CHALLENGE.name}. Te paso mis datos:`,
@@ -90,6 +99,7 @@ const RECEIPT_MESSAGE = [
   "Mi nombre:",
   "Mi email:",
   "Plan que elegí:",
+  `¿Sumo la ${NUTRITION_GUIDE.name.toLowerCase()}? (sí / no):`,
   "",
   "(Acá te adjunto el comprobante)",
 ].join("\n");

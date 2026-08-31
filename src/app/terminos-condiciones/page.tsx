@@ -8,6 +8,7 @@ import {
   RENEWAL,
   TRAINING,
   WITHDRAWAL_RIGHT,
+  NUTRITION_GUIDE,
   VISIBLE_PLANS,
   formatARS,
 } from "@/lib/products";
@@ -60,6 +61,15 @@ export default function TerminosCondicionesPage() {
           precio propios, que se contrata por separado.
         </p>
         <p>
+          La {NUTRITION_GUIDE.name.toLowerCase()} es un contenido digital
+          complementario, de adquisición opcional y por única vez, que se
+          entrega dentro de la comunidad y no vence ni se renueva. Constituye{" "}
+          <strong>material educativo de carácter general</strong>: no es un plan
+          alimentario personalizado, no contempla condiciones de salud
+          particulares y no reemplaza la consulta con un profesional de la
+          nutrición matriculado.
+        </p>
+        <p>
           El servicio no constituye una prestación médica ni reemplaza el
           asesoramiento de un profesional de la salud.
         </p>
@@ -68,7 +78,9 @@ export default function TerminosCondicionesPage() {
       <LegalSection heading="3. Precio y forma de pago">
         <p>
           Los precios vigentes, con impuestos incluidos, son:{" "}
-          {VISIBLE_PLANS.map((plan) => `${plan.name}, ${formatARS(plan.priceARS)}`).join("; ")}.
+          {VISIBLE_PLANS.map((plan) => `${plan.name}, ${formatARS(plan.priceARS)}`).join("; ")}.{" "}
+          La {NUTRITION_GUIDE.name.toLowerCase()}, de adquisición opcional, se
+          abona por única vez: {formatARS(NUTRITION_GUIDE.priceARS)}.
           Estos importes corresponden al precio promocional de lanzamiento
           vigente al momento de la contratación. Quienes contraten a ese precio
           lo conservan sin aumentos mientras renueven sin interrupciones. La

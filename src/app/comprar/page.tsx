@@ -18,6 +18,7 @@ import {
   QUARTERLY_DISCOUNT_PCT,
   RENEWAL,
   TRANSFER,
+  NUTRITION_GUIDE,
   VISIBLE_PLANS,
   formatARS,
 } from "@/lib/products";
@@ -111,6 +112,38 @@ export default function ComprarPage() {
             )}
           </li>
         ))}
+
+        {/* La guia no es un plan: se suma al que elijas. Va con el borde
+            punteado para que no se lea como una tercera opcion excluyente. */}
+        {NUTRITION_GUIDE.visible && (
+          <li className="flex flex-col gap-3 rounded-[var(--radius-card)] border border-dashed border-mp-line p-6">
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="font-display text-sm font-semibold text-mp-ink">
+                {NUTRITION_GUIDE.name}
+                <span className="ml-2 font-display text-xs font-semibold uppercase tracking-[0.08em] text-mp-ember">
+                  {NUTRITION_GUIDE.label}
+                </span>
+              </span>
+              <span className="font-display text-2xl font-extrabold text-mp-ink md:text-3xl">
+                {formatARS(NUTRITION_GUIDE.priceARS)}
+                <span className="ml-1 text-sm font-semibold text-mp-carbon/70">
+                  {NUTRITION_GUIDE.frequencyLabel}
+                </span>
+              </span>
+            </div>
+            <p className="text-sm leading-relaxed text-mp-carbon/80">
+              {NUTRITION_GUIDE.summary}
+            </p>
+            <p className="text-xs leading-relaxed text-mp-carbon/70">
+              {NUTRITION_GUIDE.disclaimer}
+            </p>
+            <p className="text-sm leading-relaxed text-mp-carbon/80">
+              Si la querés, sumá {formatARS(NUTRITION_GUIDE.priceARS)} a la
+              transferencia de tu plan y avisame en el mismo mensaje del
+              comprobante.
+            </p>
+          </li>
+        )}
       </ul>
 
       <ol className="mt-12 flex flex-col gap-8">
